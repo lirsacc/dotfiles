@@ -576,9 +576,12 @@ defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://
 # Sublime Text                                                                #
 ###############################################################################
 
-# Install Sublime Text settings
+# Install Sublime Text settings and themes
 cp -r init/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings 2> /dev/null
 cp -r init/Sublime\ Themes/$.tmTheme ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Themes 2> /dev/null
+
+# Create symlinks to actiavte subl command
+ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" ~/bin/subl
 
 ###############################################################################
 # Transmission.app                                                            #
