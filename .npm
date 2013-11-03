@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Make sure we’re using the latest npm and update existing packages
+npm update
+
+npm install -g grunt-cli
+npm install -g bower
+npm install -g yo
