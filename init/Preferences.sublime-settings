@@ -2,7 +2,7 @@
 	"bold_folder_labels": true,
 	"caret_style": "phase",
 	"close_windows_when_empty": true,
-	"color_scheme": "Packages/User/Themes/Darkside.tmTheme",
+	"color_scheme": "Packages/User/Themes/Hyrule.tmTheme",
 	"draw_indent_guides": true,
 	"draw_white_space": "selection",
 	"file_exclude_patterns":
@@ -30,9 +30,7 @@
 	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
-		"JavaScript",
 		"Vintage",
-		"SublimeLinter"
 	],
 	"match_brackets": true,
 	"match_brackets_angle": true,
@@ -50,5 +48,6 @@
 	"trim_trailing_white_space_on_save": true,
 	"use_simple_full_screen": true,
 	"wide_caret": true,
+	"theme": "Centurion.sublime-theme",
 	"word_wrap": true
 }
