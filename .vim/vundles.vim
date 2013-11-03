@@ -18,7 +18,12 @@ Bundle "gmarik/vundle"
 
 " All your bundles here
 
-Bundle 'flazz/vim-colorschemes'
+Bundle "myusuf3/numbers.vim"
+Bundle 'mileszs/ack.vim'
+Bundle 'scrooloose/syntastic'
+Bundle 'tpope/vim-fugitive'
+Bundle 'bling/vim-airline'
+Bundle 'airblade/vim-gitgutter'
 
 "Filetype plugin indent on is required by vundle
 filetype plugin indent on
