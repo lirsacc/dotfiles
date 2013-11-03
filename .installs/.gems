@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+gem install pry
+gem install rails
+gem install sass
+gem install awesome_print
