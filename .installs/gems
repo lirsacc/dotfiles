@@ -3,4 +3,5 @@
 gem install pry
 gem install rails
 gem install sass
+gem install compass
 gem install awesome_print
