@@ -18,6 +18,7 @@ set visualbell                  "No sounds
 set autoread                    "Reload files changed outside vim
 set mouse=a                 " Automatically enable mouse usage
 set mousehide               " Hide the mouse cursor while typing
+
 scriptencoding utf-8
 
 " This makes vim act like all other editors, buffers can
@@ -68,7 +69,7 @@ endif
 " ------------------------------------
 
 set background=dark         " Assume a dark background
-color Tomorrow-Night-Bright
+color Tomorrow
 set antialias
 set guifont=Ubuntu\ Mono\ derivative\ Powerline:h14
 
