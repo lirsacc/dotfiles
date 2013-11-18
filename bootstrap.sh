@@ -40,3 +40,10 @@ do
   fi
   echo
 done
+
+
+echo "=> Removing install scripts"
+rm -rf ~/.installs
+
+echo "=> Removing init files"
+rm -rf ~/init
