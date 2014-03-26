@@ -2,7 +2,7 @@
 
 echo
 echo "DOTFILES INSTALL SCRIPT"
-echo "-----------------------"
+echo "======================="
 echo
 
 cd "$(dirname "${BASH_SOURCE}")"
@@ -41,9 +41,5 @@ do
   echo
 done
 
-
 echo "=> Removing install scripts"
 rm -rf ~/.installs
-
-echo "=> Removing init files"
-rm -rf ~/init

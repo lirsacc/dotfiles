@@ -1,5 +1,6 @@
-# Compiled Python files
+# Compiled files
 *.pyc
+*.javac
 
 # Folder view configuration files
 .DS_Store
