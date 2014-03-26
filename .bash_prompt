@@ -22,43 +22,13 @@ Reset='\e[0m'         # Reset prompt styles
 Bold='\e[1m'          # Bold
 Underline='\e[4m'     # Underline
 
-# Git colors
-# ------
-if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-  c_reset="${Reset}"
-  c_user="${Bold}${Yellow}"
-  c_path="${Bold}${Yellow}"
-  c_git_clean="${Bold}${Green}"
-  c_git_dirty="${Bold}${Red}"
-else
-  c_reset=
-  c_user=
-  c_git_clean=
-  c_git_path=
-  c_git_dirty=
-fi
-
-# Function to assemble the Git parsingart of our prompt.
-function git_prompt ()
-{
-  if ! git rev-parse --git-dir > /dev/null 2>&1; then
-    return 0
-  fi
-
-  git_branch=$(git branch 2>/dev/null | sed -n '/^\*/s/^\* //p')
-
-  if git diff --quiet 2>/dev/null >&2; then
-    git_color="$c_git_clean"
-  else
-    git_color="$c_git_dirty"
-  fi
-
-  echo "${git_color}${git_branch}"
-}
-
-function git_icon() {
+function parse_git_dirty() {
     [[ $(git status 2> /dev/null | tail -n1) != *"working directory clean"* ]] && echo "*"
 }
 
-export PS1="${Bold}${Purple}\u${Gray} at ${Cyan}\h${Gray} in ${Yellow}\w${Gray}\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")${Purple}$(git_prompt)$(git_icon)${Gray}\n> ${Reset}"
+function parse_git_branch() {
+    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+}
+
+export PS1="${Bold}${Purple}\u${Gray} at ${Cyan}\h${Gray} in ${Green}\w${Gray}\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")${Yellow}$(parse_git_branch)${Gray}\n> ${Reset}"
 export PS2="${Cyan}→ ${Reset}"
