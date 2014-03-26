@@ -45,6 +45,7 @@ brew install tree
 brew install webkit2png
 brew install zopfli
 brew install ngrep
+brew install hr
 
 brew tap homebrew/versions
 brew install lua52

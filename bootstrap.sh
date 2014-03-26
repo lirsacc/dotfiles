@@ -8,6 +8,7 @@ echo
 cd "$(dirname "${BASH_SOURCE}")"
 echo " => Update from git"
 git pull origin master
+git submodule update --init
 echo
 
 function doIt() {
@@ -43,3 +44,4 @@ done
 
 echo "=> Removing install scripts"
 rm -rf ~/.installs
+rm -rf base16-iterm2/
