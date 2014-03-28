@@ -12,8 +12,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # General UI/UX                #
 ################################
 
-read -p "Enter computer handle: " handle
-read -p "Enter user name (default lirsacc): " name
+read -p "Enter computer name (default lirsacc): " name
 
 if [ -z "$name" ]
 then
@@ -21,10 +20,10 @@ then
 fi
 
 # Set computer name (as done via System Preferences → Sharing)
-sudo scutil --set ComputerName "${handle}-${name}"
-sudo scutil --set HostName "${handle}-${name}"
-sudo scutil --set LocalHostName "${handle}-${name}"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${handle}-${name}"
+sudo scutil --set ComputerName "${name}"
+sudo scutil --set HostName "${name}"
+sudo scutil --set LocalHostName "${name}"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${name}"
 
 # Set standby delay to 24 hours (default is 1 hour)
 # sudo pmset -a standbydelay 86400
