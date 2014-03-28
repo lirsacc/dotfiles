@@ -37,6 +37,8 @@ else
     RED="\033[1;31m"
 fi
 
+GIT_PS1_SHOWDIRTYSTATE=1
+
 # Set the full bash prompt.
 function set_bash_prompt () {
   # Set the PYTHON_VIRTUALENV variable.
