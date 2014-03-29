@@ -37,16 +37,63 @@ else
     RED="\033[1;31m"
 fi
 
-GIT_PS1_SHOWDIRTYSTATE=1
+export GREEN
+export YELLOW
+export PURPLE
+export WHITE
+export BLUE
+export BOLD
+export RESET
+export RED
 
-# Set the full bash prompt.
-function set_bash_prompt () {
-  # Set the PYTHON_VIRTUALENV variable.
-  set_virtualenv
-
-  # Set the bash prompt variable.
-  PS1="${BOLD}${YELLOW}${PYTHON_VIRTUALENV}${BLUE}\u${WHITE} at ${BLUE}\h${WHITE} in ${PURPLE}\w${WHITE}$(__git_ps1 "(%s)")${RESET}\n> "
+function parse_virtualenv()
+{
+    if test -z "$VIRTUAL_ENV" ; then
+      venv=""
+    else
+      venv="[`basename \"$VIRTUAL_ENV\"`]\n"
+    fi
+    echo $venv
 }
 
-# Tell bash to execute this function just before displaying its prompt.
-PROMPT_COMMAND=set_bash_prompt
+function parse_git_color() {
+  ansi=""
+  local git_status="`git status -unormal 2>&1`"
+  if ! [[ "$git_status" =~ Not\ a\ git\ repo ]]; then
+    if [[ "$git_status" =~ nothing\ to\ commit ]]; then
+      local ansi=$GREEN
+    elif [[ "$git_status" =~ no\ changes\ added\ to\ commit ]]; then
+      local ansi=$RED
+    else
+      local ansi=$YELLOW
+    fi
+  fi
+  echo "${ansi}"
+}
+
+function git_prompt ()
+{
+  if ! git rev-parse --git-dir > /dev/null 2>&1; then
+    return 0
+  fi
+
+  git_branch=$(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
+
+  echo " ${WHITE}[$(parse_git_color)$git_branch${WHITE}]${RESET}"
+}
+
+
+
+function prompt_command() {
+  previous_return_value=$?;
+  prompt="${BOLD}${YELLOW}$(parse_virtualenv)${BLUE}\u${WHITE} at ${BLUE}\h${WHITE} in ${PURPLE}\w${WHITE}$(git_prompt)${RESET}"
+  if test $previous_return_value -eq 0
+  then
+      PS1="${prompt}\n> ${RESET}"
+  else
+      PS1="${prompt}\n${RED}>${RESET} "
+  fi
+  PS2="${YELLOW}→ ${RESET}"
+}
+
+PROMPT_COMMAND="prompt_command"
