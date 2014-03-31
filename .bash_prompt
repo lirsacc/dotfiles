@@ -86,12 +86,12 @@ function git_prompt ()
 
 function prompt_command() {
   previous_return_value=$?;
-  prompt="${BOLD}${YELLOW}$(parse_virtualenv)${BLUE}\u${WHITE} at ${BLUE}\h${WHITE} in ${PURPLE}\w${WHITE}$(git_prompt)${RESET}"
+  prompt="\[${BOLD}${YELLOW}\]$(parse_virtualenv)\[${BLUE}\]\u\[${WHITE}\] at \[${BLUE}\]\h\[${WHITE}\] in \[${PURPLE}\]\w\[${WHITE}\]$(git_prompt)\[${RESET}\]"
   if test $previous_return_value -eq 0
   then
-      PS1="${prompt}\n> ${RESET}"
+      PS1="${prompt}\n> \[${RESET}\]"
   else
-      PS1="${prompt}\n${RED}>${RESET} "
+      PS1="${prompt}\n\[${RED}\]>\[${RESET}\] "
   fi
   PS2="${YELLOW}→ ${RESET}"
 }
