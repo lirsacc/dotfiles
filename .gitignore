@@ -1,7 +1,7 @@
 # Compiled files
 *.pyc
 *.javac
-
+*.swp
 # Folder view configuration files
 .DS_Store
 Desktop.ini
