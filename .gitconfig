@@ -24,7 +24,7 @@
     # Interactive rebase with the given number of latest commits
     reb = "!r() { git rebase -i HEAD~$1; }; r"
     # Rebase from master
-    rb = "git fetch;git rebase origin/master"
+    rb = rebase
 
 [apply]
     # Detect whitespace errors when applying a patch

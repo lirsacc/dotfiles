@@ -82,11 +82,15 @@ function git_prompt ()
   echo " ${WHITE}[$(parse_git_color)$git_branch${WHITE}]${RESET}"
 }
 
-
+function short_pwd ()
+{
+    # Replaces \w in PS1
+    echo $(sed "s:\([^/]\)[^/]*/:\1/:g" <<<$PWD)
+}
 
 function prompt_command() {
   previous_return_value=$?;
-  prompt="\[${BOLD}${YELLOW}\]$(parse_virtualenv)\[${BLUE}\]\u\[${WHITE}\] at \[${BLUE}\]\h\[${WHITE}\] in \[${PURPLE}\]\w\[${WHITE}\]$(git_prompt)\[${RESET}\]"
+  prompt="\[${BOLD}${YELLOW}\]$(parse_virtualenv)\[${BLUE}\]\u\[${WHITE}\] at \[${BLUE}\]\h\[${WHITE}\] in \[${PURPLE}\]$(short_pwd)\[${WHITE}\]$(git_prompt)\[${RESET}\]"
   if test $previous_return_value -eq 0
   then
       PS1="${prompt}\n> \[${RESET}\]"

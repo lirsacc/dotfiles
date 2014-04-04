@@ -139,7 +139,8 @@ alias profile='source ~/.bashrc'
 
 # Git
 alias gst="g s"
-alias gau="g a -u"
-alias gap="g a -p"
+alias gau="g add -u"
+alias gap="g add -p"
 alias gco="g go"
-alias grb="g rb"
+alias grb="git fetch && git rebase origin/master"
+alias gl="g l"
