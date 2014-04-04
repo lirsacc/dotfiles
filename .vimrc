@@ -6,7 +6,7 @@ set nocompatible
 " ====================================
 
 if !has('gui')
-    "set term=$TERM          " Make arrow and other keys work
+    set term=$TERM          " Make arrow and other keys work
 endif
 filetype plugin indent on   " Automatically detect file types.
 syntax on                   " Syntax highlighting
@@ -52,16 +52,7 @@ silent !mkdir ~/.vim/backups > /dev/null 2>&1
 set undodir=~/.vim/backups
 set undofile
 
-" Vundle
-" ------------------------------------
-" This loads all the plugins specified in ~/.vim/vundles.vim
-" Use Vundle plugin to manage all other plugins
-
-if filereadable(expand("~/.vim/vundles.vim"))
-  source ~/.vim/vundles.vim
-endif
-
-" ====================================
+"" ====================================
 " UI
 " ====================================
 
@@ -69,7 +60,7 @@ endif
 " ------------------------------------
 
 set background=dark         " Assume a dark background
-color Tomorrow
+" color Monokai
 set antialias
 set guifont=Ubuntu\ Mono\ derivative\ Powerline:h14
 
@@ -122,9 +113,9 @@ endif
 set autoindent
 set smartindent
 set smarttab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
 set expandtab
 
 filetype plugin on
@@ -171,3 +162,19 @@ set wildignore+=*.png,*.jpg,*.gif
 " Custom Settings
 " ====================================
 so ~/.vim/settings.vim
+
+" Vundle
+" ------------------------------------
+" This loads all the plugins specified in ~/.vim/vundles.vim
+" Use Vundle plugin to manage all other plugins
+
+if filereadable(expand("~/.vim/vundles.vim"))
+  source ~/.vim/vundles.vim
+endif
+
+" Shortcuts
+" =====================================
+
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+

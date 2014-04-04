@@ -22,7 +22,7 @@ Bundle "myusuf3/numbers.vim"
 Bundle 'mileszs/ack.vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-fugitive'
-" Bundle 'bling/vim-airline'
+Bundle 'bling/vim-airline'
 Bundle 'airblade/vim-gitgutter'
 
 "Filetype plugin indent on is required by vundle
