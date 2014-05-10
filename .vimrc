@@ -106,27 +106,29 @@ set wildignore+=*.png,*.jpg,*.gif
 
 " Status Line
 if has('statusline')
-    set laststatus=2
+    set laststatus=2                            " Always show statusline
 
-    " Broken down into easily includeable segments
-    set statusline=%<%f\                     " Filename
-    set statusline+=%w%h%m%r                 " Options
-    set statusline+=%{fugitive#statusline()} " Git Hotness
-    set statusline+=\ [%{&ff}/%Y]            " Filetype
-    set statusline+=\ [%{getcwd()}]          " Current dir
-    set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+    set statusline=%<\
+    set statusline+=%2*[%n%H%M%R%W]%*\          " flags and buf no
+    set statusline=%f\ [%{getcwd()}]\          " Filename and directory
+    set statusline+=\ [%{&ff}/%{strlen(&fenc)?&fenc:&enc}/%Y]
+
+    set statusline+=%=                          " Right align
+    set statusline+=%10((%l,%c)%)\ %p\%%\          " file position
+    set statusline+=%{fugitive#statusline()}    " Git Hotness
+
 endif
 
 " Folds
-set foldmethod=indent                       " fold based on indent
-set foldnestmax=3                           " deepest fold is 3 levels
-set nofoldenable                            " dont fold by default
+set foldmethod=indent                           " fold based on indent
+set foldnestmax=3                               " deepest fold is 3 levels
+set nofoldenable                                " dont fold by default
 
 " Scrolling
-set scrolloff=8                             "Start scrolling when we're 8 lines away from margins
+set scrolloff=8                                 " Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
-set scrolljump=5                            " Lines to scroll when cursor leaves screen
+set scrolljump=5                                " Lines to scroll when cursor leaves screen
 
 " Custom Settings
 so ~/.vim/settings.vim
