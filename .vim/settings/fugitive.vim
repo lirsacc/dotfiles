@@ -1,10 +1,4 @@
-" ====================================
-" Fugitive settings
-" ====================================
-
-" Key Mappings
-" ------------------------------------
-
+" Fugitive Key Mappings
 nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gc :Gcommit<CR>
