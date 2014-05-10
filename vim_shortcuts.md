@@ -17,3 +17,11 @@
 +   `ds"` removes surroundinf `"`
 +   `ys`works with text objects
 +   in visual mode, use `S`
+
+## [Abolish](https://github.com/tpope/vim-abolish)
+
+Can do many things, but most useful for now are:
++   `crm` camel case
++   `crs` snake case
++   `cru` upper case
++   `crm` mixed case
