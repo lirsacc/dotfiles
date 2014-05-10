@@ -150,5 +150,8 @@ nnoremap <C-l> <C-w>l
 " Remove trailing whitspaces on buffer write
 autocmd BufWritePre *.py :%s/\s\+$//e
 
+" Sudo override command
+command W w !sudo tee %
+
 "set background=dark                             " Assume a dark background
 colorscheme molokai
