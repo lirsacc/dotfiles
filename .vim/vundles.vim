@@ -28,6 +28,7 @@ Bundle 'jistr/vim-nerdtree-tabs'
 Bundle "myusuf3/numbers.vim"
 Bundle 'godlygeek/tabular'
 Bundle 'tpope/vim-surround'
+Bundle 'Shougo/neocomplcache'
 
 " Syntaxes fix
 
