@@ -41,5 +41,9 @@ brew install hr
 brew tap homebrew/versions
 brew install lua52
 
+# Get latest vim
+brew install vim
+mv /usr/bin/vim /usr/bin/vim.bak # vim will now point to /usr/local/bin/vim
+
 # Remove outdated versions from the cellar
 brew cleanup
