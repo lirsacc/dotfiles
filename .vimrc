@@ -147,5 +147,8 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+" Remove trailing whitspaces on buffer write
+autocmd BufWritePre *.py :%s/\s\+$//e
+
 "set background=dark                             " Assume a dark background
 colorscheme molokai
