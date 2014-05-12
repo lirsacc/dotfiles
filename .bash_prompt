@@ -46,7 +46,7 @@ export BOLD
 export RESET
 export RED
 
-function parse_virtualenv()
+function virtualenv()
 {
     if test -z "$VIRTUAL_ENV" ; then
       venv=""
@@ -56,7 +56,120 @@ function parse_virtualenv()
     echo $venv
 }
 
-function parse_git_color() {
+# Taken from https://github.com/twolfson/sexy-bash-prompt
+
+function get_git_branch() {
+  # On branches, this will return the branch name
+  # On non-branches, (no branch)
+  ref="$(git symbolic-ref HEAD 2> /dev/null | sed -e 's/refs\/heads\///')"
+  if [[ "$ref" != "" ]]; then
+    echo "$ref"
+  else
+    echo "(no branch)"
+  fi
+}
+
+function get_git_progress() {
+  # Detect in-progress actions (e.g. merge, rebase)
+  # https://github.com/git/git/blob/v1.9-rc2/wt-status.c#L1199-L1241
+  git_dir="$(git rev-parse --git-dir)"
+
+  # git merge
+  if [[ -f "$git_dir/MERGE_HEAD" ]]; then
+    echo " [merge]"
+  elif [[ -d "$git_dir/rebase-apply" ]]; then
+    # git am
+    if [[ -f "$git_dir/rebase-apply/applying" ]]; then
+      echo " [am]"
+    # git rebase
+    else
+      echo " [rebase]"
+    fi
+  elif [[ -d "$git_dir/rebase-merge" ]]; then
+    # git rebase --interactive/--merge
+    echo " [rebase]"
+  elif [[ -f "$git_dir/CHERRY_PICK_HEAD" ]]; then
+    # git cherry-pick
+    echo " [cherry-pick]"
+  fi
+  if [[ -f "$git_dir/BISECT_LOG" ]]; then
+    # git bisect
+    echo " [bisect]"
+  fi
+  if [[ -f "$git_dir/REVERT_HEAD" ]]; then
+    # git revert --no-commit
+    echo " [revert]"
+  fi
+}
+
+is_branch1_behind_branch2 () {
+  # $ git log origin/master..master -1
+  # commit 4a633f715caf26f6e9495198f89bba20f3402a32
+  # Author: Todd Wolfson <todd@twolfson.com>
+  # Date:   Sun Jul 7 22:12:17 2013 -0700
+  #
+  #     Unsynced commit
+
+  # Find the first log (if any) that is in branch1 but not branch2
+  first_log="$(git log $1..$2 -1 2> /dev/null)"
+
+  # Exit with 0 if there is a first log, 1 if there is not
+  [[ -n "$first_log" ]]
+}
+
+branch_exists () {
+  # List remote branches           | # Find our branch and exit with 0 or 1 if found/not found
+  git branch --remote 2> /dev/null | grep --quiet "$1"
+}
+
+parse_git_ahead () {
+  # Grab the local and remote branch
+  branch="$(get_git_branch)"
+  remote_branch="origin/$branch"
+
+  # $ git log origin/master..master
+  # commit 4a633f715caf26f6e9495198f89bba20f3402a32
+  # Author: Todd Wolfson <todd@twolfson.com>
+  # Date:   Sun Jul 7 22:12:17 2013 -0700
+  #
+  #     Unsynced commit
+
+  # If the remote branch is behind the local branch
+  # or it has not been merged into origin (remote branch doesn't exist)
+  if (is_branch1_behind_branch2 "$remote_branch" "$branch" ||
+      ! branch_exists "$remote_branch"); then
+    # echo our character
+    echo 1
+  fi
+}
+
+parse_git_behind () {
+  # Grab the branch
+  branch="$(get_git_branch)"
+  remote_branch="origin/$branch"
+
+  # $ git log master..origin/master
+  # commit 4a633f715caf26f6e9495198f89bba20f3402a32
+  # Author: Todd Wolfson <todd@twolfson.com>
+  # Date:   Sun Jul 7 22:12:17 2013 -0700
+  #
+  #     Unsynced commit
+
+  # If the local branch is behind the remote branch
+  if is_branch1_behind_branch2 "$branch" "$remote_branch"; then
+    # echo our character
+    echo 1
+  fi
+}
+
+function parse_git_dirty() {
+  # If the git status has *any* changes (e.g. dirty), echo our character
+  if [[ -n "$(git status --porcelain 2> /dev/null)" ]]; then
+    echo 1
+  fi
+}
+
+function git_color() {
   ansi=""
   local git_status="`git status -unormal 2>&1`"
   if ! [[ "$git_status" =~ Not\ a\ git\ repo ]]; then
@@ -71,15 +184,37 @@ function parse_git_color() {
   echo "${ansi}"
 }
 
+function get_git_status() {
+  # Grab the git dirty and git behind
+  dirty_branch="$(parse_git_dirty)"
+  branch_ahead="$(parse_git_ahead)"
+  branch_behind="$(parse_git_behind)"
+
+  # Iterate through all the cases and if it matches, then echo
+  if [[ "$dirty_branch" == 1 && "$branch_ahead" == 1 && "$branch_behind" == 1 ]]; then
+    echo " ⬢"
+  elif [[ "$dirty_branch" == 1 && "$branch_ahead" == 1 ]]; then
+    echo " ▲"
+  elif [[ "$dirty_branch" == 1 && "$branch_behind" == 1 ]]; then
+    echo " ▼"
+  elif [[ "$branch_ahead" == 1 && "$branch_behind" == 1 ]]; then
+    echo " ⬡"
+  elif [[ "$branch_ahead" == 1 ]]; then
+    echo " △"
+  elif [[ "$branch_behind" == 1 ]]; then
+    echo " ▽"
+  elif [[ "$dirty_branch" == 1 ]]; then
+    echo " *"
+  fi
+}
+
 function git_prompt ()
 {
   if ! git rev-parse --git-dir > /dev/null 2>&1; then
     return 0
   fi
 
-  git_branch=$(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
-
-  echo " ${WHITE}[$(parse_git_color)$git_branch${WHITE}]${RESET}"
+  echo " ${WHITE}[$(git_color)$(get_git_branch)$(get_git_status)${WHITE}]${RESET}"
 }
 
 function short_pwd ()
@@ -90,14 +225,14 @@ function short_pwd ()
 
 function prompt_command() {
   previous_return_value=$?;
-  prompt="\[${BOLD}${YELLOW}\]$(parse_virtualenv)\[${BLUE}\]\u\[${WHITE}\] at \[${BLUE}\]\h\[${WHITE}\] in \[${PURPLE}\]$(short_pwd)\[${WHITE}\]$(git_prompt)\[${RESET}\]"
+  prompt="\[${BOLD}${YELLOW}\]$(virtualenv)\[${BLUE}\]\u\[${WHITE}\] at \[${BLUE}\]\h\[${WHITE}\] in \[${PURPLE}\]$(short_pwd)\[${WHITE}\]$(git_prompt)\[${RESET}\]"
   if test $previous_return_value -eq 0
   then
       PS1="${prompt}\n> \[${RESET}\]"
   else
       PS1="${prompt}\n\[${RED}\]>\[${RESET}\] "
   fi
-  PS2="${YELLOW}→ ${RESET}"
+  PS2="${WHITE}→ ${RESET}"
 }
 
 PROMPT_COMMAND="prompt_command"
