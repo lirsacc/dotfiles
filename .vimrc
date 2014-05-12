@@ -30,7 +30,7 @@ set shortmess+=filmnrxoOtT                      " Abbrev. of messages (avoids 'h
 set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
 "set virtualedit=onemore                         " Allow for cursor beyond last character
 set virtualedit+=block                          " allow the cursor to go anywhere in visual block mode.
-set spell                                       " Spell checking on
+set nospell                                       " Spell checking on
 
 " <leader> is a key that allows you to have
 " your own "namespace" of keybindings.
