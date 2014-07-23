@@ -10,6 +10,9 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 npm update
 
 npm install -g grunt-cli
+npm install -g gulp
 npm install -g bower
 npm install -g yo
-npm install -g sails
+npm install -g mocha
+npm install -g istanbul
+npm install -g browserify
