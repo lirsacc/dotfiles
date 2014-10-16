@@ -8,8 +8,8 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 gem update
 
-gem install pry
-gem install rails
+# gem install pry
+# gem install rails
 gem install sass
 gem install awesome_print
 gem install jekyll
