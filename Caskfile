@@ -1,0 +1,14 @@
+install caskroom/cask/brew-cask
+
+cask install --appdir="/Applications" appcleaner
+cask install --appdir="/Applications" transmission
+cask install --appdir="/Applications" iterm2
+cask install --appdir="/Applications" licecap
+
+cask install font-open-sans
+cask install font-merriweather
+cask install font-roboto
+cask install font-roboto-slab
+cask install font-inconsolata
+cask install font-source-code-pro
+cask install font-source-sans-pro
