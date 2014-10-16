@@ -43,4 +43,5 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 # Load NVM
+export NVM_DIR="~/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
