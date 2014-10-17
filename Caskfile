@@ -4,6 +4,8 @@ cask install --appdir="/Applications" appcleaner
 cask install --appdir="/Applications" transmission
 cask install --appdir="/Applications" iterm2
 cask install --appdir="/Applications" licecap
+cask install --appdir="/Applications" imageoptim
+cask install --appdir="/Applications" caffeine
 
 cask install font-open-sans
 cask install font-merriweather
