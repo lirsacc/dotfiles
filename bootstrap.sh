@@ -6,11 +6,11 @@ echo "======================="
 echo
 
 # Update dotfiles from git repo
-# cd "$(dirname "${BASH_SOURCE}")"
-# echo " => Update from git"
-# git pull origin master
-# git submodule update --init
-# echo
+cd "$(dirname "${BASH_SOURCE}")"
+echo " => Update from git"
+git pull origin master
+git submodule update --init
+echo
 
 # Rsync the config files from git directory to home directory
 function doIt() {
