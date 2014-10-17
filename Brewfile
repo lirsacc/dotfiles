@@ -1,48 +1,48 @@
 # Make sure we’re using the latest Homebrew
-update
+brew update
 
 # Upgrade any already-installed formulae
-upgrade
+brew upgrade
 
 # Install GNU core utilities (those that come with OS X are outdated)
-install coreutils
+brew install coreutils
 # Install some other useful utilities like `sponge`
-install moreutils
+brew install moreutils
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
-install findutils
+brew install findutils
 # Install GNU `sed`, overwriting the built-in `sed`
-install gnu-sed --default-names
+brew install gnu-sed --default-names
 # Install Bash 4
-install bash
-install bash-completion
+brew install bash
+brew install bash-completion
 
 # Install wget with IRI support
-install wget --enable-iri
+brew install wget --enable-iri
 
 # Install more recent versions of some OS X tools
-install vim --override-system-vi
-install homebrew/dupes/grep
-install homebrew/dupes/screen
-install homebrew/php/php55 --with-gmp
+brew install vim --override-system-vi
+brew install homebrew/dupes/grep
+brew install homebrew/dupes/screen
+brew install homebrew/php/php55 --with-gmp
 
 # Install other useful binaries
-install ack
-install git
-install imagemagick --with-webp
-install lynx
-install node
-install pigz
-install rename
-install rhino
-install tree
-install webkit2png
-install zopfli
-install ngrep
-install hr
-install watch
-install fswatch
+brew install ack
+brew install git
+brew install imagemagick --with-webp
+brew install lynx
+brew install node
+brew install pigz
+brew install rename
+brew install rhino
+brew install tree
+brew install webkit2png
+brew install zopfli
+brew install ngrep
+brew install hr
+brew install watch
+brew install fswatch
 
-install python --framework
+brew install python --framework
 
 # Remove outdated versions from the cellar
-cleanup
+brew cleanup

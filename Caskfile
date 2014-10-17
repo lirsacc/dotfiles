@@ -1,16 +1,19 @@
-install caskroom/cask/brew-cask
+brew install caskroom/cask/brew-cask
+brew tap  caskroom/fonts
 
-cask install --appdir="/Applications" appcleaner
-cask install --appdir="/Applications" transmission
-cask install --appdir="/Applications" iterm2
-cask install --appdir="/Applications" licecap
-cask install --appdir="/Applications" imageoptim
-cask install --appdir="/Applications" caffeine
+brew cask install --appdir="/Applications" appcleaner
+brew cask install --appdir="/Applications" transmission
+brew cask install --appdir="/Applications" iterm2
+brew cask install --appdir="/Applications" licecap
+brew cask install --appdir="/Applications" imageoptim
+brew cask install --appdir="/Applications" caffeine
+brew cask install --appdir="/Applications" mailbox
+brew cask install --appdir="/Applications" atom
 
-cask install font-open-sans
-cask install font-merriweather
-cask install font-roboto
-cask install font-roboto-slab
-cask install font-inconsolata
-cask install font-source-code-pro
-cask install font-source-sans-pro
+brew cask install font-open-sans
+brew cask install font-merriweather
+brew cask install font-roboto
+brew cask install font-roboto-slab
+brew cask install font-inconsolata
+brew cask install font-source-code-pro
+brew cask install font-source-sans-pro
