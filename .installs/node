@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-# Install NVM latest
-current=$(pwd)
-git clone https://github.com/creationix/nvm.git ~/.nvm
-cd ~/.nvm
-git checkout `git describe --abbrev=0 --tags`
-cd $current
-unset current
-
 # Make sure we’re using the latest npm and update existing packages
 npm update
 

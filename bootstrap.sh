@@ -35,7 +35,6 @@ fi
 unset doIt
 
 # Homebrew
-# Install if needed
 if test ! $(which brew); then
   echo "Installing homebrew..."
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -44,13 +43,24 @@ fi
 read -p "=> Install homebrew formulas (Brewfile) ? (y/n) " -n 1
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    brew bundle Brewfile
+    source Brewfile
     read -p "=> Install casks (Caskfile) ? (y/n) " -n 1
 	echo
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
-	    brew bundle Caskfile
+	    source Caskfile
 	    brew cask alfred link
 	fi
+fi
+
+# Install NVM latest
+if test ! $(which nvm); then
+    echo "Installing nvm..."
+    current=$(pwd)
+    git clone https://github.com/creationix/nvm.git ~/.nvm
+    cd ~/.nvm
+    git checkout `git describe --abbrev=0 --tags`
+    cd $current
+    unset current
 fi
 
 for file in .installs/*
