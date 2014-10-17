@@ -16,6 +16,8 @@ brew install gnu-sed --default-names
 brew install bash
 brew install bash-completion
 
+brew install htop
+
 # Install wget with IRI support
 brew install wget --enable-iri
 

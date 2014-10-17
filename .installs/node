@@ -11,3 +11,4 @@ npm install -g mocha
 npm install -g istanbul
 npm install -g browserify
 npm install -g gitignore
+npm install -g vtop
