@@ -8,23 +8,13 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-red='\033[0;31m'
-
-echo ""
-cecho "##############################################" $red
-cecho "#   CAUTION: DO NOT BLINDLY RUN THIS SCRIPT" $red
-cecho "#      YOU WILL PROBABLY REGRET IT..." $red
-cecho "#############################################" $red
-echo ""
-
-
 ###############################################################################
 # General Settings
 ###############################################################################
 
 # Set computer name (as done via System Preferences → Sharing)
 echo ""
-echo "Setting your computer name (as done via System Preferences â†’ Sharing)"
+echo "Setting your computer name (as done via System Preferences & Sharing)"
 echo "What would you like it to be?"
 read COMPUTER_NAME
 
@@ -39,7 +29,7 @@ sudo scutil --set LocalHostName $COMPUTER_NAME
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $COMPUTER_NAME
 
 # Set standby delay to 24 hours (default is 1 hour)
-# sudo pmset -a standbydelay 86400
+sudo pmset -a standbydelay 86400
 
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
@@ -201,8 +191,9 @@ sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutio
 
 # Finder: disable window animations and Get Info animations
 defaults write com.apple.finder DisableAllAnimations -bool true
+defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
 
-# Set default Finder window
+# set default Finder window
 defaults write com.apple.finder NewWindowTarget -string "PfLo"
 defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Downloads/"
 
@@ -280,7 +271,7 @@ defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
 
 # Use list view in all Finder windows by default
 # Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
-defaults write com.apple.finder FXPreferredViewStyle -string "Clmv"
+defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
 
 # Disable the warning before emptying the Trash
 defaults write com.apple.finder WarnOnEmptyTrash -bool false
@@ -474,7 +465,7 @@ defaults write com.apple.mail SpellCheckingBehavior -string "NoSpellCheckingEnab
 ###############################################################################
 
 # Hide Spotlight tray-icon (and subsequent helper)
-sudo chmod 600 /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search
+# sudo chmod 600 /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search
 # Disable Spotlight indexing for any volume that gets mounted and has not yet
 # been indexed before.
 # Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any volume.
