@@ -19,3 +19,14 @@ let g:ctrlp_user_command = {
             \ },
             \ 'fallback': s:ctrlp_fallback
         \ }
+
+let g:ctrlp_abbrev = {
+    \ 'gmode': 'i',
+    \ 'abbrevs': [
+        \ {
+        \ 'pattern': '\(^@.\+\|\\\@<!:.\+\)\@<! ',
+        \ 'expanded': '',
+        \ 'mode': 'pfrz',
+        \ },
+        \ ]
+    \ }

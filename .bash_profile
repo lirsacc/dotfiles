@@ -43,5 +43,9 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 # Load NVM
-export NVM_DIR="~/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && source $NVM_DIR/nvm.sh
+[ -s "$NVM_DIR/bash_completion" ] && . $NVM_DIR/bash_completion
+
+# export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

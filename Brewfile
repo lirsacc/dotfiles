@@ -31,11 +31,11 @@ brew install homebrew/php/php55 --with-gmp
 brew install ack
 brew install git
 brew install imagemagick --with-webp
-brew install lynx
+# brew install lynx
 brew install node
 brew install pigz
 brew install rename
-brew install rhino
+# brew install rhino
 brew install tree
 brew install webkit2png
 brew install zopfli
@@ -44,7 +44,12 @@ brew install hr
 brew install watch
 brew install fswatch
 
+# Python install
 brew install python --framework
+pip install --upgrade setuptools
+pip install --upgrade pip
+pip install virtualenv
+pip install ipython
 
 # Remove outdated versions from the cellar
 brew cleanup
