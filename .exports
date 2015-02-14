@@ -26,3 +26,6 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 # $PATH
 export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+
+export GOPATH="/Users/lirsacc/projects/go"

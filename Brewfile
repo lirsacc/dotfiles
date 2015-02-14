@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Make sure we’re using the latest Homebrew
 brew update
 
@@ -31,25 +33,26 @@ brew install homebrew/php/php55 --with-gmp
 brew install ack
 brew install git
 brew install imagemagick --with-webp
-# brew install lynx
 brew install node
 brew install pigz
 brew install rename
-# brew install rhino
 brew install tree
 brew install webkit2png
 brew install zopfli
 brew install ngrep
 brew install hr
-brew install watch
-brew install fswatch
+brew install ag
+brew install ctags
+brew install go
+
 
 # Python install
 brew install python --framework
-pip install --upgrade setuptools
-pip install --upgrade pip
-pip install virtualenv
-pip install ipython
+
+# DB Services
+brew install postgresql --with-python
+brew install mongodb
+brew install redis
 
 # Remove outdated versions from the cellar
-brew cleanup
+cleanup

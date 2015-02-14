@@ -1,5 +1,7 @@
+#!/usr/local/bin/bash
 brew install caskroom/cask/brew-cask
-brew tap  caskroom/fonts
+brew tap caskroom/fonts
+brew cask update
 
 brew cask install --appdir="/Applications" appcleaner
 brew cask install --appdir="/Applications" transmission
@@ -9,6 +11,11 @@ brew cask install --appdir="/Applications" imageoptim
 brew cask install --appdir="/Applications" caffeine
 brew cask install --appdir="/Applications" mailbox
 brew cask install --appdir="/Applications" atom
+brew cask install --appdir="/Applications" virtualbox
+brew cask install --appdir="/Applications" barmaid
+brew cask install --appdir="/Applications" basictex
+brew cask install --appdir="/Applications" spectacle
+brew cask install --appdir="/Applications" dropbox
 
 brew cask install font-open-sans
 brew cask install font-merriweather

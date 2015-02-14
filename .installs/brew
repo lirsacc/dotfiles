@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+if test ! $(which brew); then
+  echo " * Installing homebrew..."
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+else
+  echo
+fi
+
+read -p " * Install homebrew formulas (Brewfile) ? (y/n) " -n 1
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    . ~/Brewfile
+    read -p " * Install casks (Caskfile) ? (y/n) " -n 1
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+      . ~/Caskfile
+      brew cask alfred link
+  fi
+fi

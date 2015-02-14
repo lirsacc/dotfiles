@@ -514,9 +514,6 @@ defaults write org.x.X11 wm_ffm -bool true
 # Don’t display the annoying prompt when quitting iTerm
 defaults write com.googlecode.iterm2 PromptOnQuit -bool false
 
-# Add base16 theme to iterm
-open "./iterm2/base16-3024.dark.256.itermcolors"
-
 ###############################################################################
 # Time Machine                                                                #
 ###############################################################################
