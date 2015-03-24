@@ -212,3 +212,20 @@ function spoof-mac {
     echo "Changing en0 MAC to $mac"
     sudo ifconfig en0 ether $mac
 }
+
+# Run local npm packages
+function _npl_completion () {
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$([ -d ./node_modules/.bin ] && ls ./node_modules/.bin | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g')" -- $cur) )
+}
+
+function npl() {
+    if [ ! -d ./node_modules ]; then
+      echo "Not a npm package directory..." && return 1
+    elif [ ! -f ./node_modules/.bin/$1 ]; then
+      echo "Module $1 not found in $(pwd)..." && return 1
+    fi
+    ./node_modules/.bin/$1 ${@:3}
+}
+
+complete -F _npl_completion npl
