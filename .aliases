@@ -142,6 +142,7 @@ alias gap="g add -p"
 alias gco="g go"
 alias grb="git fetch && git rebase origin/master"
 alias gl="g l"
+alias gd="g diff"
 
 alias cask="brew cask"
 alias npr="npm run"
