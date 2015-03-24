@@ -16,6 +16,7 @@ brew cask install --appdir="/Applications" barmaid
 brew cask install --appdir="/Applications" basictex
 brew cask install --appdir="/Applications" spectacle
 brew cask install --appdir="/Applications" dropbox
+brew cask install --appdir="/Applications" vagrant
 
 brew cask install font-open-sans
 brew cask install font-merriweather

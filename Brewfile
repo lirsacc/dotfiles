@@ -27,7 +27,7 @@ brew install wget --enable-iri
 brew install vim --override-system-vi
 brew install homebrew/dupes/grep
 brew install homebrew/dupes/screen
-brew install homebrew/php/php55 --with-gmp
+# brew install homebrew/php/php55 --with-gmp
 
 # Install other useful binaries
 brew install ack
@@ -51,9 +51,10 @@ brew install go
 brew install python --framework
 
 # DB Services
-brew install postgresql --with-python
-brew install mongodb
-brew install redis
+# brew install postgresql --with-python
+# brew install mongodb
+# brew install redis
+# brew install rethinkdb
 
 # Remove outdated versions from the cellar
 cleanup
