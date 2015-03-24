@@ -2,16 +2,16 @@
 
 echo
 
-# Install NVM latest
-if [ ! -f ~/.nvm/nvm.sh ]; then
-    echo " * Installing nvm..."
-    current=$(pwd)
-    git clone https://github.com/creationix/nvm.git ~/.nvm
-    cd ~/.nvm
-    git checkout `git describe --abbrev=0 --tags`
-    cd $current
-    unset current
-fi
+# Install NVM latest (move to homebrew)
+# if [ ! -f ~/.nvm/nvm.sh ]; then
+#     echo " * Installing nvm..."
+#     current=$(pwd)
+#     git clone https://github.com/creationix/nvm.git ~/.nvm
+#     cd ~/.nvm
+#     git checkout `git describe --abbrev=0 --tags`
+#     cd $current
+#     unset current
+# fi
 
 # Make sure we’re using the latest npm and update existing packages
 npm update
@@ -19,10 +19,5 @@ npm update
 npm install -g grunt-cli
 npm install -g gulp
 npm install -g bower
-npm install -g mocha
-npm install -g istanbul
-npm install -g browserify
-npm install -g watchify
-npm install -g jshint
 npm install -g gitignore
 npm install -g fsmonitor

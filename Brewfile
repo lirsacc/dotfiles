@@ -34,6 +34,7 @@ brew install ack
 brew install git
 brew install imagemagick --with-webp
 brew install node
+mkdir -p ~/.nvm && brew install nvm
 brew install pigz
 brew install rename
 brew install tree
