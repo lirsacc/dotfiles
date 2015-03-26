@@ -4,7 +4,12 @@ echo
 
 pip install --upgrade setuptools
 pip install --upgrade pip
+
 pip install --upgrade virtualenvwrapper
 pip install --upgrade virtualenv
 pip install --upgrade virtualenv-clone
+
+ENV_DIR="$HOME/.pyenvs"
+mkdir -p $ENV_DIR
+
 pip install "ipython[all]" --upgrade

@@ -44,3 +44,7 @@ fi
 # Load NVM
 export NVM_DIR="$HOME/.nvm"
 source $(brew --prefix nvm)/nvm.sh
+
+# PYTHON virtualenv specifics
+export WORKON_HOME="$HOME/.pyenvs"
+source $(brew --prefix)/bin/virtualenvwrapper.sh
