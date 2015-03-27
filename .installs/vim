@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
+echo
 # install Vundle
-git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle/
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 # install Vundle plugins
-vim --noplugin -u ~/.vim/vundles.vim -N "+set hidden" "+syntax on" +PluginClean! +PluginInstall +qall
+vim --noplugin -u ~/.vim/packages.vim -N "+set hidden" "+syntax on" +PluginClean! +PluginInstall +qall

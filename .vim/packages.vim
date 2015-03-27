@@ -2,12 +2,9 @@
 " Vim plugin configuration
 " ========================================
 "
-" This file contains the list of plugin installed using vundle plugin manager.
-" Once you've updated the list of plugin, you can run vundle update by issuing
-" the command :BundleInstall from within vim or directly invoking it from the
-" command line with the following syntax:
-" vim --noplugin -u ./vim/vundles.vim -N "+set hidden" "+syntax on" +BundleClean! +BundleInstall +qall
-
+" Install with:
+" vim --noplugin -u ./vim/packages.vim -N "+set hidden" "+syntax on" +PluginClean! +PluginInstall +qall
+"
 
 set nocompatible
 filetype off
@@ -18,6 +15,7 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'flazz/vim-colorschemes'
 " Plugin 'davidhalter/jedi-vim'
@@ -33,6 +31,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'mattn/emmet-vim'
+Plugin 'nanotech/jellybeans.vim'
 
 " Syntax modes
 Plugin 'leshill/vim-json'
