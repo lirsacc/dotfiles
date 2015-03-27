@@ -48,3 +48,7 @@ source $(brew --prefix nvm)/nvm.sh
 # PYTHON virtualenv specifics
 export WORKON_HOME="$HOME/.pyenvs"
 source $(brew --prefix)/bin/virtualenvwrapper.sh
+
+# PYTHON miniconda
+export CONDA_PATH="$HOME/.conda"
+export PATH="/Users/lirsacc/.conda/bin:$PATH"

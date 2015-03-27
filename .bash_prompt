@@ -46,12 +46,14 @@ export BOLD
 export RESET
 export RED
 
-function virtualenv()
+function py_env()
 {
-    if test -z "$VIRTUAL_ENV" ; then
-      venv=""
+    if test "$VIRTUAL_ENV" ; then
+      venv="(`basename \"$VIRTUAL_ENV\"`)\ "
+    elif test "$CONDA_ENV" ; then
+      venv="($CONDA_ENV) "
     else
-      venv="[`basename \"$VIRTUAL_ENV\"`]\n"
+      venv=""
     fi
     echo $venv
 }
@@ -249,12 +251,12 @@ function short_pwd ()
 
 function prompt_command() {
   previous_return_value=$?;
-  prompt="\[${BOLD}${YELLOW}\]$(virtualenv)\[${BLUE}\]\u\[${WHITE}\]@\[${BLUE}\]\h\[${WHITE}\]:\[${PURPLE}\]$(short_pwd)\[${WHITE}\]$(git_prompt)\[${RESET}\]"
+  prompt="\[${BOLD}${YELLOW}\]$(py_env)\[${BLUE}\]\u\[${WHITE}\] on \[${BLUE}\]\h\[${WHITE}\] in \[${PURPLE}\]$(short_pwd)\[${WHITE}\]$(git_prompt)\[${RESET}\\n\[${RESET}\]"
   if test $previous_return_value -eq 0
   then
-      PS1="${prompt}\n> \[${RESET}\]"
+      PS1="${prompt}> \[${RESET}\]"
   else
-      PS1="${prompt}\n\[${RED}\]>\[${RESET}\] "
+      PS1="${prompt}\[${RED}\]>\[${RESET}\] "
   fi
   PS2="${WHITE}→ ${RESET}"
 }
