@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Define help text
-usage="$(basename "$0") [-h] [-f l] -- Bootstraping dotfiles\n\n
+usage="$(basename "$0") [-hfl] -- Bootstraping dotfiles\n\n
   -h  help\n
   -f  force overwrite files in user's home directory\n
   -l  use local repo and do not update from git"
@@ -12,7 +12,7 @@ OPTIND=1
 force=false
 update=true
 
-while getopts "h?fl:" opt; do
+while getopts "hfl?:" opt; do
   case "$opt" in
   h|\?)
     echo -e $usage && echo && exit 0
@@ -76,7 +76,7 @@ do
   if [[ $osx == false ]] && [[ $filename =~ 'osx' ]]; then
     continue
   fi
-  
+
   read -p " * Do you want to apply the $filename install script ? (y/n) " -n 1
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     . ./$file

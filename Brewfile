@@ -46,6 +46,8 @@ brew install ag
 brew install ctags
 brew install go
 
+brew tap homebrew/completions
+brew install vagrant-completion
 
 # Python install
 brew install python --framework

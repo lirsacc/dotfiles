@@ -36,19 +36,23 @@ complete -W "NSGlobalDomain" defaults
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 
 if [ -f `brew --prefix git`/etc/bash_completion.d/git-completion.bash ]; then
-    source `brew --prefix git`/etc/bash_completion.d/git-completion.bash
+  source `brew --prefix git`/etc/bash_completion.d/git-completion.bash
 elif [ -f ~/.git-completion.bash ]; then
-    . ~/.git-completion.bash
+  . ~/.git-completion.bash
 fi
 
 # Load NVM
 export NVM_DIR="$HOME/.nvm"
-source $(brew --prefix nvm)/nvm.sh
+if [ -f `brew --prefix nvm`/nvm.sh ]; then
+  source $(brew --prefix nvm)/nvm.sh
+elif [ -f ~/.nvm/nvm.sh ]; then
+  source ~/.nvm/nvm.sh
+fi
 
 # PYTHON virtualenv specifics
 export WORKON_HOME="$HOME/.pyenvs"
-source $(brew --prefix)/bin/virtualenvwrapper.sh
+[[ -f $(brew --prefix)/bin/virtualenvwrapper.sh ]] && source $(brew --prefix)/bin/virtualenvwrapper.sh
 
 # PYTHON miniconda
 export CONDA_PATH="$HOME/.conda"
-export PATH="/Users/lirsacc/.conda/bin:$PATH"
+export PATH="$HOME/.conda/bin:$PATH"
