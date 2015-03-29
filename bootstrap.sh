@@ -77,9 +77,13 @@ do
     continue
   fi
 
-  read -p " * Do you want to apply the $filename install script ? (y/n) " -n 1
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
+  if [[ $force == true ]]; then
     . ./$file
+  else
+    read -p " * Do you want to apply the $filename install script ? (y/n) " -n 1
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      . ./$file
+    fi
   fi
   echo
 done
