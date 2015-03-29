@@ -152,7 +152,7 @@ set sidescroll=1
 set scrolljump=5                                " Lines to scroll when cursor leaves screen
 
 set background=dark                             " Assume a dark background
-colorscheme molokai
+colorscheme jellybeans
 
 " Load plugin specific settings
 for fpath in split(globpath('~/.vim/settings', '*.vim'), '\n')
