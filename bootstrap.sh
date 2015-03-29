@@ -88,13 +88,13 @@ if [[ $(which brew) ]] && $osx; then
   fi
 fi
 
-if $skip; then
+if ! $skip; then
   for file in $scripts/*
   do
     filename=`echo $file | cut -d '/' -f 2`
 
     # Skip osx specific install files if uname is not Darwin
-    ! $osx && [[ $filename =~ 'osx' ]] && continue
+    [[ ! $osx ]] && [[ $filename =~ 'osx' ]] && continue
 
     if $force; then
       . ./$file
