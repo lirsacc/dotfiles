@@ -45,7 +45,7 @@ shift $((OPTIND-1))
 function _rsync() {
   echo " * rsync'ing files to your home directory..."
     rsync \
-    --exclude ".git/" --exclude ".installs/" --exclude ".DS_Store" \
+    --exclude ".git/" --exclude "scripts/" --exclude ".DS_Store" \
     --exclude "bootstrap.sh" --exclude "README.md" --exclude "LICENSE-MIT.txt" \
     -av --no-perms . ~
 }
