@@ -183,7 +183,7 @@ parse_git_behind () {
 }
 
 function parse_git_dirty() {
-	local s='';
+	local s="";
   # If the git status has *any* changes (e.g. dirty), echo our character
   if [[ -n "$(git status --porcelain 2> /dev/null)" ]]; then
     # Ensure the index is up to date.
@@ -243,15 +243,15 @@ function get_git_status() {
 
     # Iterate through all the cases and if it matches, then echo
     if [[ "$branch_ahead" == 1 && "$branch_behind" == 1 ]]; then
-        echo "⬢"
+      echo "⬢"
     elif [[ "$branch_ahead" == 1 ]]; then
-        echo "▲"
+      echo "⬆"
     elif [[ "$branch_behind" == 1 ]]; then
-        echo "▼"
+      echo "⬇"
     elif [[ ! -z "$dirty_branch" ]]; then
-        echo "✈"
+      echo "✈"
     else
-        echo "✔"
+      echo "✔"
     fi
 }
 
@@ -259,13 +259,15 @@ function get_git_status() {
 function _git_prompt () {
 
   local s=""
-  local _progress="$(get_git_progress)"
-  local _dirty="$(parse_git_dirty)"
 
   if [ $(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}") == '0' ]
   then
+
+    local _progress="$(get_git_progress)"
+    local _dirty="$(parse_git_dirty)"
+
   	s="${s}($(get_git_branch) $(get_git_status)"
-    [[ $_progress ]] && s="${s} ${_progress}"
+    [[ $_progress ]] && s="${s} ${_progress} "
     [[ $_dirty ]] && s="${s} ${_dirty}"
     s="${s})"
   fi
