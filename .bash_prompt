@@ -46,20 +46,22 @@ export BOLD
 export RESET
 export RED
 
-function py_env()
-{
-    if test "$VIRTUAL_ENV" ; then
-      venv="(`basename \"$VIRTUAL_ENV\"`)\ "
-    elif test "$CONDA_ENV" ; then
-      venv="($CONDA_ENV) "
-    else
-      venv=""
-    fi
-    echo $venv
+function py_env() {
+  if test "$VIRTUAL_ENV" ; then
+    venv="(`basename \"$VIRTUAL_ENV\"`)\ "
+  elif test "$CONDA_ENV" ; then
+    venv="($CONDA_ENV) "
+  else
+    venv=""
+  fi
+  echo $venv
+}
+
+function ssh_flag() {
+  [[ $SSH_CONNECTION ]] && echo "(ssh)" || echo ""
 }
 
 # Taken from https://github.com/twolfson/sexy-bash-prompt
-
 function get_git_branch() {
   # On branches, this will return the branch name
   # On non-branches, (no branch)
@@ -251,7 +253,7 @@ function short_pwd ()
 
 function prompt_command() {
   previous_return_value=$?;
-  prompt="\[${BOLD}${YELLOW}\]$(py_env)\[${BLUE}\]\u\[${WHITE}\] on \[${BLUE}\]\h\[${WHITE}\] in \[${PURPLE}\]$(short_pwd)\[${WHITE}\]$(git_prompt)\[${RESET}\\n\[${RESET}\]"
+  prompt="\[${BOLD}\]\[${GREEN}\]$(ssh_flag)\[${YELLOW}\]$(py_env)\[${BLUE}\]\u\[${WHITE}\] on \[${BLUE}\]\h\[${WHITE}\] in \[${PURPLE}\]$(short_pwd)\[${WHITE}\]$(git_prompt)\[${RESET}\\n\[${RESET}\]"
   if test $previous_return_value -eq 0
   then
       PS1="${prompt}> \[${RESET}\]"
