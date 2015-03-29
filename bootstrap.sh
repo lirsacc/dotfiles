@@ -79,12 +79,12 @@ else
     [[ $REPLY =~ ^[Yy]$ ]] && _rsync || echo
 fi
 
-if [ ! $(which brew) -a $osx ]; then
+if [ -z $(which brew) -a $osx ]; then
   if [ $force ]; then
     _homebrew
   else
     read -p " * Do you want to install homebrew ? (y/n) " -n 1
-    if [[ $REPLY =~ ^[Yy]$ ]] && _homebrew || echo
+    [[ $REPLY =~ ^[Yy]$ ]] && _homebrew || echo
   fi
 fi
 
@@ -100,7 +100,7 @@ if [ ! $skip ]; then
       . ./$file
     else
       read -p " * Do you want to apply the $filename install script ? (y/n) " -n 1
-      if [[ $REPLY =~ ^[Yy]$ ]] && . ./$file
+      [[ $REPLY =~ ^[Yy]$ ]] && . ./$file
     fi
     echo
   done

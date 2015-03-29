@@ -45,7 +45,7 @@ fi
 export NVM_DIR="$HOME/.nvm"
 if [ $(which brew) ]; then
   [[ -f `brew --prefix nvm`/nvm.sh ]] && source $(brew --prefix nvm)/nvm.sh
-elif [-f $NVM_DIR/nvm.sh]; then
+elif [ -f $NVM_DIR/nvm.sh ]; then
   source $NVM_DIR/nvm.sh
   [[ -f $NVM_DIR/bash_completion ]] && source $NVM_DIR/bash_completion
 fi
