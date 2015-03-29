@@ -17,7 +17,7 @@ OPTIND=1
 force=false
 pull=true
 skip=false
-installs_path='./.installs'
+scripts='./scripts'
 
 while getopts "hfls?:" opt; do
   case "$opt" in
@@ -39,7 +39,7 @@ done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
-[[ $(uname) == "Darwin" ]] && osx=true || osx=false
+[ "$(uname -s)" = "Darwin" ] && osx=true || osx=false
 
 # Rsync the config files from git directory to home directory
 function _rsync() {
@@ -65,22 +65,22 @@ echo "------------------------------------------------------------------------"
 echo
 
 # Update dotfiles from git repo
-if [ $pull == true ]; then
+if $pull; then
   cd "$(dirname "${BASH_SOURCE}")"
   echo " * Update from git"
   git pull origin master
   echo
 fi
 
-if [ $force ]; then
+if $force; then
     _rsync
 else
     read -p " * This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1
     [[ $REPLY =~ ^[Yy]$ ]] && _rsync || echo
 fi
 
-if [ -z $(which brew) -a $osx ]; then
-  if [ $force ]; then
+if [[ $(which brew) ]] && $osx; then
+  if $force; then
     _homebrew
   else
     read -p " * Do you want to install homebrew ? (y/n) " -n 1
@@ -88,15 +88,15 @@ if [ -z $(which brew) -a $osx ]; then
   fi
 fi
 
-if [ ! $skip ]; then
-  for file in $installs_path/*
+if $skip; then
+  for file in $scripts/*
   do
     filename=`echo $file | cut -d '/' -f 2`
 
     # Skip osx specific install files if uname is not Darwin
-    [[ $osx == false ]] && [[ $filename =~ 'osx' ]] && continue
+    ! $osx && [[ $filename =~ 'osx' ]] && continue
 
-    if [[ $force == true ]]; then
+    if $force; then
       . ./$file
     else
       read -p " * Do you want to apply the $filename install script ? (y/n) " -n 1
