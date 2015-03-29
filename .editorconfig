@@ -11,3 +11,6 @@ indent_size = 2
 [*.java]
 indent_style = tab
 indent_size = 4
+
+[*.py,*.python]
+indent_size = 4
