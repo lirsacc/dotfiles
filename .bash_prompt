@@ -72,7 +72,7 @@ function _py_env() {
 # Add a flag for ssh connections
 # ----------------------------------------------------------------------------
 function _ssh_flag() {
-  [[ $SSH_CONNECTION ]] && echo "☁" || echo ""
+  [[ $IS_SSH_SESSION ]] && echo "☁" || echo ""
 }
 
 # Git prompt functions
