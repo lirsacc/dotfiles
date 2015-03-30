@@ -191,30 +191,30 @@ function parse_git_dirty() {
 
 		# Check for uncommitted changes in the index.
 		if ! $(git diff --quiet --ignore-submodules --cached); then
-			s="${s} ✭";
+			s="${s} \[${BLUE}\]✭\[${RESET}\]";
 		fi;
 
 		# Check for unstaged changes.
 		if ! $(git diff-files --quiet --ignore-submodules --); then
-			s="${s} ✱";
+			s="${s} \[${PURPLE}\]✱\[${RESET}\]";
 		fi;
 
 		# Check for untracked files.
 		if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-			s="${s} ✚";
+			s="${s} \[${GREEN}\]✚\[${RESET}\]";
 		fi;
 
     if [[ $(git status | grep deleted) ]]; then
-      s="${s} ✖"
+      s="${s} \[${RED}\]✖\[${RESET}\]"
     fi;
 
     if [[ $(git status | grep renamed) ]]; then
-      s="${s} ➜"
+      s="${s} \[${YELLOW}\]➜\[${RESET}\]"
     fi;
 
 		# Check for stashed files.
 		if $(git rev-parse --verify refs/stash &>/dev/null); then
-			s="${s} ☂";
+			s="${s} \[${ORANGE}\]☂\[${RESET}\]";
 		fi;
   fi
   echo $s;
@@ -243,15 +243,15 @@ function get_git_status() {
 
     # Iterate through all the cases and if it matches, then echo
     if [[ "$branch_ahead" == 1 && "$branch_behind" == 1 ]]; then
-      echo "⬢"
+      echo "\[${PURPLE}\]⬢\[${RESET}\]"
     elif [[ "$branch_ahead" == 1 ]]; then
-      echo "⬆"
+      echo "\[${BLUE}\]⬆\[${RESET}\]"
     elif [[ "$branch_behind" == 1 ]]; then
-      echo "⬇"
+      echo "\[${RED}\]⬇\[${RESET}\]"
     elif [[ ! -z "$dirty_branch" ]]; then
-      echo "✈"
+      echo "\[${ORANGE}\]✈\[${RESET}\]"
     else
-      echo "✔"
+      echo "\[$GREEN\]✔\[${RESET}\]"
     fi
 }
 
@@ -265,11 +265,12 @@ function _git_prompt () {
 
     local _progress="$(get_git_progress)"
     local _dirty="$(parse_git_dirty)"
+    local _color="$(git_color)"
 
-  	s="${s}($(get_git_branch) $(get_git_status)"
-    [[ $_progress ]] && s="${s} ${_progress} "
+  	s="${s}${_color}$(get_git_branch)\[${RESET}\] $(get_git_status)"
+    [[ $_progress ]] && s="${s} ${_color}${_progress}\[${RESET}\] "
     [[ $_dirty ]] && s="${s} ${_dirty}"
-    s="${s})"
+    s="${s}"
   fi
 
   echo $s
@@ -296,7 +297,7 @@ function prompt_command() {
   prompt="${prompt}\[${MAGENTA}\][$(_short_pwd)]\[${RESET}\]"
 
   [[ $py_env ]] && prompt="${prompt}\[${ORANGE}\] (${py_env})\[${RESET}\]"
-  [[ $git_prompt ]] && prompt="${prompt}\[${WHITE}\]$(git_color) ${git_prompt}\[${RESET}\]"
+  [[ $git_prompt ]] && prompt="${prompt}\[${WHITE}\] ${git_prompt} \[${RESET}\]"
 
   prompt="${prompt}\n"
 
