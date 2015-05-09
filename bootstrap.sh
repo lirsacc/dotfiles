@@ -79,7 +79,7 @@ else
     [[ $REPLY =~ ^[Yy]$ ]] && _rsync || echo
 fi
 
-if [[ $(which brew) ]] && $osx; then
+if [[ -z $(which brew) ]] && $osx; then
   if $force; then
     _homebrew
   else
