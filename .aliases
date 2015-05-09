@@ -129,9 +129,6 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
     alias "$method"="lwp-request -m '$method'"
 done
 
-# Make Grunt print stack traces by default
-command -v grunt > /dev/null && alias grunt="grunt --stack"
-
 #Reload bash profile
 alias profile='source ~/.bashrc'
 
@@ -146,5 +143,4 @@ alias gd="g diff"
 
 alias cask="brew cask"
 alias npr="npm run"
-
 

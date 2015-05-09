@@ -230,20 +230,7 @@ function npl() {
 
 complete -F _npl_completion npl
 
-# Conda python env manager shortcuts
-
-function _activate_completion () {
-  local cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$([ -d $CONDA_PATH ] && cat $CONDA_PATH/environments.txt | sed "s","$CONDA_PATH/envs/","","g")" -- $cur) )
-}
-
-function pyactivate () {
-  source $CONDA_PATH/bin/activate $1 && export CONDA_ENV=$1
-}
-
-complete -F _activate_completion pyactivate
-
-function pydeactivate () {
-  unset CONDA_ENV
-  source $CONDA_PATH/bin/deactivate
+function b2dinit () {
+  eval "$(boot2docker shellinit)"
+  DOCKER_IP=$(boot2docker ip)
 }

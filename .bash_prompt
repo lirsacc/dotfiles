@@ -15,7 +15,7 @@ if tput setaf 1 &> /dev/null; then
         YELLOW=$(tput setaf 190)
         ORANGE=$(tput setaf 172)
         PURPLE=$(tput setaf 141)
-        MAGENTA=$(tput setaf 203)
+        MAGENTA=$(tput setaf 197)
         WHITE=$(tput setaf 0)
         BLUE=$(tput setaf 39)
         RED=$(tput setaf 160)
@@ -60,9 +60,9 @@ export RED
 # ------------------------------------------------------------------------------
 function _py_env() {
   if test "$VIRTUAL_ENV" ; then
-    venv="$(basename \"$VIRTUAL_ENV\")"
+    venv=$(basename $VIRTUAL_ENV)
   elif test "$CONDA_ENV" ; then
-    venv="$CONDA_ENV"
+    venv=$CONDA_ENV
   else
     venv=""
   fi

@@ -1,23 +1,5 @@
 #!/usr/bin/env bash
 
 echo
+mkdir -p ~/.nvm && curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | bash
 
-# Install NVM latest (move to homebrew)
-# if [ ! -f ~/.nvm/nvm.sh ]; then
-#     echo " * Installing nvm..."
-#     current=$(pwd)
-#     git clone https://github.com/creationix/nvm.git ~/.nvm
-#     cd ~/.nvm
-#     git checkout `git describe --abbrev=0 --tags`
-#     cd $current
-#     unset current
-# fi
-
-# Make sure we’re using the latest npm and update existing packages
-npm update
-
-npm install -g grunt-cli
-npm install -g gulp
-npm install -g bower
-npm install -g gitignore
-npm install -g fsmonitor
