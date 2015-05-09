@@ -91,10 +91,10 @@ fi
 if ! $skip; then
   for file in $scripts/*
   do
-    filename=`echo $file | cut -d '/' -f 2`
+    filename=$(echo scripts/brew.osx | cut -d '/' -f 2 | cut -d '.' -f 1)
 
     # Skip osx specific install files if uname is not Darwin
-    [[ ! $osx ]] && [[ $filename =~ 'osx' ]] && continue
+    [[ ! $osx ]] && [[ $file =~ 'osx' ]] && continue
 
     if $force; then
       . ./$file
