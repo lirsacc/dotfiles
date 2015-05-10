@@ -214,23 +214,35 @@ function spoof-mac {
 }
 
 # Run local npm packages
-function _npl_completion () {
-    local cur=${COMP_WORDS[COMP_CWORD]}
+# Better completion thanks to http://stackoverflow.com/a/14524311
+function _npl () {
+  local cur ff
+  if [ $COMP_CWORD -eq 1 ]; then
+    # First completion word -> list node modules with binary
+    cur="${COMP_WORDS[1]}"
     COMPREPLY=( $(compgen -W "$([ -d ./node_modules/.bin ] && ls ./node_modules/.bin | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g')" -- $cur) )
+  else
+    # Back to listing filenames
+    COMPREPLY=($(compgen -f  -- "${COMP_WORDS[${COMP_CWORD}]}" ))
+    for ((ff=0; ff<${#COMPREPLY[@]}; ff++)); do
+      test -d "${COMPREPLY[$i]}" && COMPREPLY[$i]="${COMPREPLY[$i]}/"
+      test -f "${COMPREPLY[$i]}" && COMPREPLY[$i]="${COMPREPLY[$i]} "
+    done
+  fi
 }
 
 function npl() {
     if [ ! -d ./node_modules ]; then
-      echo "Not a npm package directory..." && return 1
+      echo "Not a npm package directory" && return 1
     elif [ ! -f ./node_modules/.bin/$1 ]; then
-      echo "Module $1 not found in $(pwd)..." && return 1
+      echo "Module $1 not found in $(pwd)/node_modules/.bin" && return 1
     fi
     ./node_modules/.bin/$1 ${@:2}
 }
 
-complete -F _npl_completion npl
+complete -o bashdefault -o nospace -F _npl npl
 
-function b2dinit () {
+function b2d () {
   eval "$(boot2docker shellinit)"
   DOCKER_IP=$(boot2docker ip)
 }
