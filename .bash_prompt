@@ -60,20 +60,17 @@ export RED
 # ------------------------------------------------------------------------------
 function _py_env() {
   if test "$VIRTUAL_ENV" ; then
-    venv=$(basename $VIRTUAL_ENV)
-  elif test "$CONDA_ENV" ; then
-    venv=$CONDA_ENV
+    echo "\[${ORANGE}\] ($(basename $VIRTUAL_ENV))\[${RESET}\]"
   else
-    venv=""
+    echo ""
   fi
-  echo $venv
 }
 
-# Add a flag for ssh connections
-# ----------------------------------------------------------------------------
-function _ssh_flag() {
-  [[ $IS_SSH_SESSION ]] && echo "☁" || echo ""
-}
+# # Add a flag for ssh connections
+# # ----------------------------------------------------------------------------
+# function _ssh_flag() {
+#   [[ $IS_SSH_SESSION ]] && echo "☁" || echo ""
+# }
 
 # Git prompt functions
 # Taken from https://github.com/twolfson/sexy-bash-prompt
@@ -289,24 +286,22 @@ function prompt_command() {
 
   previous_return_value=$?;
 
-  local ssh_flag="$(_ssh_flag)"
   local py_env="$(_py_env)"
   local git_prompt="$(_git_prompt)"
 
   local prompt=""
   prompt="${prompt}\[${MAGENTA}\][$(_short_pwd)]\[${RESET}\]"
 
-  [[ $py_env ]] && prompt="${prompt}\[${ORANGE}\] (${py_env})\[${RESET}\]"
+  prompt="${prompt}${py_env}"
   [[ $git_prompt ]] && prompt="${prompt}\[${WHITE}\] ${git_prompt} \[${RESET}\]"
 
   prompt="${prompt}\n"
 
   if ! test $previous_return_value -eq 0; then prompt="${prompt}\[${RED}\]"; fi
-  [[ $ssh_flag ]] && prompt="${prompt} ${ssh_flag} "
   prompt="${prompt}❯ \[${RESET}\]"
 
   PS1="${prompt}"
-  PS2="${WHITE}→ ${RESET}"
+  PS2="${WHITE}❯ ${RESET}"
 }
 
 PROMPT_COMMAND="prompt_command"

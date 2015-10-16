@@ -17,7 +17,10 @@ OPTIND=1
 force=false
 pull=true
 skip=false
+
 scripts='./scripts'
+directories=(projects)
+
 
 while getopts "hfls?:" opt; do
   case "$opt" in
@@ -71,6 +74,12 @@ if $pull; then
   git pull origin master
   echo
 fi
+
+# Create necessary directories
+for d in $directories; do
+  mkdir -p "~/$d"
+  echo "Created $d"
+done
 
 if $force; then
     _rsync

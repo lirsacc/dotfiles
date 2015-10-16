@@ -20,6 +20,8 @@ brew install bash-completion
 
 brew install htop
 
+brew install zsh
+
 # Install wget with IRI support
 brew install wget --enable-iri
 
@@ -31,6 +33,7 @@ brew install homebrew/dupes/screen
 
 # Install other useful binaries
 brew install ack
+brew install the_silver_searcher
 brew install git
 brew install imagemagick --with-webp
 brew install pigz
@@ -42,15 +45,26 @@ brew install ngrep
 brew install hr
 brew install ag
 brew install ctags
-brew install boot2docker
-brew install docker
 brew install go
+brew install entr
+brew install memcached
+brew install ngrok
+brew install pandoc
+brew install pandoc-citeproc
+brew install shecllcheck
 
+brew install docker
+brew install docker-machine
+brew install docker-compose
+
+# Shell completions
 brew tap homebrew/completions
 brew install vagrant-completion
+brew install docker-completion
 
 # Python install
 brew install python --framework
 
 # Remove outdated versions from the cellar
 cleanup
+
