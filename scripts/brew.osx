@@ -67,4 +67,3 @@ brew install python --framework
 
 # Remove outdated versions from the cellar
 cleanup
-

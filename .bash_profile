@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH"
 
@@ -5,6 +6,7 @@ export PATH="$HOME/bin:$PATH"
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
 for file in ~/.{bash_prompt,exports,aliases,functions,extra}; do
+    # shellcheck source=/dev/null
     [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
@@ -17,6 +19,8 @@ shopt -s histappend
 
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell
+
+ulimit -n 10000
 
 # Enable some Bash 4 features when possible:
 # * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
@@ -32,8 +36,9 @@ done
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 
 if [[ $(which brew) ]]; then
-  if [ -f `brew --prefix git`/etc/bash_completion.d/git-completion.bash ]; then
-    source `brew --prefix git`/etc/bash_completion.d/git-completion.bash
+  if [ -f "$(brew --prefix git)/etc/bash_completion.d/git-completion.bash" ]; then
+    # shellcheck source=/dev/null
+    source "$(brew --prefix git)/etc/bash_completion.d/git-completion.bash"
   elif [ -f ~/.git-completion.bash ]; then
     source ~/.git-completion.bash
   fi
@@ -43,11 +48,10 @@ fi
 
 # Load NVM
 export NVM_DIR="$HOME/.nvm"
+# shellcheck source=/dev/null
 [[ -f $NVM_DIR/nvm.sh ]] && source $NVM_DIR/nvm.sh
+# shellcheck source=/dev/null
 [[ -f $NVM_DIR/bash_completion ]] && source $NVM_DIR/bash_completion
 
 # PYTHON virtualenv specifics
 export WORKON_HOME="$HOME/.pyenvs"
-[[ $(which brew) ]] && [[ -f $(brew --prefix)/bin/virtualenvwrapper.sh ]] && source $(brew --prefix)/bin/virtualenvwrapper.sh
-
-ulimit -n 10000

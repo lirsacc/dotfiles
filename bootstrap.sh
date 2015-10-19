@@ -69,15 +69,15 @@ echo
 
 # Update dotfiles from git repo
 if $pull; then
-  cd "$(dirname "${BASH_SOURCE}")"
+  cd "$(dirname "${BASH_SOURCE}")" || exit 1
   echo " * Update from git"
   git pull origin master
   echo
 fi
 
 # Create necessary directories
-for d in $directories; do
-  mkdir -p "~/$d"
+for d in "${directories[@]}"; do
+  mkdir -p "$HOME/$d"
   echo "Created $d"
 done
 
@@ -103,12 +103,14 @@ if ! $skip; then
     filename=$(echo $file | cut -d '/' -f 3 | cut -d '.' -f 1)
 
     # Skip osx specific install files if uname is not Darwin
-    [[ ! $osx ]] && [[ $file =~ 'osx' ]] && continue
+    [[ ! $osx ]] && [[ $file =~ osx ]] && continue
 
     if $force; then
+      # shellcheck source=/dev/null
       . ./$file
     else
       read -p " * Do you want to apply the $filename install script ? (y/n) " -n 1
+      # shellcheck source=/dev/null
       [[ $REPLY =~ ^[Yy]$ ]] && . ./$file
     fi
     echo
