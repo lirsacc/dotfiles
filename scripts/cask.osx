@@ -4,6 +4,7 @@ brew tap caskroom/fonts
 brew cask update
 
 brew cask install --appdir="/Applications" appcleaner
+brew cask install --appdir="/Applications" the-unarchiver
 brew cask install --appdir="/Applications" transmission
 brew cask install --appdir="/Applications" bibdesk
 brew cask install --appdir="/Applications" iterm2
