@@ -244,8 +244,3 @@ function npl() {
 }
 
 complete -o bashdefault -o nospace -F _npl npl
-
-function b2d () {
-  eval "$(boot2docker shellinit)"
-  DOCKER_IP=$(boot2docker ip)
-}
