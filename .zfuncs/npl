@@ -1,0 +1,20 @@
+# npl
+#
+# Run local npm-installed binaries from a node packages directory
+# Will pass all arguments to the binary
+# Only runs from the root and does not traverse up or down
+#
+function npl() {
+
+    # Find binaries
+    if [ ! -d ./node_modules ]; then
+      echo "Not a npm package directory" && return 1
+    elif [ -z "$1" ]; then
+      echo "Enter a package name" && return 1
+    elif [ ! -f ./node_modules/.bin/$1 ]; then
+      echo "Module $1 not found in $(pwd)/node_modules/.bin" && return 1
+    fi
+
+    # Run the binary
+    ./node_modules/.bin/$1 "${@:2}"
+}
