@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 brew install caskroom/cask/brew-cask
 brew tap caskroom/fonts
 brew cask update
