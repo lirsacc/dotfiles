@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -145,9 +144,16 @@ alias gl="g l"
 alias gd="g diff"
 
 alias cask="brew cask"
+
 alias npr="npm run"
+alias npi="npm install"
+alias npis="npm install --save"
 
 alias dk="docker"
 alias dkm="docker-machine"
 alias dki="docker-init"
 alias dke="docker exec"
+
+alias a="atom"
+alias st="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
