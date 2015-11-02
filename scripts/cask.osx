@@ -36,6 +36,6 @@ brew cask install font-roboto-slab
 brew cask install font-inconsolata
 brew cask install font-source-code-pro
 brew cask install font-source-sans-pro
-brew cask install font-source-sans-serif
+brew cask install font-source-serif-pro
 brew cask install font-ubuntu
 
