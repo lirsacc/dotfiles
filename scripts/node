@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
-echo
-mkdir -p ~/.nvm && curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | bash
+mkdir -p "$HOME/.nvm"
+[[ -z $(which nvm) ]] && curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | bash
+
+source "$HOME/.nvm/nvm.sh"
+
+nvm install 0.12
+nvm install 4
+nvm install 5
+nvm alias default 5
 

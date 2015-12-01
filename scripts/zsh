@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
+
 origin=$(pwd)
 cd $HOME || exit 1
 
 git clone git@github.com:tarjoilija/zgen.git .zgen
-
 
 cd "$origin" || exit 1
 unset origin
