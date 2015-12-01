@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # Create a new directory and enter it
 function mkd() {
   mkdir -p "$@" && cd "$@" || exit 1
@@ -105,7 +106,7 @@ function digga() {
 
 # Escape UTF-8 characters into their 3-byte format
 function escape() {
-  printf "\\\x%s" $(printf "$@" | xxd -p -c1 -u)
+  printf "\\\x%s" "$(printf "$@" | xxd -p -c1 -u)"
   # print a newline unless we’re piping the output to another program
   if [ -t 1 ]; then
     echo # newline
@@ -164,13 +165,6 @@ function getcertnames() {
   fi
 }
 
-# Manually remove a downloaded app or file from the quarantine
-function unquarantine() {
-  for attribute in com.apple.metadata:kMDItemDownloadedDate com.apple.metadata:kMDItemWhereFroms com.apple.quarantine; do
-    xattr -r -d "$attribute" "$@"
-  done
-}
-
 # `s` with no arguments opens the current directory in Sublime Text, otherwise
 # opens the given location
 function s() {
@@ -210,37 +204,56 @@ function tre() {
 }
 
 # Spoof your mac adress on en0
-function spoof-mac {
+function spoof {
     mac=`openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//'`
     echo "Changing en0 MAC to $mac"
     sudo ifconfig en0 ether $mac
 }
 
-# Run local npm packages
-# Better completion thanks to http://stackoverflow.com/a/14524311
-function _npl () {
-  local cur ff
-  if [ $COMP_CWORD -eq 1 ]; then
-    # First completion word -> list node modules with binary
-    cur="${COMP_WORDS[1]}"
-    COMPREPLY=( $(compgen -W "$([ -d ./node_modules/.bin ] && ls ./node_modules/.bin | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g')" -- $cur) )
+# # Run local npm packages
+# # Better completion thanks to http://stackoverflow.com/a/14524311
+# function _npl () {
+#   local cur ff
+#   if [ $COMP_CWORD -eq 1 ]; then
+#     # First completion word -> list node modules with binary
+#     cur="${COMP_WORDS[1]}"
+#     COMPREPLY=( $(compgen -W "$([ -d ./node_modules/.bin ] && ls ./node_modules/.bin | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g')" -- $cur) )
+#   else
+#     # Back to listing filenames
+#     COMPREPLY=($(compgen -f  -- "${COMP_WORDS[${COMP_CWORD}]}" ))
+#     for ((ff=0; ff<${#COMPREPLY[@]}; ff++)); do
+#       test -d "${COMPREPLY[$i]}" && COMPREPLY[$i]="${COMPREPLY[$i]}/"
+#       test -f "${COMPREPLY[$i]}" && COMPREPLY[$i]="${COMPREPLY[$i]} "
+#     done
+#   fi
+# }
+#
+# function npl() {
+#     if [ ! -d ./node_modules ]; then
+#       echo "Not a npm package directory" && return 1
+#     elif [ ! -f ./node_modules/.bin/$1 ]; then
+#       echo "Module $1 not found in $(pwd)/node_modules/.bin" && return 1
+#     fi
+#     ./node_modules/.bin/$1 "${@:2}"
+# }
+#
+# complete -o bashdefault -o nospace -F _npl npl
+
+# Use Mac OSX Preview to open a man page in a more handsome format
+function manp() {
+  man -t $1 | open -f -a /Applications/Preview.app
+}
+
+## curlheader will return the header value specified for a given URL
+## usage: curlheader ${header} ${url}
+## or get all headers
+## curlheader ${url}
+function curlheader() {
+  if [[ -z "$2" ]]; then
+    echo "curl -k -s -D - $1 -o /dev/null"
+    curl -k -s -D - $1 -o /dev/null:
   else
-    # Back to listing filenames
-    COMPREPLY=($(compgen -f  -- "${COMP_WORDS[${COMP_CWORD}]}" ))
-    for ((ff=0; ff<${#COMPREPLY[@]}; ff++)); do
-      test -d "${COMPREPLY[$i]}" && COMPREPLY[$i]="${COMPREPLY[$i]}/"
-      test -f "${COMPREPLY[$i]}" && COMPREPLY[$i]="${COMPREPLY[$i]} "
-    done
+    echo "curl -k -s -D - $2 -o /dev/null | grep $1:"
+    curl -k -s -D - $2 -o /dev/null | grep $1:
   fi
 }
-
-function npl() {
-    if [ ! -d ./node_modules ]; then
-      echo "Not a npm package directory" && return 1
-    elif [ ! -f ./node_modules/.bin/$1 ]; then
-      echo "Module $1 not found in $(pwd)/node_modules/.bin" && return 1
-    fi
-    ./node_modules/.bin/$1 "${@:2}"
-}
-
-complete -o bashdefault -o nospace -F _npl npl

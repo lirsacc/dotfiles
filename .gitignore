@@ -13,3 +13,22 @@ Thumbs.db
 # Files that might appear on external disks
 .Spotlight-V100
 .Trashes
+
+# SSH Keys
+id_rsa
+
+.vagrant/
+
+# Vim swap files
+*.swap
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+node_modules

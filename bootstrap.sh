@@ -6,7 +6,7 @@
 usage="$(basename "$0") [-hfls] -- Bootstraping dotfiles\n\n
   -h  help\n
   -f  force overwrite files in user's home directory\n
-  -s  skip instal files (run them manually afterwards)\n
+  -s  skip install scripts
   -l  use local repo and do not update from git"
 
 # Setup
@@ -18,8 +18,8 @@ force=false
 pull=true
 skip=false
 
-scripts='./scripts'
-directories=(projects)
+scripts='./install'
+directories=("projects")
 
 
 while getopts "hfls?:" opt; do
@@ -88,6 +88,7 @@ else
     [[ $REPLY =~ ^[Yy]$ ]] && _rsync || echo
 fi
 
+# Homebrew install
 if [[ -z $(which brew) ]] && $osx; then
   if $force; then
     _homebrew
@@ -118,5 +119,3 @@ if ! $skip; then
 fi
 
 unset _rsync _homebrew force pull skip osx
-
-source ~/.bash_profile

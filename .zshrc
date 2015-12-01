@@ -20,7 +20,7 @@ if ! zgen saved; then
   zgen prezto prompt
   zgen prezto history-substring-search
   # zgen prezto command-not-found
-  # zgen prezto syntax-highlighting
+  zgen prezto syntax-highlighting
   # zgen prezto python
   zgen prezto node
   zgen prezto git
@@ -30,7 +30,7 @@ if ! zgen saved; then
   # # prezto options
   zgen prezto editor key-bindings 'emacs'
   zgen prezto editor dot-expansion 'yes'
-  zgen prezto prompt theme 'pure'
+  zgen prezto prompt theme 'smiley'
 
   zgen save
 fi
@@ -38,7 +38,6 @@ fi
 source ~/.aliases
 source ~/.exports
 source ~/.extra
-
 
 unsetopt CORRECT
 
@@ -53,3 +52,5 @@ autoload -Uz ~/.zfuncs/*(:t)
 
 autoload -Uz compinit
 compinit
+
+source ~/.functions

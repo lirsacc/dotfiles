@@ -28,8 +28,7 @@ brew install bash-completion2
 
 brew install htop
 brew install zsh
-brew install httpie
-brew info watchman
+brew install fish
 
 # Install wget with IRI support
 brew install wget --with-iri
@@ -43,6 +42,7 @@ brew install homebrew/dupes/openssh
 # Install other useful binaries
 brew install ack
 brew install git
+brew install hub
 brew install mercurial
 brew install imagemagick --with-webp
 brew install pigz
@@ -61,7 +61,12 @@ brew install ngrok
 brew instal gibo
 # brew install pandoc
 # brew install pandoc-citeproc
-brew install shecllcheck
+brew install shellcheck
+brew install httpie
+brew install watchman
+
+brew install pgcli
+brew install mycli
 
 brew install docker
 brew install docker-machine
