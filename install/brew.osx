@@ -78,7 +78,7 @@ brew install vagrant-completion
 brew install docker-completion
 
 # Python install
-brew install python --framework
+brew install python
 
 # Remove outdated versions from the cellar
 brew cleanup

@@ -1,0 +1,13 @@
+function db () {
+  if [ ! -f $HOME/.dbs/$1 ]; then
+    available_databases=$(ls $HOME/.dbs)
+    echo "No available db $1, choose from:"
+    echo $available_databases
+    return 1
+  fi
+
+  . $HOME/.dbs/$1
+  shift
+  [[ $1 == "-d" ]] && cmd="mysql" && shift || cmd="mycli"
+  $cmd -h $host -P $port -u $username --password=$password $@ $database
+}

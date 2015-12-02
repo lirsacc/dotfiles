@@ -1,4 +1,17 @@
 function docker-init () {
-  eval "$(docker-machine env default)"
-  export DOCKER_IP=$(docker-machine ip default)
+  if [[ -z $1 ]]; then
+    echo "Pass in a machine name"
+    return 1
+  fi
+
+  running=( $(docker-machine ls | grep Running | awk '{ print $1 }') )
+
+  if ! [[ $running =~ $1 ]]; then
+    echo "$1 is not a running docker machine"
+    return 1
+  fi
+
+  eval "$(docker-machine env $1)"
+
+  export DOCKER_IP=$(docker-machine ip $1)
 }

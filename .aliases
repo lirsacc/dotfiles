@@ -119,7 +119,7 @@ alias gau="g add -u"
 alias gap="g add -p"
 alias gco="g go"
 alias grb="git fetch origin/master && git rebase origin/master"
-alias gl="g l"
+alias gl="g l -n 20"
 alias gd="g diff"
 
 alias cask="brew cask"
@@ -132,5 +132,7 @@ alias dk="docker"
 alias dkm="docker-machine"
 alias dki="docker-init"
 alias dke="docker exec"
+alias dkr="docker run"
+alias dkls="docker ps"
 
-alias a="atom"
+alias reload='. $HOME/.zshrc'

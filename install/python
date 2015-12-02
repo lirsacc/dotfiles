@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 
-echo
-
-pip install --upgrade setuptools
-pip install --upgrade pip
+# # Ask for the administrator password upfront.
+# sudo -v
+# # Keep-alive: update existing `sudo` time stamp until the script has finished.
+# while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 ENV_DIR="$HOME/.pyenvs"
 mkdir -p $ENV_DIR
 
+pip install --upgrade setuptools
+pip install --upgrade pip
 pip install --upgrade virtualenv
 pip install --upgrade virtualenvwrapper
 
-pip install "ipython[all]" --upgrade
+pip install --upgrade "ipython[all]"
 pip install --upgrade bpython

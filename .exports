@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export PROJECTS="$HOME/projects"
+
 # Make vim the default editor
 export EDITOR="vim"
 

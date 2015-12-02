@@ -1,0 +1,5 @@
+#compdef db
+
+local -a dbs
+dbs=$(ls $HOME/.dbs)
+_alternative "files:dbs:($dbs)"
