@@ -79,6 +79,7 @@ brew install docker-completion
 
 # Python install
 brew install python
+brew install pyenv
 
 # Remove outdated versions from the cellar
 brew cleanup
