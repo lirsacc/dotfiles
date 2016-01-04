@@ -136,3 +136,5 @@ alias dkr="docker run"
 alias dkls="docker ps"
 
 alias reload='. $HOME/.zshrc'
+
+alias fetch-json="http --json --pretty all"
