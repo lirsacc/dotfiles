@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 # Ask for the administrator password upfront.
 sudo -v
 
@@ -63,7 +62,6 @@ brew instal gibo
 # brew install pandoc-citeproc
 brew install shellcheck
 brew install httpie
-brew install watchman
 
 brew install pgcli
 brew install mycli
