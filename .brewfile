@@ -52,6 +52,7 @@ recipes=(
   entr
   ngrok
   brew instal gibo
+  tmux
   # pandoc
   # pandoc-citeproc
   shellcheck
@@ -61,6 +62,10 @@ recipes=(
   docker
   docker-machine
   # docker-compose
+  dark-mode
+  jq
+  nmap
+  watch
 
   # Shell completions
   vagrant-completion
@@ -98,6 +103,8 @@ if [[ "$(type -P $brewroot/htop)" ]] && [[ "$(stat -L -f "%Su:%Sg" "$brewroot/ht
   sudo chown root:wheel "$brewroot/htop"
   sudo chmod u+s "$brewroot/htop"
 fi
+
+sudo ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
 
 # Remove outdated versions from the cellar
 brew cleanup

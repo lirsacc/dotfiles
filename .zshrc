@@ -1,5 +1,3 @@
-#!/usr/bin/env zsh
-
 source "${HOME}/.zgen/zgen.zsh"
 
 # check if there's no init script
@@ -38,6 +36,7 @@ fi
 source ~/.aliases
 source ~/.exports
 source ~/.extra
+source ~/.functions
 
 unsetopt CORRECT
 
@@ -52,5 +51,3 @@ autoload -Uz ~/.zfuncs/*(:t)
 
 autoload -Uz compinit
 compinit
-
-source ~/.functions

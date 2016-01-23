@@ -34,8 +34,6 @@ export PATH="$HOME/bin:$PATH"
 [[ $(which brew) ]] && export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
-export GOPATH="$HOME/projects/go"
-
 export GOPATH="$HOME/.go"
 export PATH="$GOPATH/bin:$PATH"
 

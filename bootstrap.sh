@@ -6,8 +6,7 @@
 usage="$(basename "$0") [-hfls] -- Bootstraping dotfiles\n\n
   -h  help\n
   -f  force overwrite files in user's home directory\n
-  -s  skip install scripts
-  -l  use local repo and do not update from git"
+  -l  use local repo only and do not update from git"
 
 # Setup
 # ==============================================================================
@@ -16,11 +15,9 @@ OPTIND=1
 
 force=false
 pull=true
-skip=false
 
-scripts='./install'
+scripts="install"
 directories=("projects")
-
 
 while getopts "hfls?:" opt; do
   case "$opt" in
@@ -32,9 +29,6 @@ while getopts "hfls?:" opt; do
     ;;
   l)
     pull=false
-    ;;
-  s)
-    skip=true
     ;;
   esac
 done
@@ -48,13 +42,13 @@ shift $((OPTIND-1))
 function _rsync() {
   echo " * rsync'ing files to your home directory..."
     rsync \
-    --exclude ".git/" --exclude "scripts/" --exclude ".DS_Store" \
+    --exclude ".git/" --exclude "./$scripts" --exclude ".DS_Store" \
     --exclude "bootstrap.sh" --exclude "README.md" --exclude "LICENSE-MIT.txt" \
     -av --no-perms . ~
 }
 
 # Install homebrew
-function _homebrew() {
+function install_homebrew() {
   echo " * Installing homebrew..."
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 }
@@ -78,7 +72,6 @@ fi
 # Create necessary directories
 for d in "${directories[@]}"; do
   mkdir -p "$HOME/$d"
-  echo "Created $d"
 done
 
 if $force; then
@@ -91,31 +84,39 @@ fi
 # Homebrew install
 if [[ -z $(which brew) ]] && $osx; then
   if $force; then
-    _homebrew
+    install_homebrew
+    . .brewfile
+    . .caskfile
   else
     read -p " * Do you want to install homebrew ? (y/n) " -n 1
-    [[ $REPLY =~ ^[Yy]$ ]] && _homebrew || echo
+    [[ $REPLY =~ ^[Yy]$ ]] && install_homebrew || echo
+    read -p " * Do you want to install homebrew recipes ? (y/n) " -n 1
+    [[ $REPLY =~ ^[Yy]$ ]] && . .brewfile || echo
+    read -p " * Do you want to install cask recipes ? (y/n) " -n 1
+    [[ $REPLY =~ ^[Yy]$ ]] && . .caskfile || echo
   fi
 fi
 
-if ! $skip; then
-  for file in $scripts/*
-  do
-    filename=$(echo $file | cut -d '/' -f 3 | cut -d '.' -f 1)
+for file in ./$scripts/*
+do
+  if [[ ! -f file ]]; then
+    continue
+  fi
+  filename=$(echo $file | cut -d '/' -f 3 | cut -d '.' -f 1)
 
-    # Skip osx specific install files if uname is not Darwin
-    [[ ! $osx ]] && [[ $file =~ osx ]] && continue
+  # Skip osx specific install files if uname is not Darwin
+  [[ ! $osx ]] && [[ $file =~ osx ]] && continue
 
-    if $force; then
-      # shellcheck source=/dev/null
-      . ./$file
-    else
-      read -p " * Do you want to apply the $filename install script ? (y/n) " -n 1
-      # shellcheck source=/dev/null
-      [[ $REPLY =~ ^[Yy]$ ]] && . ./$file
-    fi
-    echo
-  done
-fi
+  if $force; then
+    # shellcheck source=/dev/null
+    . ./$file
+  else
+    read -p " * Do you want to apply the $filename install script ? (y/n) " -n 1
+    # shellcheck source=/dev/null
+    [[ $REPLY =~ ^[Yy]$ ]] && . ./$file
+  fi
+  echo
+done
 
-unset _rsync _homebrew force pull skip osx
+unset _rsync install_homebrew force pull skip osx
+rm -rf "$HOME/$scripts"

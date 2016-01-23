@@ -32,6 +32,7 @@ Plugin 'jlanzarotta/bufexplorer'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'nanotech/jellybeans.vim'
+Plugin 'elixir-lang/vim-elixir'
 
 " Syntax modes
 Plugin 'leshill/vim-json'

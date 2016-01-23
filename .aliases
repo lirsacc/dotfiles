@@ -128,6 +128,7 @@ alias npr="npm run"
 alias npi="npm install"
 alias npis="npm install --save"
 
+# Docker
 alias dk="docker"
 alias dkm="docker-machine"
 alias dki="docker-init"
@@ -137,4 +138,5 @@ alias dkls="docker ps"
 
 alias reload='. $HOME/.zshrc'
 
-alias fetch-json="http --json --pretty all"
+# Pretty print the path
+alias path='echo $PATH | tr -s ":" "\n"'
