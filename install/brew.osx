@@ -1,83 +1,103 @@
 #!/usr/bin/env bash
 
+# Exit if Homebrew is not installed.
+[[ ! -z $(which brew) ]] && echo "Homebrew is needed here..." && return 1
+
 # Ask for the administrator password upfront.
 sudo -v
-
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+source ~/.brew_functions
+
+recipes=(
+  # Install GNU core utilities (those that come with OS X are outdated)
+  coreutils
+  # Install some other useful utilities like `sponge`
+  moreutils
+  # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
+  findutils
+  # Install GNU `sed`, overwriting the built-in `sed`
+  gnu-sed --default-names
+  # Install Bash 4
+  bash
+  bash-completion
+
+  # Install wget with IRI support
+  wget --with-iri
+
+  # Install more recent versions of some OS X tools
+  vim --override-system-vi --with-lua
+  homebrew/dupes/grep
+  homebrew/dupes/screen
+  homebrew/dupes/openssh
+
+  # Install other useful binaries
+  htop
+  zsh
+  ack
+  git
+  hub
+  mercurial
+  imagemagick --with-webp
+  pigz
+  rename
+  tree
+  webkit2png
+  zopfli
+  ngrep
+  hr
+  ag
+  ctags
+  entr
+  ngrok
+  brew instal gibo
+  # pandoc
+  # pandoc-citeproc
+  shellcheck
+  httpie
+  pgcli
+  mycli
+  docker
+  docker-machine
+  # docker-compose
+
+  # Shell completions
+  vagrant-completion
+  docker-completion
+
+  # Languages
+  python
+  pyenv
+  go
+  elixir
+)
+
+brew doctor
 # Make sure we’re using the latest Homebrew
 brew update
-
 # Upgrade any already-installed formulae
 brew upgrade --all
 
-# Install GNU core utilities (those that come with OS X are outdated)
-brew install coreutils
-# Install some other useful utilities like `sponge`
-brew install moreutils
-# Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
-brew install findutils
-# Install GNU `sed`, overwriting the built-in `sed`
-brew install gnu-sed --default-names
-# Install Bash 4
-brew install bash
 brew tap homebrew/versions
-brew install bash-completion2
-
-brew install htop
-brew install zsh
-brew install fish
-
-# Install wget with IRI support
-brew install wget --with-iri
-
-# Install more recent versions of some OS X tools
-brew install vim --override-system-vi --with-lua
-brew install homebrew/dupes/grep
-brew install homebrew/dupes/screen
-brew install homebrew/dupes/openssh
-
-# Install other useful binaries
-brew install ack
-brew install git
-brew install hub
-brew install mercurial
-brew install imagemagick --with-webp
-brew install pigz
-brew install rename
-brew install tree
-brew install webkit2png
-brew install zopfli
-brew install ngrep
-brew install hr
-brew install ag
-brew install ctags
-brew install go
-brew install entr
-brew install memcached
-brew install ngrok
-brew instal gibo
-# brew install pandoc
-# brew install pandoc-citeproc
-brew install shellcheck
-brew install httpie
-
-brew install pgcli
-brew install mycli
-
-brew install docker
-brew install docker-machine
-# brew install docker-compose
-
-# Shell completions
 brew tap homebrew/completions
-brew install vagrant-completion
-brew install docker-completion
 
-# Python install
-brew install python
-brew install pyenv
+for recipe in "${recipes[@]}"; do
+  brew_install_or_upgrade $recipe
+done
+
+# Cleanup stage
+# ----------------------------------
+
+local brewroot
+brewroot="$(brew --config | awk '/HOMEBREW_PREFIX/ {print $2}')"/bin
+
+# Fix htop permissions
+if [[ "$(type -P $brewroot/htop)" ]] && [[ "$(stat -L -f "%Su:%Sg" "$brewroot/htop")" != "root:wheel" || ! "$(($(stat -L -f "%DMp" "$brewroot/htop") & 4))" ]]; then
+  echo "Updating htop permissions..."
+  sudo chown root:wheel "$brewroot/htop"
+  sudo chmod u+s "$brewroot/htop"
+fi
 
 # Remove outdated versions from the cellar
 brew cleanup

@@ -1,41 +1,66 @@
 #!/usr/bin/env bash
-brew install caskroom/cask/brew-cask
+
+# Exit if Homebrew is not installed.
+[[ ! -z $(which brew) ]] && echo "Homebrew is needed here..." && return 1
+
+# Ask for the administrator password upfront.
+sudo -v
+# Keep-alive: update existing `sudo` time stamp until the script has finished.
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+brew_install_or_upgrade caskroom/cask/brew-cask
+
 brew tap caskroom/fonts
 brew cask update
 
-brew cask install --appdir="/Applications" appcleaner
-brew cask install --appdir="/Applications" the-unarchiver
-brew cask install --appdir="/Applications" transmission
-# brew cask install --appdir="/Applications" bibdesk
-brew cask install --appdir="/Applications" iterm2
-brew cask install --appdir="/Applications" licecap
-brew cask install --appdir="/Applications" imageoptim
-brew cask install --appdir="/Applications" caffeine
-brew cask install --appdir="/Applications" atom
-brew cask install --appdir="/Applications" virtualbox
-brew cask install --appdir="/Applications" mactex
-brew cask install --appdir="/Applications" spectacle
-brew cask install --appdir="/Applications" vagrant
-# brew cask install --appdir="/Applications" android-file-transfer
-brew cask install --appdir="/Applications" monolingual
-brew cask install --appdir="/Applications" onyx
-# brew cask install --appdir="/Applications" slack
-brew cask install --appdir="/Applications" flux
-brew cask install --appdir="/Applications" transmit
-brew cask install --appdir="/Applications" java
-brew cask install --appdir="/Applications" xquartz
+applications=(
+  # android-file-transfer
+  # bibdesk
+  # mactex
+  # transmit
+  1password
+  appcleaner
+  atom
+  dropbox
+  flux
+  imageoptim
+  iterm2
+  java
+  licecap
+  monolingual
+  onyx
+  quicklook-csv
+  quicklook-json
+  slack
+  spectacle
+  spotify
+  the-unarchiver
+  transmission
+  vagrant
+  virtualbox
+  vlc
+  xquartz
+)
 
+for app in "${applications[@]}"; do
+  brew cask install --appdir="/Applications" $app
+done
 
-brew cask install font-open-sans
-brew cask install font-fira-code
-brew cask install font-fira-sans
-brew cask install font-fira-mono
-brew cask install font-merriweather
-brew cask install font-roboto
-brew cask install font-roboto-slab
-brew cask install font-inconsolata
-brew cask install font-source-code-pro
-brew cask install font-source-sans-pro
-brew cask install font-source-serif-pro
-brew cask install font-ubuntu
+fonts=(
+  font-fira-code
+  font-fira-mono
+  font-fira-sans
+  font-inconsolata
+  font-merriweather
+  font-open-sans
+  font-roboto
+  font-roboto-slab
+  font-source-code-pro
+  font-source-sans-pro
+  font-source-serif-pro
+  font-ubuntu
+)
 
+for font in "${fonts[@]}"; do
+  brew cask install $font
+done
