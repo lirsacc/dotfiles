@@ -1,6 +1,6 @@
 [user]
-	name = lirsacc
-	email = c.lirsac@gmail.com
+  name = lirsacc
+  email = c.lirsac@gmail.com
 [github]
   user = lirsacc
 [alias]
@@ -35,6 +35,9 @@
   fp = fetch --prune
   pp = pull --prune
 
+  aa = add --all
+
+
   rmrb = "push --delete origin"
 
 
@@ -54,8 +57,8 @@
   # whitespace = space-before-tab,indent-with-non-tab,trailing-space
   #
   # Make `git rebase` safer on OS X
-	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
-	trustctime = false
+  # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
+  trustctime = false
 
 [color]
   # Use colors in Git commands that are capable of colored output when
@@ -105,17 +108,20 @@
 
 [credential]
   # cache creds (git help credential-cache)
-	helper = cache
+  helper = cache
 
 
 [diff]
-	# Detect copies as well as renames
-	renames = copies
+  # Detect copies as well as renames
+  renames = copies
 
 [diff "bin"]
-	# Use `hexdump` to diff binary files
-	textconv = hexdump -v -C
+  # Use `hexdump` to diff binary files
+  textconv = hexdump -v -C
 
 [help]
-	# Automatically correct and execute mistyped commands
-	autocorrect = 1
+  # Automatically correct and execute mistyped commands
+  autocorrect = 1
+
+[rebase]
+  autosquash = true

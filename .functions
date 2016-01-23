@@ -267,3 +267,14 @@ function curlheader() {
     curl -k -s -D - $2 -o /dev/null | grep $1:
   fi
 }
+
+function git-credit () {
+  git commit --amend --author "$1 <$2>" -C HEAD
+}
+
+function git-init () {
+  mkdir $1; cd $1
+  git init
+  touch README.md; git add README.md
+  git commit -m "Initial Commit"
+}

@@ -1,7 +1,8 @@
 # Compiled files
 *.pyc
 *.javac
-*.swp
+*.sw[nop]
+
 # Folder view configuration files
 .DS_Store
 Desktop.ini
@@ -32,3 +33,7 @@ pids
 *.seed
 
 node_modules
+
+tags
+!tags/
+tmp/**/*

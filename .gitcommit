@@ -1,5 +1,12 @@
-[TYPE] Title
 
-Description
 
-[Ticket]
+# [TYPE] Title (50 chars)
+#
+# Description (80 chars wrapped)
+#
+# - Why the change
+# - Quick solution description
+# - Side effects
+# - Necessary follow up
+#
+# [Ticket]
