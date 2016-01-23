@@ -9,33 +9,33 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Set computer name (as done via System Preferences → Sharing)
 # ------------------------------------------------------------------------------
-echo ""
-echo "Setting your computer name (as done via System Preferences & Sharing)"
-read -r -p "What would you like it to be (leave blank if don't want to set it) " COMPUTER_NAME
+# echo ""
+# echo "Setting your computer name (as done via System Preferences & Sharing)"
+# read -r -p "What would you like it to be (leave blank if don't want to set it) " COMPUTER_NAME
+#
+# if [ -z "$COMPUTER_NAME" ]; then
+#   sudo scutil --set ComputerName $COMPUTER_NAME
+#   sudo scutil --set HostName $COMPUTER_NAME
+#   sudo scutil --set LocalHostName $COMPUTER_NAME
+#   sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $COMPUTER_NAME
+# fi
 
-if [ -z "$COMPUTER_NAME" ]; then
-  sudo scutil --set ComputerName $COMPUTER_NAME
-  sudo scutil --set HostName $COMPUTER_NAME
-  sudo scutil --set LocalHostName $COMPUTER_NAME
-  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $COMPUTER_NAME
-fi
-
-# Get passwordless sudo
-# Taken from https://github.com/atomantic/dotfiles
-# http://wiki.summercode.com/sudo_without_a_password_in_mac_os_x
-# ------------------------------------------------------------------------------
-read -r -p "Make sudo passwordless? [y|N] " response
-
-if [[ $response =~ (yes|y|Y) ]];then
-  sed --version 2>&1 > /dev/null
-  if [[ $? == 0 ]];then
-      sudo sed -i 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
-  else
-      sudo sed -i '' 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
-  fi
-  sudo dscl . append /Groups/wheel GroupMembership "$(whoami)"
-  echo "You can now run sudo commands without password!"
-fi
+# # Get passwordless sudo
+# # Taken from https://github.com/atomantic/dotfiles
+# # http://wiki.summercode.com/sudo_without_a_password_in_mac_os_x
+# # ------------------------------------------------------------------------------
+# read -r -p "Make sudo passwordless? [y|N] " response
+#
+# if [[ $response =~ (yes|y|Y) ]];then
+#   sed --version 2>&1 > /dev/null
+#   if [[ $? == 0 ]];then
+#       sudo sed -i 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
+#   else
+#       sudo sed -i '' 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
+#   fi
+#   sudo dscl . append /Groups/wheel GroupMembership "$(whoami)"
+#   echo "You can now run sudo commands without password!"
+# fi
 
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
@@ -346,7 +346,7 @@ defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
 # defaults write com.apple.dock launchanim -bool false
 
 # Speed up Mission Control animations
-defaults write com.apple.dock expose-animation-duration -float 0.01
+defaults write com.apple.dock expose-animation-duration -float 0.1
 
 # Don’t group windows by application in Mission Control
 # (i.e. use the old Exposé behavior instead)
