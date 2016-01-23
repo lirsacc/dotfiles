@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Exit if Homebrew is not installed.
-[[ ! -z $(which brew) ]] && echo "Homebrew is needed here..." && return 1
+[[ -z $(which brew) ]] && echo "Homebrew is needed here..." && return 1
 
 # Ask for the administrator password upfront.
 sudo -v

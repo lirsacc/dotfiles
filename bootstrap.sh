@@ -85,11 +85,17 @@ fi
 if [[ -z $(which brew) ]] && $osx; then
   if $force; then
     install_homebrew
-    . .brewfile
-    . .caskfile
   else
     read -p " * Do you want to install homebrew ? (y/n) " -n 1
     [[ $REPLY =~ ^[Yy]$ ]] && install_homebrew || echo
+  fi
+fi
+
+if [[ ! -z $(which brew) ]] && $osx; then
+  if $force; then
+    source .brewfile
+    source .caskfile
+  else
     read -p " * Do you want to install homebrew recipes ? (y/n) " -n 1
     [[ $REPLY =~ ^[Yy]$ ]] && . .brewfile || echo
     read -p " * Do you want to install cask recipes ? (y/n) " -n 1
@@ -99,7 +105,8 @@ fi
 
 for file in ./$scripts/*
 do
-  if [[ ! -f file ]]; then
+  echo $file
+  if [[ ! -f $file ]]; then
     continue
   fi
   filename=$(echo $file | cut -d '/' -f 3 | cut -d '.' -f 1)
