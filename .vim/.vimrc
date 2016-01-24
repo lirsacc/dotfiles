@@ -3,13 +3,7 @@
 " it changes other options as a side effect.
 set nocompatible
 
-" Vundle -----------------------------------------------------------------------
-
-" if filereadable(expand("~/.vim/packages.vim"))
-"   source ~/.vim/packages.vim
-" endif
-
-
+" Plugin manager -----------------------------------------------------------------
 if filereadable(expand("~/.vim/plug.vim"))
   source ~/.vim/plug.vim
 endif
@@ -73,11 +67,11 @@ set hlsearch                                    " highlight matches
 set gdefault                                    " use the `g` flag by default.
 
 " Indentation
-set tabstop=4
+set tabstop=2
 set tabpagemax=15                               " Only show 15 tabs
 set showmode                                    " Display tset tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set shiftwidth=2
+set softtabstop=2
 set expandtab                                   " use spaces instead of tabs.
 set smarttab                                    " let's tab key insert 'tab stops', and bksp deletes tabs.
 set shiftround                                  " tab / shifting moves to closest tabstop.
@@ -115,7 +109,7 @@ set nowrap                                      " Don't wrap lines
 set linebreak                                   " Wrap lines at convenient points
 set backspace=indent,eol,start                  " Backspace for dummies
 set linespace=0                                 " No extra spaces between rows
-set nu                                          " Line numbers on
+set number                                      " Line numbers on
 set showmatch                                   " Show matching brackets/parenthesis
 set winminheight=0                              " Windows can be 0 line high
 set whichwrap=b,s,h,l,<,>,[,]                   " Backspace and cursor keys wrap too
