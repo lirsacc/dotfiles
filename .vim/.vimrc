@@ -5,8 +5,13 @@ set nocompatible
 
 " Vundle -----------------------------------------------------------------------
 
-if filereadable(expand("~/.vim/packages.vim"))
-  source ~/.vim/packages.vim
+" if filereadable(expand("~/.vim/packages.vim"))
+"   source ~/.vim/packages.vim
+" endif
+
+
+if filereadable(expand("~/.vim/plug.vim"))
+  source ~/.vim/plug.vim
 endif
 
 " General settings  --------------------------------------------------------------
