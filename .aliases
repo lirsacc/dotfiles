@@ -140,3 +140,8 @@ alias reload='. $HOME/.zshrc'
 
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
+
+alias npm-reset='rm -rf ./node_modules && npm install'
+
+alias avadakedavra='killall -9'
+

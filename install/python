@@ -10,3 +10,4 @@ pip install --upgrade virtualenvwrapper
 
 pip install --upgrade "ipython[all]"
 pip install --upgrade bpython
+pip install --upgrade flake8
