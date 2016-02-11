@@ -1,0 +1,3 @@
+function mysql-top () {
+  watch -n -5 --difference "mysql $@ -e 'show processlist;'"
+}
