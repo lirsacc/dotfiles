@@ -49,6 +49,7 @@ recipes=(
   ngrep
   hr
   ag
+  sift
   ctags
   entr
   ngrok
