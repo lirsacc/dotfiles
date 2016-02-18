@@ -8,6 +8,7 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+# shellcheck disable=1090,1091
 source ~/.brew_functions
 
 recipes=(
@@ -88,17 +89,15 @@ brew tap homebrew/versions
 brew tap homebrew/completions
 
 for recipe in "${recipes[@]}"; do
-  brew_install_or_upgrade $recipe
+  brew_install_or_upgrade "$recipe"
 done
 
 # Cleanup stage
 # ----------------------------------
-
-local brewroot
 brewroot="$(brew --config | awk '/HOMEBREW_PREFIX/ {print $2}')"/bin
 
 # Fix htop permissions
-if [[ "$(type -P $brewroot/htop)" ]] && [[ "$(stat -L -f "%Su:%Sg" "$brewroot/htop")" != "root:wheel" || ! "$(($(stat -L -f "%DMp" "$brewroot/htop") & 4))" ]]; then
+if [[ "$(type -P "$brewroot"/htop)" ]] && [[ "$(stat -L -f "%Su:%Sg" "$brewroot/htop")" != "root:wheel" || ! "$(($(stat -L -f "%DMp" "$brewroot/htop") & 4))" ]]; then
   echo "Updating htop permissions..."
   sudo chown root:wheel "$brewroot/htop"
   sudo chmod u+s "$brewroot/htop"
