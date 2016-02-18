@@ -49,7 +49,7 @@ function _rsync() {
     rsync \
     --exclude ".git/" --exclude "./$scripts" --exclude ".DS_Store" \
     --exclude "bootstrap.sh" --exclude "README.md" --exclude "LICENSE-MIT.txt" \
-    -av --no-perms . ~
+    --exclude "install" -av --no-perms . ~
 }
 
 # Install homebrew
@@ -110,12 +110,16 @@ fi
 
 if [[ ! -z $(which brew) ]] && $osx; then
   if $force; then
-    source .brewfile
-    source .caskfile
+    # shellcheck disable=1090,1091
+    source ./.brewfile
+    # shellcheck disable=1090,1091
+    source ./.caskfile
   else
     read -rp "Do you want to install homebrew recipes ? (y/n) " -n 1
+    # shellcheck disable=1090,1091
     [[ $REPLY =~ ^[Yy]$ ]] && source .brewfile || echo
     read -rp "Do you want to install cask recipes ? (y/n) " -n 1
+    # shellcheck disable=1090,1091
     [[ $REPLY =~ ^[Yy]$ ]] && source .caskfile || echo
   fi
 fi
