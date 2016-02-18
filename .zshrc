@@ -51,3 +51,5 @@ autoload -Uz ~/.zfuncs/*(:t)
 
 autoload -Uz compinit
 compinit
+
+bindkey \^U backward-kill-line
