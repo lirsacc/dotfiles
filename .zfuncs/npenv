@@ -1,0 +1,33 @@
+# npenv
+
+function npenv () {
+  npm_path=$(npm bin)
+  if [ -z "$npm_path" ]; then
+    echo "Not inside an NPM project"
+    return 1
+  fi
+
+  root=$(npm root)
+
+  pkg=$(cat "$root/../package.json" \
+  | grep name \
+  | head -1 \
+  | awk -F: '{ print $2 }' \
+  | sed 's/[",]//g')
+
+  export NPM_BIN="$npm_path"
+  export NPM_OLD_PATH="$PATH"
+  export PATH="$NPM_BIN:$PATH"
+	export NPM_PKG="$pkg"
+
+  export function deactivate () {
+    unset NPM_DIR
+    export PATH=$NPM_OLD_PATH
+    unset NPM_OLD_PATH
+		unset NPM_PKG
+    unset deactivate
+  }
+
+  echo "Activated npm pkg $pkg, use 'deactivate' to exit"
+	unset npm_path, pkg, root
+}
