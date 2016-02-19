@@ -5,6 +5,7 @@
 
 usage="$(basename "$0") [-hfls] -- Bootstraping dotfiles\n
   -h  help
+  -d Perform a dry run of the sync step
   -f  force overwrite files in user's home directory
   -l  use local repo only and do not update from git
   -s  rsync only"
@@ -17,11 +18,12 @@ OPTIND=1
 force=false
 pull=true
 sync_only=false
+dry_run=false
 
 scripts="install"
 directories=("projects")
 
-while getopts "hfls?:" opt; do
+while getopts "hflsd?:" opt; do
   case "$opt" in
   h|\?)
     echo -e "$usage" && echo && exit 0
@@ -34,6 +36,9 @@ while getopts "hfls?:" opt; do
     ;;
   s)
     sync_only=true
+    ;;
+  d)
+    dry_run=true
     ;;
   esac
 done
@@ -49,7 +54,7 @@ function _rsync() {
     rsync \
     --exclude ".git/" --exclude "./$scripts" --exclude ".DS_Store" \
     --exclude "bootstrap.sh" --exclude "README.md" --exclude "LICENSE-MIT.txt" \
-    --exclude "install" -av --no-perms . ~
+    --exclude "install" -av --no-perms "$@" . ~
 }
 
 # Install homebrew
@@ -84,6 +89,11 @@ fi
 for d in "${directories[@]}"; do
   mkdir -p "$HOME/$d"
 done
+
+if $dry_run; then
+  _rsync -u --dry-run
+  exit 0
+fi
 
 if $force; then
     _rsync
