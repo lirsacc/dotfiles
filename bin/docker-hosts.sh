@@ -10,9 +10,13 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-for i in "${running[@]}"; do
-    ip=$(docker-machine ip $i)
-    echo "Adding $ip for machine $i"
-    sed -i '/'$ip'/d' /etc/hosts  # remove line matching ip
-    echo "$ip $i.docker" | sudo tee -a /etc/hosts  #insert ip/host on last line
+# Remove all existing lines
+pruned=$(sed '/\.docker/d' /etc/hosts)
+echo "$pruned" | sudo tee /etc/hosts > /dev/null
+echo "Removed previous entries..."
+
+for machine in "${running[@]}"; do
+    ip=$(docker-machine ip "$machine")
+    echo "Adding $ip for machine $machine..."
+    echo "$ip $machine.docker" | sudo tee -a /etc/hosts > /dev/null  #insert ip/host on last line
 done
