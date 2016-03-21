@@ -7,11 +7,17 @@ function docker-init () {
   running=( $(docker-machine ls | grep Running | awk '{ print $1 }') )
 
   if ! [[ $running =~ $1 ]]; then
-    echo "$1 is not a running docker machine"
+    stopped=( $(docker-machine ls | grep Stopped | awk '{ print $1 }') )
+    if ! [[ $stopped =~ $1 ]]; then
+      echo "$1 is not a known docker machine"
+      return 1
+    fi
+    echo "$1 is not running (run 'docker-machine start $1')"
     return 1
   fi
 
   eval "$(docker-machine env $1)"
 
+  export DOCKER_MACHINE=$1
   export DOCKER_IP=$(docker-machine ip $1)
 }
