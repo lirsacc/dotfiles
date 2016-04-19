@@ -33,6 +33,7 @@ export PATH="$HOME/bin:$PATH"
 
 [[ $(which brew) ]] && export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+[[ $(which brew) ]] && export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
 export GOPATH="$HOME/.go"
 export PATH="$GOPATH/bin:$PATH"
