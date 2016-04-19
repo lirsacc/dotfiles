@@ -2,7 +2,7 @@
 
 origin=$(pwd)
 
-local zsh_location
+declare zsh_location
 [[ -f /usr/local/bin/zsh ]] && zsh_location="/usr/local/bin/zsh" || zsh_location="/bin/zsh"
 
 # Setup zsh as default shell

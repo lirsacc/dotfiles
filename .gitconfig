@@ -25,21 +25,19 @@
   branches = branch -a
   remotes = remote -v
   fix = commit --amend --no-edit
+
   # Credit an author on the latest commit
   credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+
   # Interactive rebase with the given number of latest commits
   reb = "!r() { git rebase -i HEAD~$1; }; r"
+
   # Rebase from master
   rb = rebase
 
   fp = fetch --prune
   pp = pull --prune
-
   aa = add --all
-
-
-  rmrb = "push --delete origin"
-
 
 [apply]
   # Detect whitespace errors when applying a patch

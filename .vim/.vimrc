@@ -31,7 +31,7 @@ set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatib
 set virtualedit+=block                          " allow the cursor to go anywhere in visual block mode.
 set gcr=a:blinkon0                              " Disable cursor blink
 set visualbell                                  " No sounds
-
+set lazyredraw
 set nospell                                       " Spell checking on
 
 " <leader> is a key that allows you to have
@@ -89,6 +89,17 @@ set showmode                                    " Show current mode down the bot
 set cursorline                                  " Highlight current line
 highlight clear SignColumn                      " SignColumn should match background for things like vim-gitgutter
 highlight clear LineNr                          " Current line number row will have same background color in relative mode.
+
+set ttimeout
+set ttimeoutlen=100
+
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
+
+if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
+  set t_Co=16
+endif
 
 " Completion
 set wildmenu                                    " Show list instead of just completing

@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 source "${HOME}/.zgen/zgen.zsh"
 
 # check if there's no init script
@@ -19,7 +20,7 @@ if ! zgen saved; then
   zgen prezto history-substring-search
   # zgen prezto command-not-found
   zgen prezto syntax-highlighting
-  # zgen prezto python
+  zgen prezto python
   zgen prezto node
   zgen prezto git
   # zgen prezto osx
@@ -27,7 +28,7 @@ if ! zgen saved; then
 
   # # prezto options
   zgen prezto editor key-bindings 'emacs'
-  zgen prezto editor dot-expansion 'yes'
+  # zgen prezto editor dot-expansion 'yes'
   zgen prezto prompt theme 'smiley'
 
   zgen save
