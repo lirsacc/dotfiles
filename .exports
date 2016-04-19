@@ -26,14 +26,17 @@ export MANPAGER="less -X"
 # Always enable colored `grep` output
 export GREP_OPTIONS="--color=auto"
 
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
 # Link Homebrew casks in `/Applications` rather than `~/Applications`
 [[ $(which brew) ]] && export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
-[[ $(which brew) ]] && export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-[[ $(which brew) ]] && export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+if [[ $(which brew) ]]; then
+  brew_prefix="$(brew --prefix coreutils)" || "/usr/local/opt/coreutils"
+  export PATH="$brew_prefix/libexec/gnubin:$PATH"
+  export MANPATH="$brew_prefix/libexec/gnuman:$MANPATH"
+fi
 
 export GOPATH="$HOME/.go"
 export PATH="$GOPATH/bin:$PATH"

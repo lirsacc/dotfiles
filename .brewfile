@@ -3,15 +3,10 @@
 # Exit if Homebrew is not installed.
 [[ -z $(which brew) ]] && echo "Homebrew is needed here..." && return 1
 
-# Ask for the administrator password upfront.
-sudo -v
-# Keep-alive: update existing `sudo` time stamp until the script has finished.
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
 # shellcheck disable=1090,1091
 source ~/.brew_functions
 
-recipes=(
+declare recipes=(
   # Install GNU core utilities (those that come with OS X are outdated)
   coreutils
   # Install some other useful utilities like `sponge`
@@ -53,7 +48,7 @@ recipes=(
   ctags
   entr
   ngrok
-  brew instal gibo
+  gibo
   tmux
   # pandoc
   # pandoc-citeproc
@@ -75,9 +70,13 @@ recipes=(
 
   # Languages
   python
+  python3
   pyenv
   go
   elixir
+  rust
+
+  keybase
 )
 
 brew doctor
@@ -104,7 +103,7 @@ if [[ "$(type -P "$brewroot"/htop)" ]] && [[ "$(stat -L -f "%Su:%Sg" "$brewroot/
   sudo chmod u+s "$brewroot/htop"
 fi
 
-sudo ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
+ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
 
 # Remove outdated versions from the cellar
 brew cleanup

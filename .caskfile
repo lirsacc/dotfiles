@@ -3,22 +3,15 @@
 # Exit if Homebrew is not installed.
 [[ -z $(which brew) ]] && echo "Homebrew is needed here..." && return 1
 
-# Ask for the administrator password upfront.
-sudo -v
-# Keep-alive: update existing `sudo` time stamp until the script has finished.
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
 brew_install_or_upgrade caskroom/cask/brew-cask
 
 brew tap caskroom/fonts
 brew cask update
 
-applications=(
+declare applications=(
   # android-file-transfer
   # bibdesk
   # mactex
-  # transmit
-  1password
   appcleaner
   atom
   dropbox
@@ -46,19 +39,16 @@ for app in "${applications[@]}"; do
   brew cask install --appdir="/Applications" $app
 done
 
-fonts=(
+declare fonts=(
   font-fira-code
   font-fira-mono
   font-fira-sans
   font-inconsolata
-  font-merriweather
+  font-input
   font-open-sans
   font-roboto
-  font-roboto-slab
   font-source-code-pro
   font-source-sans-pro
-  font-source-serif-pro
-  font-ubuntu
 )
 
 for font in "${fonts[@]}"; do
