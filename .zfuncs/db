@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 function db () {
 
-  declare available_databases=($(ls $HOME/.dbs))
+  local available_databases=($(ls $HOME/.dbs))
 
   if [[ -z "$1" || "$1" == "-l" ]]; then
     echo "Available databases are:"
@@ -19,15 +19,18 @@ function db () {
     return 1
   fi
 
+  local password=""
+
   # shellcheck disable=SC1090
   . $HOME/.dbs/$1
+
   shift
   if [[ "$1" == "-p" ]]; then
     shift
-    echo "-h ${host:?} -P ${port:?} -u ${username:?} --password=${password:?} $* ${database:?}"
+    echo "-h ${host:?} -P ${port:?} -u ${username:?} --password=$password $* ${database:?}"
     return 0
   else
     [[ $1 == "-d" ]] && cmd="mysql" && shift || cmd="mycli"
-    $cmd  -h "${host:?}" -P "${port:?}" -u "${username:?}" --password="${password:?}" "$@" "${database:?}"
+    $cmd  -h "${host:?}" -P "${port:?}" -u "${username:?}" --password="$password" "$@" "${database:?}"
   fi
 }
