@@ -4,7 +4,7 @@
 [[ -z $(which brew) ]] && echo "Homebrew is needed here..." && return 1
 
 # shellcheck disable=1090,1091
-source ~/.brew_functions
+source $HOME/.brew.sh
 
 declare recipes=(
   # Install GNU core utilities (those that come with OS X are outdated)
@@ -47,7 +47,7 @@ declare recipes=(
   sift
   ctags
   # entr
-  ngrok
+  homebrew/binary/ngrok2
   gibo
   tmux
   # pandoc
@@ -58,7 +58,7 @@ declare recipes=(
   mycli
   docker
   docker-machine
-  # docker-compose
+  docker-compose
   dark-mode
   jq
   nmap
@@ -81,21 +81,73 @@ declare recipes=(
   awscli
 )
 
+declare applications=(
+  # android-file-transfer
+  # bibdesk
+  # mactex
+  appcleaner
+  atom
+  dropbox
+  flux
+  imageoptim
+  iterm2
+  java
+  licecap
+  monolingual
+  onyx
+  quicklook-csv
+  quicklook-json
+  slack
+  spectacle
+  spotify
+  the-unarchiver
+  transmission
+  vagrant
+  virtualbox
+  vlc
+  xquartz
+)
+
+declare fonts=(
+  font-fira-code
+  font-fira-mono
+  font-fira-sans
+  font-inconsolata
+  font-input
+  font-open-sans
+  font-roboto
+  font-source-code-pro
+  font-source-sans-pro
+)
+
+brew tap caskroom/cask
+brew tap homebrew/versions
+brew tap homebrew/completions
+brew tap homebrew/dupes
+brew tap homebrew/binary
+
+brew_install_or_upgrade caskroom/cask/brew-cask
+
 brew doctor
+
 # Make sure we’re using the latest Homebrew
 brew update
 # Upgrade any already-installed formulae
 brew upgrade --all
 
-brew tap homebrew/versions
-brew tap homebrew/completions
-
 for recipe in "${recipes[@]}"; do
   brew_install_or_upgrade "$recipe"
 done
 
+for app in "${applications[@]}"; do
+  brew cask install --appdir="/Applications" $app
+done
+
+for font in "${fonts[@]}"; do
+  brew cask install $font
+done
+
 # Cleanup stage
-# ----------------------------------
 brewroot="$(brew --config | awk '/HOMEBREW_PREFIX/ {print $2}')"/bin
 
 # Fix htop permissions

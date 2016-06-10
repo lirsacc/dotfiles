@@ -46,8 +46,6 @@ done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
-[ "$(uname -s)" = "Darwin" ] && osx=true || osx=false
-
 # Rsync the config files from git directory to home directory
 function _rsync() {
   echo "rsync'ing files to your home directory..."
@@ -109,40 +107,34 @@ if $sync_only; then
 fi
 
 # Homebrew install
-if [[ -z $(which brew) ]] && $osx; then
+if [[ -z $(which brew) ]]; then
   if $force; then
     install_homebrew
   else
     read -rp "Do you want to install homebrew ? (y/n) " -n 1
     [[ $REPLY =~ ^[Yy]$ ]] && install_homebrew || echo
   fi
+# else
+#   if $force; then
+#     # shellcheck disable=1090,1091
+#     source ./.brewfile
+#     # shellcheck disable=1090,1091
+#     source ./instal
+#   else
+#     read -rp "Do you want to install homebrew recipes ? (y/n) " -n 1
+#     # shellcheck disable=1090,1091
+#     [[ $REPLY =~ ^[Yy]$ ]] && source .brewfile || echo
+#     read -rp "Do you want to install cask recipes ? (y/n) " -n 1
+#     # shellcheck disable=1090,1091
+#     [[ $REPLY =~ ^[Yy]$ ]] && source .caskfile || echo
+#   fi
 fi
 
-if [[ ! -z $(which brew) ]] && $osx; then
-  if $force; then
-    # shellcheck disable=1090,1091
-    source ./.brewfile
-    # shellcheck disable=1090,1091
-    source ./.caskfile
-  else
-    read -rp "Do you want to install homebrew recipes ? (y/n) " -n 1
-    # shellcheck disable=1090,1091
-    [[ $REPLY =~ ^[Yy]$ ]] && source .brewfile || echo
-    read -rp "Do you want to install cask recipes ? (y/n) " -n 1
-    # shellcheck disable=1090,1091
-    [[ $REPLY =~ ^[Yy]$ ]] && source .caskfile || echo
-  fi
-fi
-
-for file in ./$scripts/*
-do
+for file in ./$scripts/*; do
   if [[ ! -f $file ]]; then
     continue
   fi
   filename=$(echo "$file" | cut -d / -f 3 | cut -d '.' -f 1)
-
-  # Skip osx specific install files if uname is not Darwin
-  [[ ! $osx ]] && [[ $file =~ osx ]] && continue
 
   if $force; then
     # shellcheck source=/dev/null

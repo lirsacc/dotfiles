@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+
 source "${HOME}/.zgen/zgen.zsh"
 
 # check if there's no init script
@@ -38,6 +39,7 @@ source ~/.aliases
 source ~/.exports
 source ~/.extra
 source ~/.functions
+source ~/.brew
 
 unsetopt CORRECT
 

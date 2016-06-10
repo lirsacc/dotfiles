@@ -12,7 +12,7 @@ function cdf() { # short for `cdfinder`
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
 function targz() {
-  local tmpFile="${@%/}.tar"
+  local tmpFile="${*%/}.tar"
   tar -cvf "${tmpFile}" --exclude=".DS_Store" "${@}" || return 1
 
   size=$(
@@ -106,7 +106,7 @@ function digga() {
 
 # Escape UTF-8 characters into their 3-byte format
 function escape() {
-  printf "\\\x%s" "$(printf "$@" | xxd -p -c1 -u)"
+  printf "\\\x%s" "$(printf "%s" "$@"  | xxd -p -c1 -u)"
   # print a newline unless we’re piping the output to another program
   if [ -t 1 ]; then
     echo # newline
@@ -115,7 +115,7 @@ function escape() {
 
 # Decode \x{ABCD}-style Unicode escape sequences
 function unidecode() {
-  perl -e "binmode(STDOUT, ':utf8'); print \"$@\""
+  perl -e "binmode(STDOUT, ':utf8'); print \"$*\""
   # print a newline unless we’re piping the output to another program
   if [ -t 1 ]; then
     echo # newline
@@ -124,7 +124,7 @@ function unidecode() {
 
 # Get a character’s Unicode code point
 function codepoint() {
-  perl -e "use utf8; print sprintf('U+%04X', ord(\"$@\"))"
+  perl -e "use utf8; print sprintf('U+%04X', ord(\"$*\"))"
   # print a newline unless we’re piping the output to another program
   if [ -t 1 ]; then
     echo # newline
@@ -134,20 +134,23 @@ function codepoint() {
 # Show all the names (CNs and SANs) listed in the SSL certificate
 # for a given domain
 function getcertnames() {
+
+  local tmp domain certText
+
   if [ -z "${1}" ]; then
     echo "ERROR: No domain specified."
     return 1
   fi
 
-  local domain="${1}"
+  domain="${1}"
   echo "Testing ${domain}…"
   echo # newline
 
-  local tmp=$(echo -e "GET / HTTP/1.0\nEOT" \
+  tmp=$(echo -e "GET / HTTP/1.0\nEOT" \
     | openssl s_client -connect "${domain}:443" 2>&1);
 
   if [[ "${tmp}" = *"-----BEGIN CERTIFICATE-----"* ]]; then
-    local certText=$(echo "${tmp}" \
+    certText=$(echo "${tmp}" \
       | openssl x509 -text -certopt "no_header, no_serial, no_version, \
       no_signame, no_validity, no_issuer, no_pubkey, no_sigdump, no_aux");
       echo "Common Name:"
@@ -204,8 +207,8 @@ function git-credit () {
   git commit --amend --author "$1 <$2>" -C HEAD
 }
 
-function git-init () {
-  mkdir $1; cd $1
+function git-new () {
+  mkdir $1; cd $1 || exit 1
   git init
   touch README.md; git add README.md
   git commit -m "Initial Commit"

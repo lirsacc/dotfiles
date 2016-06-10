@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 # Useful brew shortcuts taken from https://github.com/thoughtbot/laptop
 
