@@ -31,22 +31,22 @@ declare recipes=(
   # Install other useful binaries
   htop
   zsh
-  ack
+  # ack
   git
-  hub
-  mercurial
+  # hub
+  # mercurial
   imagemagick --with-webp
   pigz
   rename
   tree
   webkit2png
   zopfli
-  ngrep
+  # ngrep
   hr
   ag
   sift
   ctags
-  entr
+  # entr
   ngrok
   gibo
   tmux
@@ -75,8 +75,10 @@ declare recipes=(
   go
   elixir
   rust
+  elm
 
   keybase
+  awscli
 )
 
 brew doctor
