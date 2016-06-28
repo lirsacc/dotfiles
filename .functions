@@ -225,6 +225,31 @@ function fixperms(){
     find . \( -name "*.sh" -or -type d \) -exec chmod 755 {} \; && find . -type f ! -name "*.sh" -exec chmod 644 {} \;
 }
 
+# Opens the github page for the current git repository in your browser
+# Adapted from:
+# git@github.com:jasonneylon/dotfiles.git https://github.com/jasonneylon/dotfiles/
+function gh() {
+  giturl=$(git config --get remote.origin.url)
+
+  if [ "$giturl" == "" ]; then
+     echo "Not a git repository or no remote.origin.url set"
+     exit 1;
+  fi
+
+  if [[ ! "$giturl" == *"github"* ]]; then
+    echo "Not a github repository"
+    exit 1;
+  fi
+
+  giturl=${giturl/git\@github\.com\:/https://github.com/}
+  giturl=${giturl/\.git/\/tree/}
+  branch="$(git symbolic-ref HEAD 2>/dev/null)" ||
+  branch="(unnamed branch)"     # detached HEAD
+  branch=${branch##refs/heads/}
+  giturl=$giturl$branch
+  open "$giturl"
+}
+
 # AWS helpers, thanks Lorenz Gruber (@bandinigo)
 function aws_mfa () {
   # Use with aws_mfa arn profile_name
