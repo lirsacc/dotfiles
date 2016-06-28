@@ -1,36 +1,52 @@
 #!/usr/bin/env zsh
-function db () {
 
-  local available_databases=($(ls $HOME/.dbs))
+function db () {
+  # Start `mysql` or `mycli` from a known config file.
+  # Store config files in `$HOME/.dbs` or `$DATABASE_STORE`,
+  # they should be source-able exposing the following variables:
+  #
+  #   `host`
+  #   `port`
+  #   `username`
+  #   `password`
+  #   `database`
+  #
+  # `password` and `username` can be empty or missing.
+
+  # Flags:
+  # `-d`: will switch from `mycli` to `mysql`
+  # `-p`: just prints the connection string
+  # `-l`: list all existing databses
+
+  local loc="${DATABASE_STORE:-$HOME/.dbs}"
+  local available_databases=($(ls $loc))
 
   if [[ -z "$1" || "$1" == "-l" ]]; then
-    echo "Available databases are:"
+    echo "Available databases stored in $(realpath $loc) are:"
     for db_ in "${available_databases[@]}"; do
       echo " - $db_"
     done
     return 0
   fi
 
-  if [ ! -f $HOME/.dbs/$1 ]; then
-    echo "No available db $1, choose from:"
+  if [ ! -f $loc/$1 ]; then
+    echo "$1 can't be found in $(realpath $loc), choose from:"
     for db_ in "${available_databases[@]}"; do
       echo " - $db_"
     done
     return 1
   fi
 
-  local password=""
-
   # shellcheck disable=SC1090
-  . $HOME/.dbs/$1
+  . $loc/$1
 
   shift
   if [[ "$1" == "-p" ]]; then
     shift
-    echo "-h ${host:?} -P ${port:?} -u ${username:?} --password=$password $* ${database:?}"
+    echo "-h ${host:?} -P ${port:?} -u ${username:-''} --password=${password:-''} $* ${database:?}"
     return 0
   else
     [[ $1 == "-d" ]] && cmd="mysql" && shift || cmd="mycli"
-    $cmd  -h "${host:?}" -P "${port:?}" -u "${username:?}" --password="$password" "$@" "${database:?}"
+    $cmd  -h "${host:?}" -P "${port:?}" -u "${username:-''}" --password="${password:-''}" "$@" "${database:?}"
   fi
 }
