@@ -203,17 +203,6 @@ function curlheader() {
   fi
 }
 
-function git-credit () {
-  git commit --amend --author "$1 <$2>" -C HEAD
-}
-
-function git-new () {
-  mkdir $1; cd $1 || exit 1
-  git init
-  touch README.md; git add README.md
-  git commit -m "Initial Commit"
-}
-
 # Show normally hidden system and dotfile types of files
 # in Mac OSX Finder
 function showhiddenfiles() {

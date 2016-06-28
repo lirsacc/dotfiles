@@ -25,6 +25,8 @@
   branches = branch -a
   remotes = remote -v
   fix = commit --amend --no-edit
+  new = !"mkdir $1; cd $1 || exit 1; git init; touch README.md .gitignore; git add . git commit -m 'Initial Commit'"
+  credit = !"git commit --amend --author $1 <$2> -C HEAD"
 
   # Credit an author on the latest commit
   credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
@@ -123,3 +125,7 @@
 
 [rebase]
   autosquash = true
+[filter "lfs"]
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
+  required = true
