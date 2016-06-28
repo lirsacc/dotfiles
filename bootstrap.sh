@@ -1,17 +1,53 @@
 #!/usr/bin/env bash
 
-# Usage
 # ==============================================================================
-
-usage="$(basename "$0") [-hfls] -- Bootstraping dotfiles\n
-  -h  help
-  -d Perform a dry run of the sync step
-  -f  force overwrite files in user's home directory
-  -l  use local repo only and do not update from git
-  -s  rsync only"
-
 # Setup
 # ==============================================================================
+
+current=$(basename "$0")
+
+usage="
+                                           .
+Your friendly dotfiles bootstraper bot  ~(0_0)~﻿
+
+$current [options]
+
+Options and arguments:
+
+  -h, --help          Display this help text
+  -d, --dry-run       Perform a dry run of the sync step
+  -f, --force         Force overwrite files in target directory
+  -l, --local         Use local repo only and do not update from git
+  -s, --no-install    Sync only and doesn't run the install scripts
+
+  --target            Use this location instead of \$HOME ($HOME), must be a directory
+  --install           Look for install scripts there instead of $(pwd)/install
+  --branch            Git branch to update from
+  "
+
+# Parameters
+# ------------------------------------------------------------------------------
+
+scripts="$(realpath ./install)"
+
+target="$HOME"
+
+directories=("projects")
+
+branch="master"
+
+rsync_exclude=(
+  ".git/"
+  "install"
+  "$scripts"
+  ".DS_Store"
+  "bootstrap.sh"
+  "README.md"
+  "LICENSE-MIT.txt"
+)
+
+# Read the options
+# ------------------------------------------------------------------------------
 
 OPTIND=1
 
@@ -20,14 +56,88 @@ pull=true
 sync_only=false
 dry_run=false
 
-scripts="install"
-directories=("projects")
+optspec=":hflsdc-:"
+OPTERR=0
 
-while getopts "hflsd?:" opt; do
-  case "$opt" in
-  h|\?)
-    echo -e "$usage" && echo && exit 0
-    ;;
+while getopts "${optspec}" opt; do
+  case "${opt}" in
+    h)
+      echo -e "$usage" && echo && exit 0
+      ;;
+    -)
+      case ${OPTARG} in
+        help)
+          echo -e "$usage" && echo && exit 0
+          ;;
+        force)
+          force=true
+          ;;
+        local)
+          pull=false
+          ;;
+        no-install)
+          sync_only=true
+          ;;
+        dry-run)
+          dry_run=true
+          ;;
+        target)
+          # shellcheck disable=2004
+          val="${!OPTIND}"; OPTIND=$(( OPTIND + 1 ))
+          if [[ -z "$val" ]]; then
+            echo "--target cannot be empty" && exit 1
+          fi
+          target=$(realpath "$val")
+          ;;
+        target=*)
+          val=${OPTARG#*=}
+          if [[ -z "$val" ]]; then
+            echo "--target cannot be empty" && exit 1
+          fi
+          target=$(realpath "$val")
+          ;;
+          install)
+            # shellcheck disable=2004
+            val="${!OPTIND}"; OPTIND=$(( OPTIND + 1 ))
+            if [[ -z "$val" ]]; then
+              echo "--install cannot be empty" && exit 1
+            fi
+            scripts=$(realpath "$val")
+            ;;
+          install=*)
+            val=${OPTARG#*=}
+            if [[ -z "$val" ]]; then
+              echo "--install cannot be empty" && exit 1
+            fi
+            opt=${OPTARG%=$val}
+            scripts=$(realpath "$val")
+            ;;
+          branch)
+            # shellcheck disable=2004
+            val="${!OPTIND}"; OPTIND=$(( OPTIND + 1 ))
+            if [[ -z "$val" ]]; then
+              echo "--branch cannot be empty" && exit 1
+            fi
+            branch="$val"
+            ;;
+          branch=*)
+            val=${OPTARG#*=}
+            if [[ -z "$val" ]]; then
+              echo "--branch cannot be empty" && exit 1
+            fi
+            opt=${OPTARG%=$val}
+            branch="$val"
+            ;;
+        *)
+          if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" != ":" ]; then
+            echo
+            echo "  Unknown option \`--${OPTARG}\`" >&2
+            echo -e "$usage"
+            exit 1
+          fi
+          ;;
+      esac;
+      ;;
   f)
     force=true
     ;;
@@ -40,111 +150,220 @@ while getopts "hflsd?:" opt; do
   d)
     dry_run=true
     ;;
+  *)
+    if [ "$OPTERR" != 1 ] || [ "${optspec:0:1}" = ":" ]; then
+      echo
+      echo "  Unknown option \`-${OPTARG}\`" >&2
+      echo -e "$usage"
+      exit 1
+    fi
+    ;;
   esac
 done
 
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 [ "$1" = "--" ] && shift
+unset val
 
-# Rsync the config files from git directory to home directory
-function _rsync() {
-  echo "rsync'ing files to your home directory..."
-    rsync \
-    --exclude ".git/" --exclude "./$scripts" --exclude ".DS_Store" \
-    --exclude "bootstrap.sh" --exclude "README.md" --exclude "LICENSE-MIT.txt" \
-    --exclude "install" -av --no-perms "$@" . ~
+# Source and define helpers
+# ------------------------------------------------------------------------------
+
+# shellcheck source=/dev/null
+source .colors.sh
+
+function _bot() {
+  clr_bold clr_green "    .     "
+  clr_bold clr_green " ~(0_0)~﻿  " -n; clr_bold "$@"
 }
 
-# Install homebrew
-function install_homebrew() {
-  echo "Installing homebrew..."
+function _bot_error() {
+  clr_bold clr_red "    .     "
+  clr_bold clr_red " ~(0_0)~﻿  " -n; clr_bold clr_red "$@"
+  echo
+}
+
+function _bot_exit() {
+  clr_bold clr_cyan "    .     "
+  clr_bold clr_cyan " ~(0_0)~﻿  " -n; clr_bold clr_cyan "Bot out!"
+  echo
+  _cleanup
+  exit 0
+}
+
+function _align() {
+  echo -n "        ﻿  "
+}
+
+function _rsync() {
+  rsync "${rsync_exclude[@]/#/--exclude=}" -a -t -p --no-perms "$@" . "$target"
+}
+
+function _install_homebrew() {
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 }
 
-function cleanup () {
-  unset _rsync install_homebrew force pull skip osx
-  rm -rf "${HOME:?}/$scripts"
+function _pretty_rsync_change() {
+  # Parse rsync `itemize` output
+  local start_ cmd_ mod_ file_
+  # local type_
+
+  start_="${1:0:1}"
+  # type_="${1:1:1}"
+  mod_="${1:2:7}"
+  file_="${1:10}"
+
+  # shellcheck disable=2076
+  if [[ ! "<>c" =~ "$start_" ]]; then
+    return 0
+  fi
+
+  case "$mod_" in
+    '+++++++')
+      cmd_="clr_cyan '?? ' -n"
+      ;;
+    '.st....'|'.s.....'|'..t....')
+      cmd_="clr_green ' M ' -n"
+      ;;
+  esac
+
+  cmd_="$cmd_;echo $file_"
+
+  _align; eval "$cmd_"
 }
 
-# Bootstrap dotfiles
+function check_changes() {
+  # Get file change for known files (into the dotfiles repo) from rsync
+  # and format them nicely
+  local changes
+  _bot "Checking for changed files against $target (this does not check for files deleted in the target)"
+  changes=$(_rsync -i --dry-run)
+  if [[ -z "${changes// }" ]]; then
+    _bot "No change detected"
+    _cleanup
+    exit 0
+  else
+    _bot "Changes detected:"
+    echo
+    (IFS='
+'
+for x in $changes; do _pretty_rsync_change "$x"; done)
+  fi
+}
+
+function _cleanup() {
+  unset _rsync _install_homebrew check_changes _pretty_rsync_change
+  unset _bot _align _bot_error _bot_exit
+  unset force pull dry_run sync_only
+  unset rsync_exclude scripts directories target
+}
+
 # ==============================================================================
+# Install process
+# ==============================================================================                                                                     ";
 
 echo
-echo "Running dotfiles bootstraping script"
-echo "------------------------------------------------------------------------"
-echo
+_bot "Starting bootstrap process in $(pwd)"
 
-# Update dotfiles from git repo
-if $pull; then
-  # shellcheck disable=SC2128
-  cd "$(dirname "${BASH_SOURCE}")" || exit 1
-  echo "Update from git"
-  git pull origin master
+if [[ ! -d $scripts ]]; then
+  _bot_error "Install scripts location $scripts is not a directory"
+  exit 1
+fi
+
+if [[ ! -d $target ]]; then
+  _bot_error "Target $target is not a directory"
+  exit 1
+fi
+
+if $pull; then # -- Update dotfiles from git repo
+  _bot "Updating from git"
+  # shellcheck disable=SC2128,2164
+  cd "$(dirname "${BASH_SOURCE[@]}")"
+  [[ $? == 1 ]] && _bot_error "Error moving directories" && exit 1
+  echo
+  git pull origin "$branch"
+  [[ $? == 1 ]] && _bot_error "Error running 'git pull origin master'" && exit 1
   echo
 fi
 
-# Create necessary directories
-for d in "${directories[@]}"; do
-  mkdir -p "$HOME/$d"
+if $dry_run; then  # -- Load and display (nice) diff
+  check_changes
+  _bot_exit
+fi
+
+# -- rsync the files to $HOME
+if $force; then
+    _bot "rsync'ing files to your target directory ($target)..."
+    echo
+    _rsync -v
+    [[ $? == 1 ]] && _bot_error "Error while rsync'ing yout files" && exit 1
+else
+    _bot "This may overwrite existing files in your target directory ($target). Are you sure? (y/n) " -n
+    read -rp "" -n 1
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+       _align
+       clr_bold "rsync'ing files to your target directory ($target)..."
+       echo
+       _rsync -v
+       [[ $? == 1 ]] && _bot_error "Error while rsync'ing yout files" && exit 1
+    fi
+fi
+
+if $sync_only; then  # -- exit early
+  _bot_exit
+fi
+
+echo
+_bot "Creating directories"
+echo
+for dir in "${directories[@]}"; do
+  _align; echo "- $target/$dir"
+  mkdir -p "$target/$dir"
 done
 
-if $dry_run; then
-  _rsync -u --dry-run
-  exit 0
-fi
-
-if $force; then
-    _rsync
-else
-    read -rp "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1
-    [[ $REPLY =~ ^[Yy]$ ]] && _rsync || echo
-fi
-
-# Exit early
-if $sync_only; then
-  cleanup
-  exit 0
-fi
-
-# Homebrew install
 if [[ -z $(which brew) ]]; then
   if $force; then
-    install_homebrew
+    _bot "Installing Homebrew"
+    echo
+    _install_homebrew
   else
-    read -rp "Do you want to install homebrew ? (y/n) " -n 1
-    [[ $REPLY =~ ^[Yy]$ ]] && install_homebrew || echo
+    _bot "Do you want to install Homebrew ? (y/n) " -n
+    read -rp "" -n 1
+    [[ $REPLY =~ ^[Yy]$ ]] && echo && _install_homebrew || echo
   fi
-# else
-#   if $force; then
-#     # shellcheck disable=1090,1091
-#     source ./.brewfile
-#     # shellcheck disable=1090,1091
-#     source ./instal
-#   else
-#     read -rp "Do you want to install homebrew recipes ? (y/n) " -n 1
-#     # shellcheck disable=1090,1091
-#     [[ $REPLY =~ ^[Yy]$ ]] && source .brewfile || echo
-#     read -rp "Do you want to install cask recipes ? (y/n) " -n 1
-#     # shellcheck disable=1090,1091
-#     [[ $REPLY =~ ^[Yy]$ ]] && source .caskfile || echo
-#   fi
+else
+  if $force; then
+    _bot "Updating Homebrew"
+    brew update
+  else
+    _bot "Homebrew is already installed, do you want to update it ? (y/n) " -n
+    read -rp "" -n 1
+    [[ $REPLY =~ ^[Yy]$ ]] && echo && brew update || echo
+  fi
 fi
 
-for file in ./$scripts/*; do
+_bot "Processing install scripts in '$scripts'"
+for file in $scripts/*; do
   if [[ ! -f $file ]]; then
     continue
   fi
-  filename=$(echo "$file" | cut -d / -f 3 | cut -d '.' -f 1)
+  filename=$(basename "$file")
 
   if $force; then
+    _align; echo "- Sourcing $filename"
     # shellcheck source=/dev/null
     . ./$file
   else
-    read -rp "Do you want to apply the $filename install script ? (y/n) " -n 1
-    # shellcheck source=/dev/null
-    [[ $REPLY =~ ^[Yy]$ ]] && . ./$file
+    echo
+    _align; echo -n "- Do you want to apply the $filename install script ? (y/n) "
+    read -rp "" -n 1
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      echo
+      # shellcheck source=/dev/null
+      . ./$file
+      [[ $? == 1 ]] && _bot_error "Error processing $file" && exit 1
+    fi
   fi
   echo
 done
 
-cleanup
+_bot_exit
