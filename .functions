@@ -48,7 +48,7 @@ function fs() {
   if [[ -n "$@" ]]; then
     du $arg -- "$@"
   else
-    du $arg .[^.]* *
+    du $arg ./.[^.]* ./*
   fi
 }
 
@@ -188,18 +188,18 @@ function tre() {
 
 # Spoof your mac adress on en0
 function spoof {
-    mac=`openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//'`
+    mac=$(openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
     echo "Changing en0 MAC to $mac"
-    sudo ifconfig en0 ether $mac
+    sudo ifconfig en0 ether "$mac"
 }
 
 function curlheader() {
   if [[ -z "$2" ]]; then
     echo "curl -k -s -D - $1 -o /dev/null"
-    curl -k -s -D - $1 -o /dev/null:
+    curl -k -s -D - "$1" -o /dev/null:
   else
     echo "curl -k -s -D - $2 -o /dev/null | grep $1:"
-    curl -k -s -D - $2 -o /dev/null | grep $1:
+    curl -k -s -D - "$2" -o /dev/null | grep "$1":
   fi
 }
 

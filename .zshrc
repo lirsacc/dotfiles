@@ -22,7 +22,7 @@ if ! zgen saved; then
   # zgen prezto command-not-found
   zgen prezto syntax-highlighting
   zgen prezto python
-  zgen prezto node
+  # zgen prezto node
   zgen prezto git
   # zgen prezto osx
   # zgen prezto homebrew
@@ -39,7 +39,8 @@ source ~/.aliases
 source ~/.exports
 source ~/.extra
 source ~/.functions
-source ~/.brew
+# source ~/.brew.sh
+# source ~/.colors.sh
 
 unsetopt CORRECT
 
