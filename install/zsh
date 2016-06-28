@@ -5,9 +5,9 @@ declare zsh_location
 [[ -f /usr/local/bin/zsh ]] && zsh_location="/usr/local/bin/zsh" || zsh_location="/bin/zsh"
 
 # Setup zsh as default shell
-read -p "Setup zsh as the default shell ? (y/n) " -n 1
+read -rp "Setup zsh as the default shell ? (y/n) " -n 1
 [[ $REPLY =~ ^[Yy]$ ]] && chsh -s $zsh_location || echo
 
-git clone git@github.com:tarjoilija/zgen.git $HOME/.zgen
+git clone git@github.com:tarjoilija/zgen.git "$HOME/.zgen"
 
 unset zsh_location

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ENV_DIR="$HOME/.pyenvs"
-mkdir -p $ENV_DIR
+mkdir -p "$ENV_DIR"
 
 pip install --upgrade setuptools
 pip install --upgrade pip

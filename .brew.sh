@@ -15,7 +15,12 @@ brew_install_or_upgrade() {
 brew_is_installed() {
   local name
   name="$(brew_expand_alias "$1")"
-  brew list -1 | grep -Fqx "$name"
+  res=$(brew ls --versions "$name")
+  if [[ -z "$res" ]]; then
+    return 1
+  else
+    return 0
+  fi
 }
 
 brew_is_upgradable() {
