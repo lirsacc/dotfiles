@@ -224,3 +224,21 @@ function hidehiddenfiles() {
 function fixperms(){
     find . \( -name "*.sh" -or -type d \) -exec chmod 755 {} \; && find . -type f ! -name "*.sh" -exec chmod 644 {} \;
 }
+
+# AWS helpers, thanks Lorenz Gruber (@bandinigo)
+function aws_mfa () {
+  # Use with aws_mfa arn profile_name
+  aws sts get-session-token --output text \
+  --serial-number "${1}" --token-code "${3}" | \
+  awk '/^CRED/ {print "region eu-central-1\naws_access_key_id " $2 "\naws_secret_access_key " $4 "\naws_session_token " $5}' | \
+  while read -r key value; do aws configure set "$key" "$value" \
+  --profile "${2}"; done
+}
+
+function aws_assume_role () {
+  # Use with aws_assume_role role_arn session_name profile_name
+  aws sts assume-role \
+    --role-arn "$1" --role-session-name="$2" --output text | \
+    awk '/^CRED/ {print "region eu-central-1\naws_access_key_id " $2 "\naws_secret_access_key " $4 "\naws_session_token " $5}' | \
+  while read -r key value; do aws configure set "$key" "$value" --profile "$3"; done
+}
