@@ -267,3 +267,12 @@ function aws_assume_role () {
     awk '/^CRED/ {print "region eu-central-1\naws_access_key_id " $2 "\naws_secret_access_key " $4 "\naws_session_token " $5}' | \
   while read -r key value; do aws configure set "$key" "$value" --profile "$3"; done
 }
+
+function create () {
+  if [ -f "$1" ]; then
+    # echo "$1 already exists -> touching"
+    touch "$1"
+  else
+    install -Dv /dev/null "$1"
+  fi
+}
