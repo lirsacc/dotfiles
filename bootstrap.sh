@@ -291,17 +291,16 @@ if $dry_run; then  # -- Load and display (nice) diff
 fi
 
 # -- rsync the files to $HOME
+_bot "rsync'ing files to your target directory ($target)..."
 if $force; then
-    _bot "rsync'ing files to your target directory ($target)..."
     echo
     _rsync -v
     [[ $? == 1 ]] && _bot_error "Error while rsync'ing yout files" && exit 1
 else
-    _bot "This may overwrite existing files in your target directory ($target). Are you sure? (y/n) " -n
+    _align
+    echo -n "This may overwrite existing files in your target directory ($target). Are you sure? (y/n) "
     read -rp "" -n 1
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-       _align
-       clr_bold "rsync'ing files to your target directory ($target)..."
        echo
        _rsync -v
        [[ $? == 1 ]] && _bot_error "Error while rsync'ing yout files" && exit 1
