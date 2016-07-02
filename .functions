@@ -231,17 +231,20 @@ function fixperms(){
 function gh() {
   giturl=$(git config --get remote.origin.url)
 
-  if [ "$giturl" == "" ]; then
+  if [[ "$giturl" == "" ]]; then
      echo "Not a git repository or no remote.origin.url set"
-     exit 1;
+     return 1;
   fi
 
-  if [[ ! "$giturl" == *"github"* ]]; then
+  if [[ "$giturl" == *"github"* ]]; then
+    giturl=${giturl/git\@github\.com\:/https://github.com/}
+  elif [[ "$giturl" == *"gitlab"* ]]; then
+    giturl=${giturl/git\@gitlab\.com\:/https://gitlab.com/}
+  else
     echo "Not a github repository"
-    exit 1;
+    return 1;
   fi
 
-  giturl=${giturl/git\@github\.com\:/https://github.com/}
   giturl=${giturl/\.git/\/tree/}
   branch="$(git symbolic-ref HEAD 2>/dev/null)" ||
   branch="(unnamed branch)"     # detached HEAD
