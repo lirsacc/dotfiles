@@ -5,7 +5,7 @@ export PATH="$HOME/bin:$PATH"
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{exports,aliases,functions,extra}; do
+for file in ~/.{bash_prompt,exports,aliases,functions,extra}; do
     # shellcheck source=/dev/null
     [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
@@ -33,7 +33,7 @@ done
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2 | tr ' ' '\n')" scp sftp ssh
 
 # If possible, add tab completion for many more commands
-# shellcheck source=/dev/null
+# shellcheck disable=1091
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 
 if [[ $(which brew) ]]; then
@@ -49,6 +49,8 @@ elif [ -f ~/.git-completion.bash ]; then
   source ~/.git-completion.bash
 fi
 
+# Load NVM
+export NVM_DIR="$HOME/.nvm"
 # shellcheck source=/dev/null
 [[ -f $NVM_DIR/nvm.sh ]] && source $NVM_DIR/nvm.sh
 # shellcheck source=/dev/null
