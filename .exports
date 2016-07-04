@@ -48,6 +48,3 @@ export NVM_DIR="$HOME/.nvm"
 export WORKON_HOME="$HOME/.pyenvs"
 export PROJECT_HOME="$WORKON_HOME"
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
-
-# shellcheck disable=1091
-source virtualenvwrapper.sh

@@ -21,7 +21,7 @@ if ! zgen saved; then
   zgen prezto history-substring-search
   # zgen prezto command-not-found
   zgen prezto syntax-highlighting
-  zgen prezto python
+  # zgen prezto python
   # zgen prezto node
   zgen prezto git
   # zgen prezto osx
@@ -39,6 +39,7 @@ source ~/.aliases
 source ~/.exports
 source ~/.extra
 source ~/.functions
+source ~/.shims.sh
 # source ~/.brew.sh
 # source ~/.colors.sh
 
