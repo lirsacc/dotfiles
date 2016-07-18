@@ -40,6 +40,7 @@ source ~/.exports
 source ~/.extra
 source ~/.functions
 source ~/.shims.sh
+source ~/.aws_helpers.sh
 # source ~/.brew.sh
 # source ~/.colors.sh
 
