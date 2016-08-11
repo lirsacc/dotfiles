@@ -15,6 +15,7 @@ declare recipes=(
   findutils
   # Install GNU `sed`, overwriting the built-in `sed`
   gnu-sed --default-names
+  gzip
   # Install Bash 4
   bash
   bash-completion
@@ -125,6 +126,7 @@ brew_tap homebrew/versions
 brew_tap homebrew/completions
 brew_tap homebrew/dupes
 brew_tap homebrew/binary
+brew_tap caskroom/versions
 
 brew_install_or_upgrade caskroom/cask/brew-cask
 
