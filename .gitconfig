@@ -24,7 +24,12 @@
   tags = tag -l
   branches = branch -a
   remotes = remote -v
+
+  # Commands for quickly saving current work state
   fix = commit --amend --no-edit
+  wip = !"git add . && git commit -m wip"
+  save = stash save -u
+
   new = !"mkdir $1; cd $1 || exit 1; git init; touch README.md .gitignore; git add . git commit -m 'Initial Commit'"
   credit = !"git commit --amend --author $1 <$2> -C HEAD"
 
