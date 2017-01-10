@@ -29,11 +29,8 @@ Options and arguments:
 # ------------------------------------------------------------------------------
 
 scripts="$(realpath ./install)"
-
 target="$HOME"
-
 directories=("projects")
-
 branch="master"
 
 rsync_exclude=(
@@ -203,10 +200,10 @@ function _install_homebrew() {
 }
 
 function _pretty_rsync_change() {
-  # Parse rsync `itemize` output
+  # Parse rsync `itemize` output in a `git status`-like manner
   local start_ cmd_ mod_ file_
-  # local type_
 
+  cmd_=""
   start_="${1:0:1}"
   # type_="${1:1:1}"
   mod_="${1:2:7}"
@@ -222,13 +219,13 @@ function _pretty_rsync_change() {
       cmd_="clr_cyan '?? ' -n"
       ;;
     '.st....'|'.s.....'|'..t....')
-      cmd_="clr_green ' M ' -n"
+      # Rsync change state is qualified by gitt diff status as we only
+      # care about content.
+      git diff -s "$target/$file_" "$(pwd)/$file_" || cmd_="clr_green ' M ' -n"
       ;;
   esac
 
-  cmd_="$cmd_;echo $file_"
-
-  _align; eval "$cmd_"
+  [[ ! -z "${cmd_}" ]] && eval "_align;$cmd_;echo $file_"
 }
 
 function check_changes() {
