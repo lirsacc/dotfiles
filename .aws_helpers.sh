@@ -25,7 +25,7 @@ function aws-assume-role () {
   aws-unset-credentials
 
   aws sts assume-role \
-    --role-arn "$1" --role-session-name="$2-session" --output text --region "$3" | \
+    --role-arn "$1" --role-session-name="$2-session" --output text --region "$3" --profile "${4:-default}" | \
     awk '/^CRED/ {print "aws_access_key_id " $2 "\naws_secret_access_key " $4 "\naws_session_token " $5}' | \
 
   while read -r key value; do aws configure set "$key" "$value" --profile "$2"; done
