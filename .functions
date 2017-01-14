@@ -261,3 +261,12 @@ function create () {
     install -Dv /dev/null "$1"
   fi
 }
+
+function nvm-upgrade() {
+  { (
+    cd "$NVM_DIR" || exit 1
+    git fetch origin
+    # shellcheck disable=2046
+    git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" origin`
+  ) }
+}

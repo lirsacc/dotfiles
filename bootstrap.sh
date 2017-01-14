@@ -337,6 +337,9 @@ else
   fi
 fi
 
+# shellcheck source=/dev/null
+source "$target/.exports"
+
 _bot "Processing install scripts in '$scripts'"
 for file in $scripts/*; do
   if [[ ! -f $file ]]; then
