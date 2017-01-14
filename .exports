@@ -28,10 +28,17 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
 if [[ $(which brew) ]]; then
-  # Link Homebrew casks in `/Applications` rather than `~/Applications`
-  export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+  export HOMEBREW_NO_AUTO_UPDATE=1
+  export HOMEBREW_BUILD_FROM_SOURCE=1
+  # export HOMEBREW_NO_EMOJI=1
+  export HOMEBREW_NO_ANALYTICS=1
   export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-  export MANPATH="$/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+fi
+
+if [[ $(which cask) ]]; then
+# Link Homebrew casks in `/Applications` rather than `~/Applications`
+  export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 fi
 
 export GOPATH="$HOME/.go"
@@ -44,5 +51,3 @@ export NVM_DIR="$HOME/.nvm"
 export WORKON_HOME="$HOME/.pyenvs"
 export PROJECT_HOME="$WORKON_HOME"
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
-
-export PATH="$PATH:$HOME/.cargo/bin"

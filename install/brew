@@ -29,45 +29,33 @@ declare recipes=(
   homebrew/dupes/screen
   homebrew/dupes/openssh
 
-  # Install other useful binaries
   htop
   zsh
-  # ack
   git
-  # hub
-  # mercurial
+  mercurial
   imagemagick --with-webp
   pigz
   rename
   tree
   webkit2png
   zopfli
-  # ngrep
+  ngrep
   hr
   ag
-  sift
   ctags
-  # entr
   homebrew/binary/ngrok2
   gibo
   tmux
-  # pandoc
-  # pandoc-citeproc
   shellcheck
   httpie
   pgcli
   mycli
-  docker
-  docker-machine
-  docker-compose
   dark-mode
   jq
   nmap
-  watch
 
   # Shell completions
   vagrant-completion
-  docker-completion
 
   # Languages
   python
@@ -80,12 +68,11 @@ declare recipes=(
 
   keybase
   awscli
+
+  libressl
 )
 
 declare applications=(
-  # android-file-transfer
-  # bibdesk
-  # mactex
   appcleaner
   atom
   dropbox
@@ -98,7 +85,6 @@ declare applications=(
   onyx
   quicklook-csv
   quicklook-json
-  slack
   spectacle
   spotify
   the-unarchiver
@@ -110,9 +96,6 @@ declare applications=(
 )
 
 declare fonts=(
-  font-fira-code
-  font-fira-mono
-  font-fira-sans
   font-inconsolata
   font-input
   font-open-sans
