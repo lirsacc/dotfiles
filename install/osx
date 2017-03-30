@@ -9,16 +9,16 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Set computer name (as done via System Preferences → Sharing)
 # ------------------------------------------------------------------------------
-# echo ""
-# echo "Setting your computer name (as done via System Preferences & Sharing)"
-# read -r -p "What would you like it to be (leave blank if don't want to set it) " COMPUTER_NAME
-#
-# if [ -z "$COMPUTER_NAME" ]; then
-#   sudo scutil --set ComputerName $COMPUTER_NAME
-#   sudo scutil --set HostName $COMPUTER_NAME
-#   sudo scutil --set LocalHostName $COMPUTER_NAME
-#   sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $COMPUTER_NAME
-# fi
+echo ""
+echo "Setting your computer name (as done via System Preferences & Sharing)"
+read -r -p "What would you like it to be (leave blank if don't want to set it) " COMPUTER_NAME
+
+if [ -z "$COMPUTER_NAME" ]; then
+  sudo scutil --set ComputerName "$COMPUTER_NAME"
+  sudo scutil --set HostName "$COMPUTER_NAME"
+  sudo scutil --set LocalHostName "$COMPUTER_NAME"
+  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$COMPUTER_NAME"
+fi
 
 # # Get passwordless sudo
 # # Taken from https://github.com/atomantic/dotfiles
