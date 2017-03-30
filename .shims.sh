@@ -4,11 +4,20 @@
 # I know what I am doing.
 
 lazy_source () {
-  eval "$1 () { echo 'Sourcing $2' && source $2 && $1 \$@ }"
+  eval "$1 () { unset -f $1; $2; $1 \$@ }"
 }
 
-lazy_source mkvirtualenv "virtualenvwrapper.sh"
-lazy_source rmvirtualenv "virtualenvwrapper.sh"
-lazy_source workon "virtualenvwrapper.sh"
+lazy_source mkvirtualenv "source virtualenvwrapper.sh"
+lazy_source rmvirtualenv "source virtualenvwrapper.sh"
+lazy_source workon "source virtualenvwrapper.sh"
 
-lazy_source nvm "${NVM_DIR}/nvm.sh"
+function source_nvm() {
+  unset -f nvm node yarn npm > /dev/null 2>&1
+  # shellcheck disable=SC1090
+  [ -s "${NVM_DIR}"/nvm.sh ] && . "${NVM_DIR}/nvm.sh"
+}
+
+lazy_source nvm "source nvm"
+lazy_source node "source_nvm"
+lazy_source npm "source_nvm"
+lazy_source yarn "source_nvm"
