@@ -32,8 +32,8 @@ Plug 'elixir-lang/vim-elixir'
 Plug 'mxw/vim-jsx'
 Plug 'itchyny/lightline.vim'
 Plug 'flazz/vim-colorschemes'
+Plug 'liuchengxu/space-vim-dark'
 
 " Add plugins to &runtimepath
 call plug#end()
 filetype plugin indent on
-
