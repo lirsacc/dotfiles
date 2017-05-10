@@ -14,7 +14,7 @@ declare recipes=(
   # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
   findutils
   # Install GNU `sed`, overwriting the built-in `sed`
-  gnu-sed --default-names
+  gnu-sed --with-default-names
   gzip
   # Install Bash 4
   bash
@@ -54,16 +54,13 @@ declare recipes=(
   jq
   nmap
 
-  # Shell completions
-  vagrant-completion
-
   # Languages
   python
   python3
-  pyenv
+  # pyenv
   go
   elixir
-  rust
+  # rust
   elm
 
   keybase
@@ -74,7 +71,7 @@ declare recipes=(
 
 declare applications=(
   appcleaner
-  atom
+  # atom
   dropbox
   flux
   imageoptim
@@ -89,7 +86,7 @@ declare applications=(
   spotify
   the-unarchiver
   transmission
-  vagrant
+  # vagrant
   virtualbox
   vlc
   xquartz
