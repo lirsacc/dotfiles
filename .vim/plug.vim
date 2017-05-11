@@ -21,7 +21,6 @@ Plug 'mattreduce/vim-mix'
 Plug 'leshill/vim-json'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
-Plug 'indenthtml.vim'
 Plug 'tpope/vim-markdown'
 Plug 'groenewege/vim-less'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --tern-completer --gocode-completer' }
