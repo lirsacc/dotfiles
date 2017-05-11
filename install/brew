@@ -7,6 +7,8 @@
 source "$HOME/.brew.sh"
 
 declare recipes=(
+  gpg
+
   # Install GNU core utilities (those that come with OS X are outdated)
   coreutils
   # Install some other useful utilities like `sponge`
@@ -24,12 +26,14 @@ declare recipes=(
   wget --with-iri
 
   # Install more recent versions of some OS X tools
-  vim --override-system-vi --with-lua
+  vim --with-override-system-vi --with-lua
   homebrew/dupes/grep
   homebrew/dupes/screen
   homebrew/dupes/openssh
 
   htop
+  ack
+  jp2a
   zsh
   git
   mercurial
@@ -43,7 +47,6 @@ declare recipes=(
   hr
   ag
   ctags
-  homebrew/binary/ngrok2
   gibo
   tmux
   shellcheck
@@ -53,14 +56,15 @@ declare recipes=(
   dark-mode
   jq
   nmap
+  nano
 
-  # Languages
+  # postgresql
+  # mysql
+
   python
   python3
-  # pyenv
   go
   elixir
-  # rust
   elm
 
   keybase
@@ -86,7 +90,6 @@ declare applications=(
   spotify
   the-unarchiver
   transmission
-  # vagrant
   virtualbox
   vlc
   xquartz

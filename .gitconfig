@@ -123,6 +123,7 @@
 [diff]
   # Detect copies as well as renames
   renames = copies
+  indentHeuristic = on
 
 [diff "bin"]
   # Use `hexdump` to diff binary files

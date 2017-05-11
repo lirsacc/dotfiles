@@ -45,7 +45,7 @@ function fs() {
   else
     local arg=-sh
   fi
-  if [[ -n "$@" ]]; then
+  if [[ -n "$*" ]]; then
     du $arg -- "$@"
   else
     du $arg ./.[^.]* ./*
@@ -53,8 +53,7 @@ function fs() {
 }
 
 # Use Git’s colored diff when available
-hash git &>/dev/null
-if [ $? -eq 0 ]; then
+if hash git &>/dev/null; then
   function diff() {
     git diff --no-index --color-words "$@"
   }
@@ -193,16 +192,6 @@ function spoof {
     sudo ifconfig en0 ether "$mac"
 }
 
-function curlheader() {
-  if [[ -z "$2" ]]; then
-    echo "curl -k -s -D - $1 -o /dev/null"
-    curl -k -s -D - "$1" -o /dev/null:
-  else
-    echo "curl -k -s -D - $2 -o /dev/null | grep $1:"
-    curl -k -s -D - "$2" -o /dev/null | grep "$1":
-  fi
-}
-
 # Show normally hidden system and dotfile types of files
 # in Mac OSX Finder
 function showhiddenfiles() {
@@ -273,4 +262,16 @@ function nvm-upgrade() {
 
 function remove-known-host() {
   sed -i "/$1/d" "$HOME/.ssh/known_hosts"
+}
+
+function online-check() {
+  # Stolen and adapted (removed cron job, use as a command) from:
+  # https://github.com/nicksp/dotfiles/
+  local offline
+  offline=$(dig 8.8.8.8 +time=1 +short google.com A | grep -c "no servers could be reached")
+  if [[ "$offline" == "0" ]]; then
+    return 0
+  else
+    return 1
+  fi
 }

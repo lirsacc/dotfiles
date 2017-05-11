@@ -8,4 +8,7 @@ Use `./bootstrap.sh` from the repository to apply configuration.
 
 ## Overview
 
-## Extensions
+## TODO
+
+- [ ] Improve bootstrap `--dry-run`
+- [ ] Integrate atom config / installed plugins
