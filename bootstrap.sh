@@ -28,7 +28,7 @@ Options and arguments:
 # Parameters
 # ------------------------------------------------------------------------------
 
-scripts="$(realpath ./install)"
+scripts="$(realpath ./"${INSTALL_SCRIPTS:-install}")"
 target="$HOME"
 directories=("projects")
 branch="master"
@@ -216,12 +216,12 @@ function _pretty_rsync_change() {
 
   case "$mod_" in
     '+++++++')
-      cmd_="clr_cyan '?? ' -n"
+      cmd_="clr_red 'MISSING ' -n"
       ;;
     '.st....'|'.s.....'|'..t....')
       # Rsync change state is qualified by gitt diff status as we only
       # care about content.
-      git diff -s "$target/$file_" "$(pwd)/$file_" || cmd_="clr_green ' M ' -n"
+      git diff -s "$target/$file_" "$(pwd)/$file_" || cmd_="clr_blue 'UPDATED ' -n"
       ;;
   esac
 
@@ -232,7 +232,7 @@ function check_changes() {
   # Get file change for known files (into the dotfiles repo) from rsync
   # and format them nicely
   local changes
-  _bot "Checking for changed files against $target (this does not check for files deleted in the target)"
+  _bot "Checking for changed files against $target (this does not check for files deleted in the repo but not in the target)"
   changes=$(_rsync -i --dry-run)
   if [[ -z "${changes// }" ]]; then
     _bot "No change detected"
@@ -259,7 +259,7 @@ function _cleanup() {
 # ==============================================================================                                                                     ";
 
 echo
-_bot "Starting bootstrap process in $(pwd)"
+_bot "Starting bootstrap process in $(pwd) against $target"
 
 if [[ ! -d $scripts ]]; then
   _bot_error "Install scripts location $scripts is not a directory"
