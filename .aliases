@@ -130,18 +130,16 @@ alias npis="npm install --save"
 
 # Docker
 alias dk="docker"
-alias dkm="docker-machine"
-alias dki="docker-init"
 alias dke="docker exec"
 alias dkr="docker run"
 alias dkls="docker ps"
+alias remove-docker-orphans="docker rmi -f $(docker images -f dangling=true -q)"
 
 alias reload='. $HOME/.zshrc'
 
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
 
-alias npm-reset='rm -rf ./node_modules && npm install'
 
 alias avadakedavra='killall -9'
 

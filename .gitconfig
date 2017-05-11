@@ -29,7 +29,7 @@
 
   # Commands for quickly saving current work state
   fix = commit --amend --no-edit
-  wip = !"git add . && git commit -m wip"
+  wip = !"git add . --all -U && git commit -m wip"
   save = stash save -u
 
   new = !"mkdir $1; cd $1 || exit 1; git init; touch README.md .gitignore; git add . git commit -m 'Initial Commit'"
@@ -45,8 +45,8 @@
   rb = rebase
 
   fp = fetch --prune
+  prune = fetch --prune
   pp = pull --prune
-  aa = add --all
 
 [apply]
   # Detect whitespace errors when applying a patch
@@ -88,6 +88,7 @@
 [merge]
   # Include summaries of merged commits in newly created merge commit messages
   log = true
+  conflictstyle = diff3
 
 # URL shorthands
 [url "git@github.com:"]
@@ -109,6 +110,7 @@
 
 [commit]
   template=~/.gitcommit
+
 
 [advice]
     statusHints = false

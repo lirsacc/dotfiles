@@ -2,6 +2,7 @@ export PROJECTS="$HOME/projects"
 
 # Make vim the default editor
 export EDITOR="vim"
+export VISUAL_EDITOR="atom"
 
 # Larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=32768

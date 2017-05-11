@@ -1,6 +1,0 @@
-#compdef docker-init
-
-local -a running
-running=( $(docker-machine ls | grep Running | awk '{ print $1 }') )
-_alternative "docker:running machines:($running)"
-
