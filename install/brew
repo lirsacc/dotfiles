@@ -7,129 +7,131 @@
 source "$HOME/.brew.sh"
 
 declare recipes=(
-  gpg
+  'gpg'
 
   # Install GNU core utilities (those that come with OS X are outdated)
-  coreutils
+  'coreutils'
   # Install some other useful utilities like `sponge`
-  moreutils
+  'moreutils'
   # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
-  findutils
+  'findutils'
   # Install GNU `sed`, overwriting the built-in `sed`
-  gnu-sed --with-default-names
-  gzip
+  'gnu-sed --with-default-names'
+  'gzip'
   # Install Bash 4
-  bash
-  bash-completion
+  'bash'
+  'bash-completion'
 
   # Install wget with IRI support
-  wget --with-iri
+  'wget --with-iri'
 
   # Install more recent versions of some OS X tools
-  vim --with-override-system-vi --with-lua
-  homebrew/dupes/grep
-  homebrew/dupes/screen
-  homebrew/dupes/openssh
+  'vim --with-override-system-vi --with-lua'
+  'grep --with-default-names'
+  'screen'
+  'openssh'
 
-  htop
-  ack
-  jp2a
-  zsh
-  git
-  mercurial
-  imagemagick --with-webp
-  pigz
-  rename
-  tree
-  webkit2png
-  zopfli
-  ngrep
-  hr
-  ag
-  ctags
-  gibo
-  tmux
-  shellcheck
-  httpie
-  pgcli
-  mycli
-  dark-mode
-  jq
-  nmap
-  nano
+  'htop'
+  'ack'
+  'jp2a'
+  'zsh'
+  'git'
+  'mercurial'
+  'imagemagick --with-webp'
+  'pigz'
+  'rename'
+  'tree'
+  'webkit2png'
+  'zopfli'
+  'ngrep'
+  'hr'
+  'ag'
+  'ctags'
+  'gibo'
+  'tmux'
+  'shellcheck'
+  'httpie'
+  'pgcli'
+  'mycli'
+  'dark-mode'
+  'jq'
+  'nmap'
+  'nano'
 
-  # postgresql
-  # mysql
+  # 'postgresql'
+  # 'mysql'
 
-  python
-  python3
-  go
-  elixir
-  elm
+  'python'
+  'python3'
+  'go'
+  'elixir'
+  'elm'
 
-  keybase
-  awscli
+  'awscli'
 
-  libressl
+  'libressl'
 )
 
 declare applications=(
-  appcleaner
-  # atom
-  dropbox
-  flux
-  imageoptim
-  iterm2
-  java
-  licecap
-  monolingual
-  onyx
-  quicklook-csv
-  quicklook-json
-  spectacle
-  spotify
-  the-unarchiver
-  transmission
-  virtualbox
-  vlc
-  xquartz
+  'appcleaner'
+  # 'atom'
+  'dropbox'
+  'flux'
+  'imageoptim'
+  'iterm2'
+  'java'
+  'licecap'
+  'monolingual'
+  'onyx'
+  'quicklook-csv'
+  'quicklook-json'
+  'spectacle'
+  'spotify'
+  'the-unarchiver'
+  'transmission'
+  'virtualbox'
+  'vlc'
+  'xquartz'
 )
 
 declare fonts=(
-  font-inconsolata
-  font-input
-  font-open-sans
-  font-roboto
-  font-source-code-pro
-  font-source-sans-pro
+  'font-inconsolata'
+  'font-input'
+  'font-open-sans'
+  'font-roboto'
+  'font-source-code-pro'
+  'font-source-sans-pro'
 )
 
-brew_tap caskroom/cask
-brew_tap homebrew/versions
-brew_tap homebrew/completions
-brew_tap homebrew/dupes
-brew_tap homebrew/binary
-brew_tap caskroom/versions
 
-brew_install_or_upgrade caskroom/cask/brew-cask
+brew tap caskroom/cask
+brew-tap caskroom/fonts
 
 brew doctor
 
 # Make sure we’re using the latest Homebrew
 brew update
+
 # Upgrade any already-installed formulae
-brew upgrade --all
+brew upgrade
 
 for recipe in "${recipes[@]}"; do
-  brew_install_or_upgrade "$recipe"
+  if [ ! -z "$recipe" ]; then
+    # shellcheck disable=SC2086
+    brew-install-or-upgrade $recipe
+  fi
 done
 
 for app in "${applications[@]}"; do
-  brew cask install --appdir="/Applications" "$app"
+  if [ ! -z "$app" ]; then
+    brew cask install --appdir="/Applications" "$app"
+  fi
 done
 
 for font in "${fonts[@]}"; do
-  brew cask install "$font"
+  if [ ! -z "$font" ]; then
+    brew cask install "$font"
+  fi
 done
 
 # Cleanup stage

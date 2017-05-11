@@ -2,9 +2,9 @@
 
 # Useful brew shortcuts taken from https://github.com/thoughtbot/laptop
 
-brew_install_or_upgrade() {
-  if brew_is_installed "$1"; then
-    if brew_is_upgradable "$1"; then
+brew-install-or-upgrade() {
+  if brew-is-installed "$1"; then
+    if brew-is-upgradable "$1"; then
       brew upgrade "$@"
     fi
   else
@@ -12,9 +12,9 @@ brew_install_or_upgrade() {
   fi
 }
 
-brew_is_installed() {
+brew-is-installed() {
   local name
-  name="$(brew_expand_alias "$1")"
+  name="$(brew-expand-alias "$1")"
   res=$(brew ls --versions "$name")
   if [[ -z "$res" ]]; then
     return 1
@@ -23,31 +23,16 @@ brew_is_installed() {
   fi
 }
 
-brew_is_upgradable() {
+brew-is-upgradable() {
   local name
-  name="$(brew_expand_alias "$1")"
+  name="$(brew-expand-alias "$1")"
   ! brew outdated --quiet "$name" >/dev/null
 }
 
-brew_tap() {
+brew-tap() {
   brew tap "$1" --repair 2> /dev/null
 }
 
-brew_expand_alias() {
+brew-expand-alias() {
   brew info "$1" 2>/dev/null | head -1 | awk '{gsub(/.*\//, ""); gsub(/:/, ""); print $1}'
-}
-
-brew_launchctl_restart() {
-  local name
-  name="$(brew_expand_alias "$1")"
-  local domain="homebrew.mxcl.$name"
-  local plist="$domain.plist"
-
-  mkdir -p "$HOME/Library/LaunchAgents"
-  ln -sfv "/usr/local/opt/$name/$plist" "$HOME/Library/LaunchAgents"
-
-  if launchctl list | grep -Fq "$domain"; then
-    launchctl unload "$HOME/Library/LaunchAgents/$plist" >/dev/null
-  fi
-  launchctl load "$HOME/Library/LaunchAgents/$plist" >/dev/null
 }
