@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+rustup_url=https://static.rust-lang.org/rustup/dist/x86_64-apple-darwin/rustup-init
+curl $rustup_url -sSf | sh -s -- -y --no-modify-path -v
