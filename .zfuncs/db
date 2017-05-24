@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 function db () {
+  #
   # Start `mysql` or `mycli` from a known config file.
   # Store config files in `$HOME/.dbs` or `$DATABASE_STORE`,
   # they should be source-able exposing the following variables:
@@ -10,43 +11,70 @@ function db () {
   #   `username`
   #   `password`
   #   `database`
+  #   `driver`
   #
   # `password` and `username` can be empty or missing.
-
+  #
+  # To protect the files, use chown / chmod to your own user.
+  #
   # Flags:
-  # `-d`: will switch from `mycli` to `mysql`
-  # `-p`: just prints the connection string
-  # `-l`: list all existing databses
+  # `-d`: will switch from `mycli` to `mysql` (only for mysql)
+  # `-p`: just prints the connection string (only for mysql, useful for mysqldump and such)
+  # `-l`: list all existing databases
 
   local loc="${DATABASE_STORE:-$HOME/.dbs}"
   local available_databases=($(ls $loc))
+  local driver host port databse username password
+
+  function _list() {
+    for db_ in "${available_databases[@]}"; do
+      unset driver host port databse username password
+      . $loc/$db_
+      printf " %-7s %s\n" "[${driver:-mysql}]" "$db_"
+    done
+  }
 
   if [[ -z "$1" || "$1" == "-l" ]]; then
-    echo "Available databases stored in $(realpath $loc) are:"
-    for db_ in "${available_databases[@]}"; do
-      echo " - $db_"
-    done
+    echo
+    echo "Available databases stored in "$(realpath $loc)":"
+    echo
+    _list
+    echo
     return 0
   fi
 
-  if [ ! -f $loc/$1 ]; then
-    echo "$1 can't be found in $(realpath $loc), choose from:"
-    for db_ in "${available_databases[@]}"; do
-      echo " - $db_"
-    done
+  db_file="$1"
+  shift
+
+  if [ ! -f "$loc/$db_file" ]; then
+    echo
+    echo "Database $1 can't be found in "$(realpath $loc)"."
+    echo "Please choose from:"
+    echo
+    _list
+    echo
     return 1
   fi
 
+  unset driver host port databse username password
   # shellcheck disable=SC1090
-  . $loc/$1
+  . $loc/$db_file
 
-  shift
-  if [[ "$1" == "-p" ]]; then
-    shift
-    echo "-h ${host:?} -P ${port:?} -u ${username:-''} --password=${password:-''} $* ${database:?}"
-    return 0
+  if [ "${driver:-mysql}" = "mysql" ]; then
+    if [[ "$1" == "-p" ]]; then
+      echo "-h ${host:?} -P ${port:?} -u ${username:-''} --password=${password:-''} $* ${database:?}"
+      return 0
+    else
+      [[ $1 == "-d" ]] && cmd="mysql" || cmd="mycli"
+      $cmd  -h "${host:?}" -P "${port:?}" -u "${username:-''}" --password="${password:-''}" "${database:?}"
+    fi
+  elif [ "${driver:-mysql}" = "pg" ]; then
+    # See https://www.postgresql.org/docs/current/static/libpq-envars.html
+    # Normally the env variables should not be visible from the outside.
+    # [TODO] Could that work with nmysql / mycli rather than build
+    # a connection string.
+    PGPASSWORD="${password:-}" PGUSER="${username:-}" PGPORT="${port:?}" PGDATABASE="${database:-}" PGHOST="${host:?}" psql
   else
-    [[ $1 == "-d" ]] && cmd="mysql" && shift || cmd="mycli"
-    $cmd  -h "${host:?}" -P "${port:?}" -u "${username:-''}" --password="${password:-''}" "$@" "${database:?}"
+    echo "Unknown driver ${driver} for ${db_file}. Supports (mysql or pg)."
   fi
 }
