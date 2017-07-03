@@ -16,23 +16,36 @@ function db () {
   # `password` and `username` can be empty or missing.
   #
   # To protect the files, use chown / chmod to your own user.
-  #
-  # Flags:
-  # `-d`: will switch from `mycli` to `mysql` (only for mysql)
-  # `-p`: just prints the connection string (only for mysql, useful for mysqldump and such)
-  # `-l`: list all existing databases
 
   local loc="${DATABASE_STORE:-$HOME/.dbs}"
-  local available_databases=($(ls $loc))
   local driver host port databse username password
 
   function _list() {
-    for db_ in "${available_databases[@]}"; do
+    for db_ in ${loc}/*; do
       unset driver host port databse username password
-      . $loc/$db_
-      printf " %-7s %s\n" "[${driver:-mysql}]" "$db_"
+      . $db_
+      printf " %7s - %s\n" "${driver:-mysql}" "$(basename $db_)"
     done
   }
+
+  function _help() {
+    echo
+    echo "Usage: db [CONNECTION-FILE] [OPTIONS]"
+    echo
+    echo "Options:"
+    printf "   %10s   Show this help.\n" "-h, --help"
+    printf "   %10s   List all available connection files.\n" "-l"
+    echo
+    printf "   %10s   (mysql driver) Print connection string.\n" "-p"
+    printf "   %10s   Useful for tools like 'mysqldump'.\n" ""
+    echo
+    printf "   %10s   (pg driver) Specify command to run. Defaults to 'pgsql'.\n" "--cmd"
+  }
+
+  if [[ -z "$1" || "$1" == "-h" || "$1" == "--help" ]]; then
+    _help
+    return 0
+  fi
 
   if [[ -z "$1" || "$1" == "-l" ]]; then
     echo
@@ -62,10 +75,11 @@ function db () {
 
   if [ "${driver:-mysql}" = "mysql" ]; then
     if [[ "$1" == "-p" ]]; then
+      shift
       echo "-h ${host:?} -P ${port:?} -u ${username:-''} --password=${password:-''} $* ${database:?}"
       return 0
     else
-      [[ $1 == "-d" ]] && cmd="mysql" || cmd="mycli"
+      [[ $1 == "-d" ]] && cmd="mysql" && shift || cmd="mycli"
       $cmd  -h "${host:?}" -P "${port:?}" -u "${username:-''}" --password="${password:-''}" "${database:?}"
     fi
   elif [ "${driver:-mysql}" = "pg" ]; then
@@ -73,7 +87,17 @@ function db () {
     # Normally the env variables should not be visible from the outside.
     # [TODO] Could that work with nmysql / mycli rather than build
     # a connection string.
-    PGPASSWORD="${password:-}" PGUSER="${username:-}" PGPORT="${port:?}" PGDATABASE="${database:-}" PGHOST="${host:?}" psql
+    if [[ "$1" == "--cmd" ]]; then
+      shift
+      cmd="$1"
+      shift
+    elif [[ ! -z "$1" ]]; then
+      echo "Unrecognized option $1 for driver ${driver}."
+      return 1
+    else
+      cmd="psql"
+    fi
+    PGPASSWORD="${password:-}" PGUSER="${username:-}" PGPORT="${port:?}" PGDATABASE="${database:-}" PGHOST="${host:?}" "$cmd" "$@"
   else
     echo "Unknown driver ${driver} for ${db_file}. Supports (mysql or pg)."
   fi
