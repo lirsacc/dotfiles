@@ -135,7 +135,8 @@
 
 [help]
   # Automatically correct and execute mistyped commands
-  autocorrect = 1
+  # autocorrect = 1
+  autocorrect = 0
 
 [rebase]
   autosquash = true
