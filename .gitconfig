@@ -28,6 +28,9 @@
   branches = branch -a
   remotes = remote -v
 
+  stats = "shortlog -sn"
+	recent = !"git for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'"
+
   # Commands for quickly saving current work state
   fix = commit --amend --no-edit
   wip = !"git add . --all -U && git commit -m wip"
