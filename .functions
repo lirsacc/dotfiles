@@ -275,3 +275,7 @@ function online-check() {
     return 1
   fi
 }
+
+function line {
+  head -n$2 < $1 | tail -n1
+}
