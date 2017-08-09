@@ -276,6 +276,10 @@ function online-check() {
   fi
 }
 
-function line {
-  head -n$2 < $1 | tail -n1
+function line() {
+  local _hc
+  local _tc
+  _hc="${2-${1?missing line number}}"
+  [[ ! -z "$2" ]] && _tc=$(($2 - $1 + 1)) || _tc=1
+  head -n"${_hc}" <&0 | tail -n"${_tc}"
 }
