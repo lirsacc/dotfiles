@@ -4,6 +4,7 @@
 [github]
   user = lirsacc
 [alias]
+  create = !"git init && git commit --allow-empty -m init"
   # View abbreviated SHA, description, and history graph of the latest 20 commits
   l = "log --graph --pretty=format:'%C(yellow)%h%Creset %C(red)%d %C(cyan)<%an>%Creset %s %Creset%Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
   # View the current working tree status using the short format
