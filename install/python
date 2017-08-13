@@ -3,11 +3,19 @@
 ENV_DIR="$HOME/.pyenvs"
 mkdir -p "$ENV_DIR"
 
-pip install --upgrade setuptools
-pip install --upgrade pip
-pip install --upgrade virtualenv
-pip install --upgrade virtualenvwrapper
+declare both=(
+  setuptools
+  pip
+  'ipython[all]'
+  flake8
+  pylint
+  bpython
+)
 
-pip install --upgrade "ipython[all]"
-pip install --upgrade bpython
-pip install --upgrade flake8
+declare python2=(
+  virtualenv
+  virtualenvwrapper
+)
+
+pip2 install -U "${both[@]}" "${python2[@]}"
+pip3 install -U "${both[@]}"

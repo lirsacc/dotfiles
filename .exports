@@ -50,6 +50,7 @@ export PATH="$PATH:$HOME/.cargo/bin"
 export NVM_DIR="$HOME/.nvm"
 export PATH="$HOME/.yarn/bin:$PATH"
 
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export WORKON_HOME="$HOME/.pyenvs"
 export PROJECT_HOME="$WORKON_HOME"
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
