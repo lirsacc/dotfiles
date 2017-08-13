@@ -41,6 +41,7 @@ rsync_exclude=(
   "bootstrap.sh"
   "README.md"
   "LICENSE-MIT.txt"
+  ".gitkeep"
 )
 
 # Read the options
