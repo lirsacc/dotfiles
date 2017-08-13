@@ -1,13 +1,13 @@
 #!/usr/bin/env zsh
 
+# uncomment to profile prompt startup with zprof
+# zmodload zsh/zprof
+
 fpath=(~/.zfuncs "${fpath[@]}")
 typeset -U fpath
 
 autoload -Uz ~/.zfuncs/*(:t)
 autoload -Uz compinit
-# compinit
-
-bindkey \^U backward-kill-line
 
 source "${HOME}/.zgen/zgen.zsh"
 
@@ -45,7 +45,7 @@ fi
 source "${HOME}/.aliases"
 source "${HOME}/.functions"
 source "${HOME}/.exports"
-source "${HOME}/.extra"
+[[ -f "${HOME}/.extra" ]] && source "${HOME}/.extra"
 
 source "${HOME}/.aws_helpers.sh"
 source "${HOME}/.shims.sh"
@@ -59,3 +59,10 @@ HISTDUP=erase               #Erase duplicates in the history file
 setopt    appendhistory     #Append history to the history file (no overwriting)
 setopt    sharehistory      #Share history across terminals
 setopt    incappendhistory  #Immediately append to the history file, not just when a term is killed
+
+# uncomment to finish profiling
+# zprof
+
+# uncomment for vim bindings
+# bindkey -v
+bindkey '^U' backward-kill-line

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Adapted from: https://github.com/maxtsepkov/bash_colors
 #
 # Constants and functions for terminal colors.

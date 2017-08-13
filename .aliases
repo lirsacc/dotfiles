@@ -1,21 +1,28 @@
+#!/usr/bin/env bash
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload='exec ${SHELL} -l'
+
+# Pretty print the path
+alias path='echo $PATH | tr -s ":" "\n"'
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
+alias :q="exit"
+
 # Shortcuts
-alias d="cd ~/Documents/Dropbox"
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
 alias p="cd ~/projects"
 
-alias g="git"
-
 alias h="history"
-alias hclear="cat /dev/null > ~/.bash_history && history -c"
+alias hclear="cat /dev/null > ~/.bash_history && cat /dev/null > ~/.zhistory && history -c"
 
-alias j="jobs"
+alias e="vim --"
+
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 # Always use color output for `ls`
 alias ls="ls --color=auto"
@@ -25,14 +32,12 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 alias l="ls -lFh --color=auto"
 
 # List all files colorized in long format, including dot files
-alias la="ls -laFh --color=auto"
 alias ll="ls -laFh --color=auto"
 
 # List only directories
 alias lsd='ls -lFh --color=auto | grep "^d"'
 
-# Enable aliases to be sudo’ed
-alias sudo='sudo '
+alias sudo='nocorrect sudo'
 
 # Gzip-enabled `curl`
 alias gurl='curl --compressed'
@@ -47,16 +52,13 @@ alias update='sudo softwareupdate -i -a; brew update; brew upgrade --all; brew c
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 # Flush Directory Service cache
-alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
+alias flush-dns="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
 # Clean up LaunchServices to remove duplicates in the “Open With” menu
 alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 
 # View HTTP traffic
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
-
-# dig dns
-alias dns="digga"
 
 # Canonical hex dump; some systems have this symlinked
 command -v hd > /dev/null || alias hd="hexdump -C"
@@ -70,15 +72,22 @@ command -v sha1sum > /dev/null || alias sha1sum="shasum"
 # Trim new lines and copy to clipboard
 alias c="tr -d '\n' | pbcopy"
 
-# Recursively delete `.DS_Store` files
-alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
-
 # ROT13-encode text. Works for decoding, too! ;)
 alias rot13='tr a-zA-Z n-za-mN-ZA-M'
 
+# Recursively delete `.DS_Store` files
+alias cleanup-dsstore="find . -type f -name '*.DS_Store' -ls -delete"
+
 # Empty the Trash on all mounted volumes and the main HDD
-# Also, clear Apple’s System Logs to improve shell startup speed
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
+alias empty-trash="sudo rm -frv /Volumes/*/.Trashes; \
+                   sudo rm -frv ~/.Trash; \
+                   sudo rm -v /private/var/vm/sleepimage; \
+                   sudo rm -frv /private/var/log/asl/*.asl; \
+                   sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
+
+
+# Clear Apple’s System Logs to improve shell startup speed
+alias cleanup-asl-logs="sudo rm -rfv /private/var/log/asl/*.asl"
 
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
@@ -110,38 +119,31 @@ alias map="xargs -n1"
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-    alias "$method"="lwp-request -m '$method'"
+  #  shellcheck disable=2139,SC2140
+	alias "${method}"="lwp-request -m '${method}'"
 done
 
 # Git
+alias g="git"
 alias gst="g s"
-alias gau="g add -u"
-alias gap="g add -p"
-alias gco="g go"
-alias grb="git fetch origin/master && git rebase origin/master"
-alias gl="g l -n 20"
-alias gd="g diff"
+alias gl="g l"
+alias gd="g d"
+alias grb="g rb"
 
 alias cask="brew cask"
 
-alias npr="npm run"
-alias npi="npm install"
-alias npis="npm install --save"
-
 # Docker
 alias dk="docker"
-alias dke="docker exec"
-alias dkr="docker run"
-alias dkls="docker ps"
-alias remove-docker-orphans="docker rmi -f $(docker images -f dangling=true -q)"
-
-alias reload='. $HOME/.zshrc'
-
-# Pretty print the path
-alias path='echo $PATH | tr -s ":" "\n"'
-
+alias remove-docker-orphans='docker rmi -f $(docker images -f dangling=true -q)'
 
 alias avadakedavra='killall -9'
 
 alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
 alias airport='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport'
+
+alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+
+alias stfu="osascript -e 'set volume output muted true'"
+alias pumpitup="osascript -e 'set volume output volume 100'"
+
+alias ungz="gunzip -k"

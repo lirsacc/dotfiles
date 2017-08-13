@@ -1,39 +1,69 @@
-# Compiled files
-*.pyc
-*.javac
-*.sw[nop]
+# global gitignore
 
-# Folder view configuration files
-.DS_Store
-Desktop.ini
+tmp/**/*
 
-# Thumbnail cache files
+# linux
+*~
+
+# vim stuff
+%*
+*.sw[a-z]
+*.swap
+.vim/viminfo
+.vim/swaps/*
+.vim/undo
+
+# git credentials
+.gitconfig.local
+
+# osx
 ._*
+.AppleDouble
+.DS_Store
+.localized
+.LSOverride
+.Trashes
+Icon
+.Spotlight-V100
+
+# window
+Desktop.ini
 Thumbs.db
 
-# Files that might appear on external disks
-.Spotlight-V100
-.Trashes
+# node
+node_modules
+npm-debug.log
 
-# SSH Keys
+# python
+*.pyc
+pip-log.txt
+pip-delete-this-directory.txt
+.egg
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints
+
+# java / jvm
+*.javac
+*.jar
+*.war
+*.ear
+
+# ssh keys
 id_rsa
 
+# vagrant stuff
 .vagrant/
 
-# Vim swap files
-*.swap
-
-# Logs
+# logs and runtime data
 logs
 *.log
-
-# Runtime data
 pids
 *.pid
 *.seed
+*.pid.lock
 
-node_modules
-
+# ctags
 tags
 !tags/
-tmp/**/*

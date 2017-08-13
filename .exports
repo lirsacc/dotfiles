@@ -1,23 +1,48 @@
+#!/usr/bin/env bash
 export PROJECTS="$HOME/projects"
 
 # Make vim the default editor
 export EDITOR="vim"
-export VISUAL_EDITOR="atom"
+export VISUAL_EDITOR="code"
+
+# generic colouriser
+GRC=$(which grc)
+if [ "$TERM" != dumb ] && [ -n "$GRC" ]
+    then
+        # shellcheck disable=2139
+        alias colourify="$GRC -es --colour=auto"
+        alias configure='colourify ./configure'
+        for app in {diff,make,gcc,g++,ping,traceroute}; do
+            # shellcheck disable=2139
+            alias "$app"='colourify '$app
+    done
+fi
 
 # Larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=32768
 export SAVEHIST=32768
 export HISTFILESIZE=$HISTSIZE
-export HISTCONTROL=ignoredups
+export HISTCONTROL="erasedups:ignoreboth"
+# Use standard ISO 8601 timestamp
+# %F equivalent to %Y-%m-%d
+# %T equivalent to %H:%M:%S (24-hours format)
+export HISTTIMEFORMAT='%F %T '
 # Make some commands not show up in history
-export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help:bg:fg:history:clear"
 
 # Prefer US English and use UTF-8
 export LANG="en_US"
 export LC_ALL="en_US.UTF-8"
 
 # Highlight section titles in manual pages
-export LESS_TERMCAP_md="$ORANGE"
+# highlighting inside manpages and elsewhere
+export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
+export LESS_TERMCAP_me=$'\E[0m'           # end mode
+export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
+export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\E[0m'           # end underline
+export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X"
@@ -28,27 +53,28 @@ export GREP_OPTIONS="--color=auto"
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
-if [[ $(which brew) ]]; then
-  export HOMEBREW_NO_AUTO_UPDATE=1
-  export HOMEBREW_BUILD_FROM_SOURCE=1
-  # export HOMEBREW_NO_EMOJI=1
-  export HOMEBREW_NO_ANALYTICS=1
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-fi
+# Avoid issues with `gpg` as installed via Homebrew.
+# https://stackoverflow.com/a/42265848/96656
+# shellcheck disable=2155
+export GPG_TTY=$(tty);
 
-if [[ $(which cask) ]]; then
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_BUILD_FROM_SOURCE=1
+# export HOMEBREW_NO_EMOJI=1
+export HOMEBREW_NO_ANALYTICS=1
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
 # Link Homebrew casks in `/Applications` rather than `~/Applications`
-  export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-fi
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
-export GOPATH="$HOME/.go"
-export PATH="$GOPATH/bin:$PATH"
+# export GOPATH="$HOME/.go"
+# export PATH="$GOPATH/bin:$PATH"
 
 export PATH="$PATH:$HOME/.cargo/bin"
 
 export NVM_DIR="$HOME/.nvm"
-export PATH="$HOME/.yarn/bin:$PATH"
+# export PATH="$HOME/.yarn/bin:$PATH"
 
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export WORKON_HOME="$HOME/.pyenvs"

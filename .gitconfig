@@ -1,34 +1,52 @@
-[user]
-	name = lirsacc
-	email = c.lirsac@gmail.com
-[github]
-  user = lirsacc
+# [user]
+# 	name = lirsacc
+# 	email = c.lirsac@gmail.com
+
+# [github]
+#   user = lirsacc
+
 [alias]
+  fp = fetch --prune
+  prune = fetch --prune
+  pp = pull --prune
+  co  = checkout
+  cp  = cherry-pick
+  c = clone --recursive  # Clone a repository including all submodules
+  rb = !"git fetch && git rebase origin/master"
+
+  force-push = push --force
+  please = push --force-with-lease
+  shallow-clone = clone --depth=1
+  hard-reset = reset --hard
+  # reset-last = reset --hard HEAD~1
+  # undo-last = reset --soft HEAD~1
+
+  # create an empty repository
   create = !"git init && git commit --allow-empty -m init"
-  # View abbreviated SHA, description, and history graph of the latest 20 commits
-  l = "log --graph --pretty=format:'%C(yellow)%h%Creset %C(red)%d %C(cyan)<%an>%Creset %s %Creset%Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+
+  # nice git log
+  lg = "log --pretty=format:'%C(yellow)%h%Creset %C(red)%d %C(cyan)<%an>%Creset %s %Creset%Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+  g = !"git lg --graph"
+  l = !"git lg --graph -n 20"
+
   # View the current working tree status using the short format
   s = status -sb
+
   # Show the diff between the latest commit and the current state
   d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
   # `git di $number` shows the diff between the state `$number` revisions ago and the current state
   di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
-  dsf = !"f() { [ -z "$GIT_PREFIX" ] || cd "$GIT_PREFIX" && git diff --color "$@" | diff-so-fancy  | less --tabs=4 -RFX; }; f"
   # Pull in remote changes for the current repository and all its submodules
   p = !"git pull; git submodule foreach git pull origin master"
-  # Clone a repository including all submodules
-  c = clone --recursive
-  # Commit all changes
-  ca = !git add -A && git commit -av
-  # Switch to a branch, creating it if necessary
-  go = checkout -B
+
   # Show verbose output about tags, branches or remotes
   tags = tag -l
   branches = branch -a
   remotes = remote -v
 
-  stats = "shortlog -sn"
+  stats = shortlog --email --numbered --summary  # list contributors
 	recent = !"git for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'"
 
   # Commands for quickly saving current work state
@@ -36,30 +54,27 @@
   wip = !"git add . --all -U && git commit -m wip"
   save = stash save -u
 
-  new = !"mkdir $1; cd $1 || exit 1; git init; touch README.md .gitignore; git add . git commit -m 'Initial Commit'"
-  credit = !"git commit --amend --author $1 <$2> -C HEAD"
-
   # Credit an author on the latest commit
   credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
 
   # Interactive rebase with the given number of latest commits
   reb = "!r() { git rebase -i HEAD~$1; }; r"
 
-  # Rebase from master
-  rb = rebase
-
-  fp = fetch --prune
-  prune = fetch --prune
-  pp = pull --prune
+  # list aliases
+  aliases = config --get-regexp alias
 
 [apply]
   # Detect whitespace errors when applying a patch
   whitespace = fix
 
 [core]
+  autocrlf = input
+  editor = vim
+  abbrev = 12
   # Use custom `.gitignore` and `.gitattributes`
   excludesfile = ~/.gitignore
-  # attributesfile = ~/.gitattributes
+  attributesfile = ~/.gitattributes
+
   # Treat spaces before tabs, lines that are indented with 8 or more spaces, and
   # all kinds of trailing whitespace as an error.
   # [default] trailing-space: looks for spaces at the end of a line
@@ -75,15 +90,18 @@
   # Use colors in Git commands that are capable of colored output when
   # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
   ui = auto
+
 [color "branch"]
   current = yellow reverse
   local = yellow
   remote = green
+
 [color "diff"]
   meta = yellow bold
   frag = magenta bold
   old = red bold
   new = green bold
+
 [color "status"]
   added = yellow
   changed = green
@@ -111,6 +129,7 @@
 [push]
   # default = matching
   default = current
+  followTags = true
 
 [commit]
   template=~/.gitcommit
@@ -140,7 +159,21 @@
 
 [rebase]
   autosquash = true
+
 [filter "lfs"]
   clean = git-lfs clean %f
   smudge = git-lfs smudge %f
   required = true
+
+[user]
+    # Don't guess the user's identity.
+    # https://github.com/git/git/blob/90f7b16b3adc78d4bbabbd426fb69aa78c714f71/Documentation/config.txt#L2847-L2855
+    useConfigOnly = true
+
+[include]
+    # Load local configs.
+    # https://git-scm.com/docs/git-config#_includes
+    # [!] The following needs to remain at the end of this file in
+    #     order to allow any of the above configs to be overwritten
+    #     by the local ones
+    path = ~/.gitconfig.local

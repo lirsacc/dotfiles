@@ -1,7 +1,7 @@
 # From https://github.com/creationix/nvm/issues/539#issuecomment-110643090
 # Creates a function which will source the given file on first call.
-# Removed the check on file existence for virtualenvwrapper.sh, trust that
-# I know what I am doing.
+# Keep your shell startup fast by not doing stuff at the cost of lossing
+# completion for certain commands and missing commands in $PATH.
 
 lazy_source () {
   eval "$1 () { unset -f $1; $2; $1 \$@ }"

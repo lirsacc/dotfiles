@@ -8,6 +8,8 @@ source "$HOME/.brew.sh"
 
 declare recipes=(
   'gpg'
+  'pinentry-mac'
+  # 'gpg-agent'
 
   # Install GNU core utilities (those that come with OS X are outdated)
   'coreutils'
@@ -36,7 +38,7 @@ declare recipes=(
   'jp2a'
   'zsh'
   'git'
-  'mercurial'
+  # 'mercurial'
   'imagemagick --with-webp'
   'pigz'
   'rename'
@@ -45,27 +47,33 @@ declare recipes=(
   'zopfli'
   'ngrep'
   'hr'
-  'ag'
+  'the_silver_searcher'  # ag
   'ctags'
   'gibo'
   'tmux'
+  'screen'
   'shellcheck'
   'httpie'
-  'pgcli'
+  # 'pgcli'
   'mycli'
   'dark-mode'
   'jq'
   'nmap'
   'nano'
+  'pstree'
+  'pv'
+  # 'terminal-notifier'
+  'wifi-password'
 
   # 'postgresql'
   # 'mysql'
 
   'python'
   'python3'
-  'go'
-  'elixir'
-  'elm'
+  'erlang'
+  # 'go'
+  # 'elixir'
+  # 'elm'
 
   'awscli'
 
@@ -74,33 +82,48 @@ declare recipes=(
 
 declare applications=(
   'appcleaner'
-  # 'atom'
   'dropbox'
+  # 'firefoxdeveloperedition'
+  # 'google-chrome-canary'
+  # 'chromium'
+  # 'opera'
   'flux'
+  'imagealpha'
   'imageoptim'
   'iterm2'
   'java'
+  'karabiner'
   'licecap'
   'monolingual'
   'onyx'
   'quicklook-csv'
   'quicklook-json'
+  'rescuetime'
   'spectacle'
   'spotify'
   'the-unarchiver'
   'transmission'
-  'virtualbox'
+  'visual-studio-code-insiders'
   'vlc'
   'xquartz'
+  # 'virtualbox'
 )
 
 declare fonts=(
+  'font-fira-code'
+  'font-fira-mono'
+  'font-fira-sans'
   'font-inconsolata'
   'font-input'
+  'font-office-code-pro'
   'font-open-sans'
+  'font-roboto-mono'
+  'font-roboto-slab'
   'font-roboto'
   'font-source-code-pro'
   'font-source-sans-pro'
+  'font-source-serif-pro'
+  'font-ubuntu'
 )
 
 

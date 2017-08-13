@@ -163,7 +163,7 @@ set scrolljump=5                                " Lines to scroll when cursor le
 
 set background=dark                             " Assume a dark background
 set termguicolors
-colorscheme space-vim-dark
+colorscheme molokai
 
 " Load plugin specific settings
 for fpath in split(globpath('~/.vim/settings', '*.vim'), '\n')
