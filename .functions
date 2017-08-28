@@ -432,3 +432,14 @@ function insert-env-vars() {
   sed "${sed_args[@]}" "${tmp_file}"
   cleanup
 }
+
+
+# Encrypt to stdout
+function encrypt() {
+  openssl enc -aes-256-cbc -salt -a -in "$1"
+}
+
+# Decrypt to stdout
+function decrypt() {
+  openssl enc -aes-256-cbc -d -a -in "${1}"
+}
