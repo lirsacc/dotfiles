@@ -396,7 +396,7 @@ function insert-env-vars() {
   typeset tmp_file tracing strict sed_args env_vars env_var undef
 
   [[ "$-" =~ x ]] && tracing=1 || tracing=0
-  [[ "${@}" == *"--strict"* ]] && strict=1 || strict=0
+  [[ "${*}" == *"--strict"* ]] && strict=1 || strict=0
 
   tmp_file="_$$.$RANDOM.tmp"
   undef="$RANDOM"
@@ -412,7 +412,7 @@ function insert-env-vars() {
     unset cleanup
   }
 
-  <&0 > "${tmp_file}"
+  true <&0 > "${tmp_file}"
 
   env_vars=($(grep --only-matching --perl-regexp '\$\{[A-Z\_]+\}' "${tmp_file}" | sed -e s/\[\{\}\$\]//g))
 
