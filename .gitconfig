@@ -1,10 +1,3 @@
-# [user]
-# 	name = lirsacc
-# 	email = c.lirsac@gmail.com
-
-# [github]
-#   user = lirsacc
-
 [alias]
   fp = fetch --prune
   prune = fetch --prune
