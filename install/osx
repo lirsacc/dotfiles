@@ -624,3 +624,9 @@ for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
   killall "${app}" > /dev/null 2>&1
 done
 echo "Done. Note that some of these changes require a logout/restart to take effect."
+
+
+# Spectacle App
+# Get config file with:
+# > cp -r ~/Library/Application\ Support/Spectacle/Shortcuts.json install/spectacle-config.json
+cp -fr install/spectacle-config.json ~/Library/Application\ Support/Spectacle/Shortcuts.json 2> /dev/null
