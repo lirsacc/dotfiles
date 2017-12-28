@@ -1,4 +1,8 @@
 [alias]
+
+  # Prevent git git from blowing up
+  git = !exec git
+
   fp = fetch --prune
   prune = fetch --prune
   pp = pull --prune
