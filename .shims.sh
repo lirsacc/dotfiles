@@ -7,14 +7,12 @@ lazy_source () {
   eval "$1 () { unset -f $1; $2; $1 \$@ }"
 }
 
-lazy_source mkvirtualenv "source virtualenvwrapper.sh"
-lazy_source rmvirtualenv "source virtualenvwrapper.sh"
-lazy_source workon "source virtualenvwrapper.sh"
-
 function source_nvm() {
   unset -f nvm node npm > /dev/null 2>&1
   # shellcheck disable=SC1090
-  [ -s "${NVM_DIR}"/nvm.sh ] && . "${NVM_DIR}/nvm.sh"
+  [ -s "${NVM_DIR}"/nvm.sh ] \
+    && . "${NVM_DIR}/nvm.sh" \
+    && [ -s .nvmrc ] && nvm use
 }
 
 lazy_source nvm "source_nvm"

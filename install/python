@@ -4,9 +4,7 @@ ENV_DIR="$HOME/.pyenvs"
 mkdir -p "$ENV_DIR"
 
 declare both=(
-  setuptools
-  pip
-  'ipython[all]'
+  'ipython'
   flake8
   pylint
   bpython
@@ -14,8 +12,10 @@ declare both=(
 
 declare python2=(
   virtualenv
-  virtualenvwrapper
 )
 
-pip2 install -U "${both[@]}" "${python2[@]}"
-pip3 install -U "${both[@]}"
+pip2 install --upgrade setuptools pip wheel
+pip install --upgrade setuptools pip wheel
+
+pip2 install "${both[@]}" "${python2[@]}"
+pip install "${both[@]}"

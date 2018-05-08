@@ -68,8 +68,8 @@ declare recipes=(
   # 'postgresql'
   # 'mysql'
 
+  'python@2'
   'python'
-  'python3'
   'erlang'
   # 'go'
   # 'elixir'

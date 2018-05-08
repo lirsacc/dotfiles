@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+ZGEN_AUTOLOAD_COMPINIT=0
+
 # uncomment to profile prompt startup with zprof
 # zmodload zsh/zprof
 
