@@ -1,7 +1,0 @@
-#compdef npl
-
-local -a binaries
-if [[ -d ./node_modules/.bin ]]; then # Only do completion if valid directory
-  binaries=$(ls ./node_modules/.bin)
-  _alternative "pkg:npm packages:($binaries)" 'files:filenames:_files'
-fi

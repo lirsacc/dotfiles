@@ -1,0 +1,5 @@
+#compdef project
+
+local -a pjs
+pjs=$(ls "${PROJECTS:-~/projects}" -p | grep /)
+_alternative "dirs:projects:($pjs)"

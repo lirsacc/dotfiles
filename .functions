@@ -366,10 +366,9 @@ function whois() {
 }
 
 # Copy w/ progress
-cp_p () {
+cp-p () {
   rsync -WavP --human-readable --progress "$1" "$2"
 }
-
 
 function randomchars () {
   dd if=/dev/urandom count=1 2> /dev/null \
@@ -384,55 +383,6 @@ function randomchars () {
 function randombytes () {
   dd if=/dev/urandom bs="${2:-1M}" count="${1}" 2> /dev/null | cat
 }
-
-# Poor man's templating
-# Replace all occurrence of ${VAR} in stdin with the value of $VAR where
-# VAR is an existing env variable.
-# Notes:
-# - Path and urls can have forward slash, so we use `|` as a delimiter for sed
-# - Disables trace (`-x`) to avoid leaking env vars when run in an unprivileged environment
-function insert-env-vars() {
-
-  typeset tmp_file tracing strict sed_args env_vars env_var undef
-
-  [[ "$-" =~ x ]] && tracing=1 || tracing=0
-  [[ "${*}" == *"--strict"* ]] && strict=1 || strict=0
-
-  tmp_file="_$$.$RANDOM.tmp"
-  undef="$RANDOM"
-
-  [[ $tracing == 1 ]] && set +x
-
-  sed_args=()
-  env_vars=()
-
-  function cleanup () {
-    [[ $tracing == 1 ]] && set -x
-    rm -f "$tmp_file"
-    unset cleanup
-  }
-
-  true <&0 > "${tmp_file}"
-
-  env_vars=($(grep --only-matching --perl-regexp '\$\{[A-Z\_]+\}' "${tmp_file}" | sed -e s/\[\{\}\$\]//g))
-
-  for env_var in "${env_vars[@]}"; do
-
-    if [[ $strict == 1 ]]; then
-      if [[ "$(eval echo \$\{"$env_var:-$undef"\})" == "${undef}" ]]; then
-        echo "${env_var} is not defined"
-        cleanup
-        return 1
-      fi
-    fi
-
-    sed_args+=("-e s|\${$env_var}|$(eval echo \$\{"$env_var"\})|g")
-  done
-
-  sed "${sed_args[@]}" "${tmp_file}"
-  cleanup
-}
-
 
 # Encrypt to stdout
 function encrypt() {

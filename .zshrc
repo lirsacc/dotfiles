@@ -6,7 +6,6 @@ ZGEN_AUTOLOAD_COMPINIT=0
 # zmodload zsh/zprof
 
 fpath=(~/.zfuncs "${fpath[@]}")
-typeset -U fpath
 
 autoload -Uz ~/.zfuncs/*(:t)
 autoload -Uz compinit
@@ -33,13 +32,16 @@ if ! zgen saved; then
   # zgen prezto python
   # zgen prezto node
   zgen prezto git
-  # zgen prezto osx
+  zgen prezto osx
   # zgen prezto homebrew
 
   # # prezto options
   zgen prezto editor key-bindings 'emacs'
   # zgen prezto editor dot-expansion 'yes'
   zgen prezto prompt theme 'smiley'
+
+  zgen prezto 'git:alias' skip yes
+  zgen prezto 'git:status:ignore' submodules all
 
   zgen save
 fi
