@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo "Please enter the password you want to hash:"
+read -rs password
+htpasswd -bnBC 12 "" "$password" | sed 's/^://'
