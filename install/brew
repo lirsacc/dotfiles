@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 # Exit if Homebrew is not installed.
-[[ -z $(which brew) ]] && echo "Homebrew is needed here..." && return 1
+if [[ -z $(command -v brew) ]]; then
+  echo "Homebrew is needed here, please install from https://brew.sh..."
+  return 1
+fi
 
 # shellcheck disable=1090
 source "$HOME/.brew.sh"
@@ -9,29 +12,46 @@ source "$HOME/.brew.sh"
 declare recipes=(
   'gpg'
   'pinentry-mac'
-  # 'gpg-agent'
 
-  # Install GNU core utilities (those that come with OS X are outdated)
   'coreutils'
-  # Install some other useful utilities like `sponge`
   'moreutils'
-  # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
-  'findutils'
-  # Install GNU `sed`, overwriting the built-in `sed`
+  'findutils --with-default-names'
+  'binutils'
+  'diffutils'
+
   'gnu-sed --with-default-names'
+  'gnu-indent --with-default-names'
+  'ed --with-default-names'
+  'gnu-tar --with-default-names'
+  'gnu-which --with-default-names'
+  'emacs'
+  'gpatch'
+  'less'
+  'm4'
+  'make --with-default-names'
+  'nano'
+  'bison'
+  'flex'
+  'rsync'
+  # 'gdb'
+  'watch'
+  'gawk'
+
   'gzip'
-  # Install Bash 4
+
   'bash'
   'bash-completion'
 
-  # Install wget with IRI support
   'wget --with-iri'
 
-  # Install more recent versions of some OS X tools
   'vim --with-override-system-vi --with-lua'
   'grep --with-default-names'
   'screen'
   'openssh'
+  'gzip'
+
+  'python'
+  'python@2'
 
   'htop'
   'ack'
@@ -54,59 +74,50 @@ declare recipes=(
   'screen'
   'shellcheck'
   'httpie'
-  # 'pgcli'
-  'mycli'
-  'dark-mode'
   'jq'
   'nmap'
-  'nano'
   'pstree'
   'pv'
-  # 'terminal-notifier'
   'wifi-password'
+  'unzip'
+  'libressl'
 
-  # 'postgresql'
+  'postgresql'
   # 'mysql'
+  'pgcli'
+  'mycli'
 
-  'python@2'
-  'python'
-  'erlang'
+  # 'erlang'
   # 'go'
   # 'elixir'
   # 'elm'
+  'perl'
 
   'awscli'
 
-  'libressl'
+  # 'mas'
 )
 
 declare applications=(
+  'alfred'
   'appcleaner'
   'dropbox'
-  # 'firefoxdeveloperedition'
-  # 'google-chrome-canary'
-  # 'chromium'
-  # 'opera'
-  'flux'
-  'imagealpha'
-  'imageoptim'
   'iterm2'
-  'java'
-  'karabiner'
   'licecap'
-  'monolingual'
-  'onyx'
-  'quicklook-csv'
-  'quicklook-json'
+  # 'monolingual'
+  # 'onyx'
   'rescuetime'
   'spectacle'
   'spotify'
   'the-unarchiver'
-  'transmission'
-  'visual-studio-code-insiders'
   'vlc'
   'xquartz'
-  # 'virtualbox'
+  'whatsapp'
+  'authy'
+  'resolutionator'
+  'slack'
+  'sublime-tex'
+  'visual-studio-code-insiders'
 )
 
 declare fonts=(
@@ -115,45 +126,49 @@ declare fonts=(
   'font-fira-sans'
   'font-inconsolata'
   'font-input'
-  'font-office-code-pro'
   'font-open-sans'
   'font-roboto-mono'
-  'font-roboto-slab'
   'font-roboto'
   'font-source-code-pro'
   'font-source-sans-pro'
   'font-source-serif-pro'
-  'font-ubuntu'
+  'font-ibm-plex'
 )
 
-
-brew tap caskroom/cask
+brew-tap caskroom/cask
 brew-tap caskroom/fonts
+brew-tap homebrew/cask-versions
+# brew-tap mas-cli/tap
+# brew tap-pin mas-cli/tap
 
 brew doctor
 
 # Make sure we’re using the latest Homebrew
 brew update
 
-# Upgrade any already-installed formulae
-brew upgrade
+echo -n "Upgrade all already-installed formulae? (y/n) "
+read -rp "" -n 1
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  echo
+  brew upgrade
+fi
 
 for recipe in "${recipes[@]}"; do
-  if [ ! -z "$recipe" ]; then
+  if [ -n "$recipe" ]; then
     # shellcheck disable=SC2086
     brew-install-or-upgrade $recipe
   fi
 done
 
 for app in "${applications[@]}"; do
-  if [ ! -z "$app" ]; then
-    brew cask install --appdir="/Applications" "$app"
+  if [ -n "$app" ]; then
+    brew cask install --require-sha "$app"
   fi
 done
 
 for font in "${fonts[@]}"; do
-  if [ ! -z "$font" ]; then
-    brew cask install "$font"
+  if [ -n "$font" ]; then
+    brew cask install --require-sha "$font"
   fi
 done
 

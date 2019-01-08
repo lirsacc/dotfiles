@@ -15,7 +15,7 @@ alias .....="cd ../../../.."
 alias :q="exit"
 
 # Shortcuts
-alias p="project"
+alias p="cd ~/projects"
 
 alias h="history"
 alias hclear="cat /dev/null > ~/.bash_history && cat /dev/null > ~/.zhistory && history -c"

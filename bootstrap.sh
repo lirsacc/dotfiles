@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-# ==============================================================================
-# Setup
-# ==============================================================================
+# Uncomment for debug information
+# set -x
 
-current=$(basename "$0")
+# Safer bash script
+set -euo pipefail
 
 usage="
                                            .
-Your friendly dotfiles bootstraper bot  ~(0_0)~﻿
+Your friendly dotfiles bootstraper bot  ~(0_0)~
 
-$current [options]
+$(basename "$0") [options]
 
 Options and arguments:
 
@@ -25,23 +25,30 @@ Options and arguments:
   --branch            Git branch to update from
   "
 
+if ! [[ "$OSTYPE" =~ darwin* ]]; then
+  echo "This is meant to be run on macOS only"
+  exit
+fi
+
 # Parameters
 # ------------------------------------------------------------------------------
 
-scripts="$(realpath ./"${INSTALL_SCRIPTS:-install}")"
-target="$HOME"
+scripts="${INSTALL_SCRIPTS:-"$(pwd)/install"}"
+target="${HOME}"
 directories=("projects")
 branch="master"
 
 rsync_exclude=(
   ".git/"
   "install"
-  "$scripts"
+  "${scripts}"
   ".DS_Store"
   "bootstrap.sh"
   "README.md"
   "LICENSE-MIT.txt"
   ".gitkeep"
+  "_diff.sh"
+  "_rename-computer.sh"
 )
 
 # Read the options
@@ -85,14 +92,14 @@ while getopts "${optspec}" opt; do
           if [[ -z "$val" ]]; then
             echo "--target cannot be empty" && exit 1
           fi
-          target=$(realpath "$val")
+          target="${val}"
           ;;
         target=*)
           val=${OPTARG#*=}
           if [[ -z "$val" ]]; then
             echo "--target cannot be empty" && exit 1
           fi
-          target=$(realpath "$val")
+          target="${val}"
           ;;
           install)
             # shellcheck disable=2004
@@ -100,7 +107,7 @@ while getopts "${optspec}" opt; do
             if [[ -z "$val" ]]; then
               echo "--install cannot be empty" && exit 1
             fi
-            scripts=$(realpath "$val")
+            scripts="${val}"
             ;;
           install=*)
             val=${OPTARG#*=}
@@ -108,7 +115,7 @@ while getopts "${optspec}" opt; do
               echo "--install cannot be empty" && exit 1
             fi
             opt=${OPTARG%=$val}
-            scripts=$(realpath "$val")
+            scripts="${val}"
             ;;
           branch)
             # shellcheck disable=2004
@@ -206,9 +213,8 @@ function _pretty_rsync_change() {
 
   cmd_=""
   start_="${1:0:1}"
-  # type_="${1:1:1}"
-  mod_="${1:2:7}"
-  file_="${1:10}"
+  mod_="${1:2:9}"
+  file_="${1:13}"
 
   # shellcheck disable=2076
   if [[ ! "<>c" =~ "$start_" ]]; then
@@ -219,8 +225,8 @@ function _pretty_rsync_change() {
     '+++++++')
       cmd_="clr_red 'MISSING ' -n"
       ;;
-    '.st....'|'.s.....'|'..t....')
-      # Rsync change state is qualified by gitt diff status as we only
+    '.st......'|'.s.......'|'..t......')
+      # Rsync change state is qualified by git diff status as we only
       # care about content.
       git diff -s "$target/$file_" "$(pwd)/$file_" || cmd_="clr_blue 'UPDATED ' -n"
       ;;
@@ -257,18 +263,18 @@ function _cleanup() {
 
 # ==============================================================================
 # Install process
-# ==============================================================================                                                                     ";
+# ==============================================================================
 
 echo
-_bot "Starting bootstrap process in $(pwd) against $target"
+_bot "Starting bootstrap process in $(pwd) against $target (Install scripts: ${scripts})"
 
 if [[ ! -d $scripts ]]; then
-  _bot_error "Install scripts location $scripts is not a directory"
+  _bot_error "Install scripts location '${scripts}' is not a directory"
   exit 1
 fi
 
 if [[ ! -d $target ]]; then
-  _bot_error "Target $target is not a directory"
+  _bot_error "Target '${target}' is not a directory"
   exit 1
 fi
 
@@ -310,14 +316,17 @@ if $sync_only; then  # -- exit early
 fi
 
 echo
-_bot "Creating directories"
+_bot "Creating extra directories"
 echo
 for dir in "${directories[@]}"; do
   _align; echo "- $target/$dir"
   mkdir -p "$target/$dir"
 done
 
-if [[ -z $(which brew) ]]; then
+_bot "Installing xcode command line tools"
+xcode-select --install || true
+
+if [[ -z $(command -v brew) ]]; then
   if $force; then
     _bot "Installing Homebrew"
     echo
@@ -338,11 +347,12 @@ else
   fi
 fi
 
-# shellcheck source=/dev/null
-source "$target/.exports"
+_bot "Do you want to rename your computer (current name: $(scutil --get ComputerName))? (y/n) " -n
+read -rp "" -n 1
+[[ $REPLY =~ ^[Yy]$ ]] && echo && ./_rename-computer.sh
 
 _bot "Processing install scripts in '$scripts'"
-for file in $scripts/*; do
+for file in "$scripts"/*; do
   if [[ ! -f $file ]]; then
     continue
   fi
@@ -351,7 +361,7 @@ for file in $scripts/*; do
   if $force; then
     _align; echo "- Sourcing $filename"
     # shellcheck source=/dev/null
-    . ./$file
+    . "./$file"
   else
     echo
     _align; echo -n "- Do you want to apply the $filename install script ? (y/n) "
@@ -359,7 +369,7 @@ for file in $scripts/*; do
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       echo
       # shellcheck source=/dev/null
-      . ./$file
+      . "./$file"
       [[ $? == 1 ]] && _bot_error "Error processing $file" && exit 1
     fi
   fi

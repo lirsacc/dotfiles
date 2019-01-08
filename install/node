@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ -z $(which nvm) || ! -f "$NVM_DIR/nvm.sh" ]]; then
+if [[ -z $(command -v nvm) || ! -f "$NVM_DIR/nvm.sh" ]]; then
   { (
     [[ -d "$NVM_DIR" ]] && rm -r "$NVM_DIR"
     # Use cloning instead of direct link so we always get the latest by default
@@ -27,5 +27,7 @@ done
 nvm use default
 nvm alias default lts/*
 
-# Install yarn
-curl -o- -L https://yarnpkg.com/install.sh | bash
+# Install yarn from homebrew
+# shellcheck disable=1090
+source "$HOME/.brew.sh"
+brew-install-or-upgrade yarn --without-node

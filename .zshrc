@@ -50,6 +50,7 @@ source "${HOME}/.aliases"
 source "${HOME}/.functions"
 source "${HOME}/.exports"
 [[ -f "${HOME}/.extra" ]] && source "${HOME}/.extra"
+[[ -f "${HOME}/.local" ]] && source "${HOME}/.local"
 
 source "${HOME}/.aws_helpers.sh"
 source "${HOME}/.shims.sh"

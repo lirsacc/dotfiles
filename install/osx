@@ -7,19 +7,6 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# Set computer name (as done via System Preferences → Sharing)
-# ------------------------------------------------------------------------------
-echo ""
-echo "Setting your computer name (as done via System Preferences & Sharing)"
-read -r -p "What would you like it to be (leave blank if don't want to set it) " COMPUTER_NAME
-
-if [ -z "$COMPUTER_NAME" ]; then
-  sudo scutil --set ComputerName "$COMPUTER_NAME"
-  sudo scutil --set HostName "$COMPUTER_NAME"
-  sudo scutil --set LocalHostName "$COMPUTER_NAME"
-  sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$COMPUTER_NAME"
-fi
-
 # # Get passwordless sudo
 # # Taken from https://github.com/atomantic/dotfiles
 # # http://wiki.summercode.com/sudo_without_a_password_in_mac_os_x
@@ -557,7 +544,7 @@ sudo mdutil -i on / > /dev/null
 # Rebuild the index from scratch
 sudo mdutil -E / > /dev/null
 
-# iterm2 and default terminal
+# terminal
 # ------------------------------------------------------------------------------
 # Only use UTF-8 in Terminal.app
 defaults write com.apple.terminal StringEncodings -array 4
@@ -571,62 +558,14 @@ defaults write com.apple.Terminal "Startup Window Settings" -string "Pro"
 defaults write com.apple.terminal FocusFollowsMouse -bool true
 defaults write org.x.X11 wm_ffm -bool true
 
-# Don’t display the annoying prompt when quitting iTerm
-defaults write com.googlecode.iterm2 PromptOnQuit -bool false
-
-# Install themes
-open "${HOME}/installs/iterm/*.itermcolors"
-
-# # Chrome
-# # ------------------------------------------------------------------------------
-#
-# # Allow installing user scripts via GitHub Gist or Userscripts.org
-# defaults write com.google.Chrome ExtensionInstallSources -array "https://gist.githubusercontent.com/" "http://userscripts.org/*"
-# defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://gist.githubusercontent.com/" "http://userscripts.org/*"
-#
-# # Disable the all too sensitive backswipe on trackpads
-# defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool false
-# defaults write com.google.Chrome.canary AppleEnableSwipeNavigateWithScrolls -bool false
-#
-# # Disable the all too sensitive backswipe on Magic Mouse
-# defaults write com.google.Chrome AppleEnableMouseSwipeNavigateWithScrolls -bool false
-# defaults write com.google.Chrome.canary AppleEnableMouseSwipeNavigateWithScrolls -bool false
-#
-# # Use the system-native print preview dialog
-# defaults write com.google.Chrome DisablePrintPreview -bool true
-# defaults write com.google.Chrome.canary DisablePrintPreview -bool true
-#
-# # Expand the print dialog by default
-# defaults write com.google.Chrome PMPrintingExpandedStateForPrint2 -bool true
-# defaults write com.google.Chrome.canary PMPrintingExpandedStateForPrint2 -bool true
-
-# Transmission
-# ------------------------------------------------------------------------------
-
-# Use `~/Documents/Torrents` to store incomplete downloads
-defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
-defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Documents/Torrents"
-
-# Don’t prompt for confirmation before downloading
-defaults write org.m0k.transmission DownloadAsk -bool false
-
-# Trash original torrent files
-defaults write org.m0k.transmission DeleteOriginalTorrent -bool true
-
-# Hide the donate message
-defaults write org.m0k.transmission WarningDonate -bool false
-# Hide the legal disclaimer
-defaults write org.m0k.transmission WarningLegal -bool false
-
 for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
   "Dock" "Finder" "Mail" "Messages" "Safari" "SystemUIServer" \
-  "Terminal" "Transmission" "iCal"; do
+  "Terminal" "iCal"; do
   killall "${app}" > /dev/null 2>&1
 done
 echo "Done. Note that some of these changes require a logout/restart to take effect."
 
-
 # Spectacle App
-# Get config file with:
+# Get current config file with:
 # > cp -r ~/Library/Application\ Support/Spectacle/Shortcuts.json install/spectacle-config.json
 cp -fr install/spectacle-config.json ~/Library/Application\ Support/Spectacle/Shortcuts.json 2> /dev/null

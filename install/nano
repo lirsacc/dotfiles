@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
+rm -rf "$HOME/.nanorc"
+rm -rf "$HOME/.nano"
 git clone git@github.com:scopatz/nanorc.git "$HOME/.nano"
-touch "$HOME/.nanorc"
-truncate -s 0 "$HOME/.nanorc"
-echo "include $HOME/.nano/*.nanorc" >> ~/.nanorc
+echo "include $HOME/.nano/*.nanorc" > ~/.nanorc

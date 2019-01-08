@@ -6,5 +6,4 @@ DOCKER_APP_URL=https://download.docker.com/mac/edge/Docker.dmg
 curl -o .docker.dmg "$DOCKER_APP_URL"
 hdiutil mount .docker.dmg
 sudo cp -R "/Volumes/Docker/Docker.app" /Applications
-hdiutil mount "Volumes/Docker"
 rm -rf .docker.dmg

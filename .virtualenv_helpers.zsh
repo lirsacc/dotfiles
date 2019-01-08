@@ -84,7 +84,7 @@ function mkvirtualenv() {
   if [ "$version" -eq "3" ]; then
     python3 -m venv --clear --copies "${WORKON_HOME:?}/${name}"
   elif [ "$version" -eq "2" ]; then
-    python2 -m virtualenv --python "$(which python2)" --clear --always-copy "${WORKON_HOME:?}/${name}"
+    python2 -m virtualenv --python "$(command -v python2)" --clear --always-copy "${WORKON_HOME:?}/${name}"
   else
     echo "Unknown python version ${version}"
     return 1

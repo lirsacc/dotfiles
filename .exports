@@ -6,7 +6,7 @@ export EDITOR="vim"
 export VISUAL_EDITOR="code"
 
 # generic colouriser
-GRC=$(which grc)
+GRC=$(command -v grc)
 if [ "$TERM" != dumb ] && [ -n "$GRC" ]
     then
         # shellcheck disable=2139
@@ -47,6 +47,9 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X"
 
+export MANPATH="/usr/local/share/man:$MANPATH"
+export INFOPATH="/usr/local/share/info:$INFOPATH"
+
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
@@ -56,11 +59,34 @@ export PATH="$HOME/bin:$PATH"
 export GPG_TTY=$(tty);
 
 export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_BUILD_FROM_SOURCE=1
-# export HOMEBREW_NO_EMOJI=1
+export HOMEBREW_NO_EMOJI=1
 export HOMEBREW_NO_ANALYTICS=1
+
+# Homebrew replacements of OS X installed tools.
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
+export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+export MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
+
+export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+export MANPATH="/usr/local/opt/make/libexec/gnuman:$MANPATH"
+
+export PATH="/usr/local/opt/m4/bin:$PATH"
+
+export PATH="/usr/local/opt/unzip/bin:$PATH"
+
+export PATH="/usr/local/opt/flex/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/flex/lib"
+export CPPFLAGS="-I/usr/local/opt/flex/include"
+
+export PATH="/usr/local/opt/bison/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/bison/lib"
+
+export PATH="/usr/local/opt/libressl/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/libressl/lib"
+export CPPFLAGS="-I/usr/local/opt/libressl/include"
+export PKG_CONFIG_PATH="/usr/local/opt/libressl/lib/pkgconfig"
 
 # Link Homebrew casks in `/Applications` rather than `~/Applications`
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
@@ -74,6 +100,16 @@ export NVM_DIR="$HOME/.nvm"
 # export PATH="$HOME/.yarn/bin:$PATH"
 
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-export WORKON_HOME="$HOME/.pyenvs"
+export WORKON_HOME="$HOME/.virtualenvs"
+
+eval "$(pyenv init - --no-rehash zsh)"
+
+export PYENV_VIRTUALENV_DISABLE_PROMPT=0
+export PYENV_VIRTUALENV_VERBOSE_ACTIVATE=1
+eval "$(pyenv virtualenv-init -)"  # Inlined below
+
 # shellcheck disable=1090
 source "$HOME/.virtualenv_helpers.zsh"
+
+# shellcheck disable=1090
+source "$HOME/.brew.sh"

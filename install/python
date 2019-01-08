@@ -1,13 +1,21 @@
 #!/usr/bin/env bash
 
-ENV_DIR="$HOME/.pyenvs"
-mkdir -p "$ENV_DIR"
+WORKON_HOME="${WORKON_HOME:-"$HOME/.virtualenvs"}"
+mkdir -p "$WORKON_HOME"
 
-declare both=(
+# shellcheck disable=1090
+source "$HOME/.brew.sh"
+
+brew-install-or-upgrade pyenv
+# brew-install-or-upgrade pyenv-virtualenv
+
+declare _2and3=(
   'ipython'
   flake8
   pylint
   bpython
+  tox
+  ipython
 )
 
 declare python2=(
@@ -17,5 +25,5 @@ declare python2=(
 pip2 install --upgrade setuptools pip wheel
 pip install --upgrade setuptools pip wheel
 
-pip2 install "${both[@]}" "${python2[@]}"
-pip install "${both[@]}"
+pip2 install "${_2and3[@]}" "${python2[@]}"
+pip install "${_2and3[@]}"
