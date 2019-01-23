@@ -60,6 +60,9 @@
   # list aliases
   aliases = config --get-regexp alias
 
+  # create a new working branch
+  start-work = "!s() { git fetch origin master && git checkout -b ${1?'Please specify branch name as argument'} origin/master; }; s"
+
 [apply]
   # Detect whitespace errors when applying a patch
   whitespace = fix
