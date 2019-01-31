@@ -118,17 +118,17 @@
 
 # URL shorthands
 [url "git@github.com:"]
-    insteadOf = "gh:"
-    pushInsteadOf = "github:"
-    pushInsteadOf = "git://github.com/"
+  insteadOf = "gh:"
+  pushInsteadOf = "github:"
+  pushInsteadOf = "git://github.com/"
 [url "git://github.com/"]
-    insteadOf = "github:"
+  insteadOf = "github:"
 [url "git@gist.github.com:"]
-    insteadOf = "gst:"
-    pushInsteadOf = "gist:"
-    pushInsteadOf = "git://gist.github.com/"
+  insteadOf = "gst:"
+  pushInsteadOf = "gist:"
+  pushInsteadOf = "git://gist.github.com/"
 [url "git://gist.github.com/"]
-    insteadOf = "gist:"
+  insteadOf = "gist:"
 
 [push]
   # default = matching
@@ -140,7 +140,7 @@
 
 
 [advice]
-    statusHints = false
+  statusHints = false
 
 [credential]
   # cache creds (git help credential-cache)
@@ -165,14 +165,15 @@
   autosquash = true
 
 [filter "lfs"]
-  clean = git-lfs clean %f
-  smudge = git-lfs smudge %f
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
   required = true
+  process = git-lfs filter-process
 
 [user]
-    # Don't guess the user's identity.
-    # https://github.com/git/git/blob/90f7b16b3adc78d4bbabbd426fb69aa78c714f71/Documentation/config.txt#L2847-L2855
-    useConfigOnly = true
+  # Don't guess the user's identity.
+  # https://github.com/git/git/blob/90f7b16b3adc78d4bbabbd426fb69aa78c714f71/Documentation/config.txt#L2847-L2855
+  useConfigOnly = true
 
 [include]
     # Load local configs.
