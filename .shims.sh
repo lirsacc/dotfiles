@@ -11,10 +11,11 @@ function source_nvm() {
   unset -f nvm node npm > /dev/null 2>&1
   # shellcheck disable=SC1090
   [ -s "${NVM_DIR}"/nvm.sh ] \
-    && . "${NVM_DIR}/nvm.sh" \
+    && . "${NVM_DIR}/nvm.sh" --no-use \
     && [ -s .nvmrc ] && nvm use
 }
 
 lazy_source nvm "source_nvm"
 lazy_source node "source_nvm"
 lazy_source npm "source_nvm"
+lazy_source yarn "source_nvm"
