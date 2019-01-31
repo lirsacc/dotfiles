@@ -4,7 +4,7 @@
 # set -x
 
 # Safer bash script
-set -euo pipefail
+set -eo pipefail
 
 usage="
                                            .
@@ -167,7 +167,7 @@ while getopts "${optspec}" opt; do
 done
 
 shift $((OPTIND - 1))
-[ "$1" = "--" ] && shift
+[ "$1" = "--" ] && shift || true
 unset val
 
 # Source and define helpers
@@ -208,7 +208,7 @@ function _install_homebrew() {
 }
 
 function _pretty_rsync_change() {
-  # Parse rsync `itemize` output in a `git status`-like manner
+  # Transform rsync `itemize` output in a `git status`-like manner
   local start_ cmd_ mod_ file_
 
   cmd_=""
@@ -227,12 +227,12 @@ function _pretty_rsync_change() {
       ;;
     '.st......'|'.s.......'|'..t......')
       # Rsync change state is qualified by git diff status as we only
-      # care about content.
+      # care about the file's contents.
       git diff -s "$target/$file_" "$(pwd)/$file_" || cmd_="clr_blue 'UPDATED ' -n"
       ;;
   esac
 
-  [[ ! -z "${cmd_}" ]] && eval "_align;$cmd_;echo $file_"
+  [[ -n "${cmd_}" ]] && eval "_align;$cmd_;echo $file_" || true
 }
 
 function check_changes() {
