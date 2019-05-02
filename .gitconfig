@@ -61,7 +61,7 @@
   aliases = config --get-regexp alias
 
   # create a new working branch
-  start-work = "!s() { echo "Starting work on branch ${1?'Please specify branch name as argument'}" && git fetch origin "${2-master}" && git checkout -b "${1}" origin/"${2-master}"; }; s"
+  workon = "!s() { echo "Starting work on branch ${1?'Please specify branch name as argument'}" && (git rev-parse --verify "${1}" && git checkout "${1}") || (git fetch origin "${2-master}" && git checkout -b "${1}" origin/"${2-master}"); }; s"
 
 [apply]
   # Detect whitespace errors when applying a patch
