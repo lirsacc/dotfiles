@@ -163,36 +163,8 @@ function hidehiddenfiles() {
   osascript -e 'tell application "Finder" to activate'
 }
 
-function fixperms(){
-    find . \( -name "*.sh" -or -type d \) -exec chmod 755 {} \; && find . -type f ! -name "*.sh" -exec chmod 644 {} \;
-}
-
-# Opens the github page for the current git repository in your browser
-# Adapted from:
-# git@github.com:jasonneylon/dotfiles.git https://github.com/jasonneylon/dotfiles/
-function gh() {
-  giturl=$(git config --get remote.origin.url)
-
-  if [[ "$giturl" == "" ]]; then
-     echo "Not a git repository or no remote.origin.url set"
-     return 1;
-  fi
-
-  if [[ "$giturl" == *"github"* ]]; then
-    giturl=${giturl/git\@github\.com\:/https://github.com/}
-  elif [[ "$giturl" == *"gitlab"* ]]; then
-    giturl=${giturl/git\@gitlab\.com\:/https://gitlab.com/}
-  else
-    echo "Not a github repository"
-    return 1;
-  fi
-
-  giturl=${giturl/\.git/\/tree/}
-  branch="$(git symbolic-ref HEAD 2>/dev/null)" ||
-  branch="(unnamed branch)"     # detached HEAD
-  branch=${branch##refs/heads/}
-  giturl=$giturl$branch
-  open "$giturl"
+function fixperms() {
+  find . \( -name "*.sh" -or -type d \) -exec chmod 755 {} \; && find . -type f ! -name "*.sh" -exec chmod 644 {} \;
 }
 
 function create () {

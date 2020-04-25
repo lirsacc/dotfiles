@@ -50,6 +50,7 @@ declare recipes=(
   'flex'
   'fzf'
   'gdb'
+  'gh'
   # 'ghc'
   'gibo'
   'git'
