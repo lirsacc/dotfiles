@@ -102,16 +102,15 @@ export NVM_DIR="$HOME/.nvm"
 # export PATH="$HOME/.yarn/bin:$PATH"
 
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-export WORKON_HOME="$HOME/.virtualenvs"
 
-eval "$(pyenv init - --no-rehash zsh)"
+export PYENV_ROOT="$HOME/.pyenv"
 
 export PYENV_VIRTUALENV_DISABLE_PROMPT=0
 export PYENV_VIRTUALENV_VERBOSE_ACTIVATE=1
-eval "$(pyenv virtualenv-init -)"  # Inlined below
 
-# shellcheck disable=1090
-source "$HOME/.virtualenv_helpers.zsh"
+eval "$(pyenv init - --no-rehash zsh)"
+# Disabled because slow on each prompt
+# eval "$(pyenv virtualenv-init -)"
 
 # shellcheck disable=1090
 source "$HOME/.brew.sh"
