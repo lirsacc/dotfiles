@@ -54,9 +54,6 @@ source "${HOME}/.exports"
 
 source "${HOME}/.shims.sh"
 
-# source "${HOME}/.brew.sh"
-# source "${HOME}/.colors.sh"
-
 unsetopt CORRECT
 
 HISTDUP=erase               #Erase duplicates in the history file
