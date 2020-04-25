@@ -4,19 +4,17 @@
   git = !exec git
 
   fp = fetch --prune
-  prune = fetch --prune
   pp = pull --prune
   co  = checkout
   cp  = cherry-pick
   c = clone --recursive  # Clone a repository including all submodules
   rb = !"git fetch && git rebase origin/master"
 
-  force-push = push --force
   please = push --force-with-lease
   shallow-clone = clone --depth=1
   hard-reset = reset --hard
-  # reset-last = reset --hard HEAD~1
-  # undo-last = reset --soft HEAD~1
+  reset-last = reset --hard HEAD~1
+  undo-last = reset --soft HEAD~1
 
   # create an empty repository
   create = !"git init && git commit --allow-empty -m init"
