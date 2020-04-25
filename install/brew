@@ -2,8 +2,8 @@
 
 # Exit if Homebrew is not installed.
 if [[ -z $(command -v brew) ]]; then
-  echo "Homebrew is needed here, please install from https://brew.sh..."
-  return 1
+    echo "Homebrew is needed here, please install from https://brew.sh..."
+    return 1
 fi
 
 # shellcheck disable=1090
@@ -17,130 +17,130 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 declare recipes=(
 
-  # Make Mac OS behave more like the servers.
-  'coreutils'
-  'moreutils'
-  'findutils --with-default-names'
-  'binutils'
-  'diffutils'
+    # Make Mac OS behave more like the servers.
+    'coreutils'
+    'moreutils'
+    'findutils --with-default-names'
+    'binutils'
+    'diffutils'
 
-  'gnu-sed --with-default-names'
-  'gnu-indent --with-default-names'
-  'ed --with-default-names'
-  'gnu-tar --with-default-names'
-  'gnu-which --with-default-names'
-  'less'
-  'nano'
-  'rsync'
-  'gawk'
-  'watch'
-  'make --with-default-names'
+    'gnu-sed --with-default-names'
+    'gnu-indent --with-default-names'
+    'ed --with-default-names'
+    'gnu-tar --with-default-names'
+    'gnu-which --with-default-names'
+    'less'
+    'nano'
+    'rsync'
+    'gawk'
+    'watch'
+    'make --with-default-names'
 
-  # Other utilities
-  'awscli'
-  'bash-completion'
-  'bash'
-  'bison'
-  'ctags'
-  # 'elixir'
-  # 'elm'
-  # 'erlang'
-  'emacs'
-  'fish'
-  'flex'
-  'fzf'
-  'gdb'
-  'gh'
-  # 'ghc'
-  'gibo'
-  'git'
-  # 'go'
-  'gpatch'
-  'gpg'
-  'grep --with-default-names'
-  'gzip'
-  'hr'
-  'htop'
-  'httpie'
-  'imagemagick --with-webp'
-  'jp2a'
-  'jq'
-  'libressl'
-  'm4'
-  'mas'
-  'mercurial'
-  'mycli'
-  'mysql'
-  'ngrep'
-  'nmap'
-  'openssh'
-  'perl'
-  'pgcli'
-  'pigz'
-  'pinentry-mac'
-  'postgresql'
-  'pstree'
-  'pv'
-  'rename'
-  'screen'
-  'screen'
-  'shellcheck'
-  'the_silver_searcher' # ag
-  'tmux'
-  'tree'
-  'unzip'
-  'vim --with-override-system-vi --with-lua'
-  'webkit2png'
-  'wget --with-iri'
-  'wifi-password'
-  'zopfli'
-  'zsh'
+    # Other utilities
+    'awscli'
+    'bash-completion'
+    'bash'
+    'bison'
+    'ctags'
+    # 'elixir'
+    # 'elm'
+    # 'erlang'
+    'emacs'
+    'fish'
+    'flex'
+    'fzf'
+    'gdb'
+    'gh'
+    # 'ghc'
+    'gibo'
+    'git'
+    # 'go'
+    'gpatch'
+    'gpg'
+    'grep --with-default-names'
+    'gzip'
+    'hr'
+    'htop'
+    'httpie'
+    'imagemagick --with-webp'
+    'jp2a'
+    'jq'
+    'libressl'
+    'm4'
+    'mas'
+    'mercurial'
+    'mycli'
+    'mysql'
+    'ngrep'
+    'nmap'
+    'openssh'
+    'perl'
+    'pgcli'
+    'pigz'
+    'pinentry-mac'
+    'postgresql'
+    'pstree'
+    'pv'
+    'rename'
+    'screen'
+    'screen'
+    'shellcheck'
+    'the_silver_searcher' # ag
+    'tmux'
+    'tree'
+    'unzip'
+    'vim --with-override-system-vi --with-lua'
+    'webkit2png'
+    'wget --with-iri'
+    'wifi-password'
+    'zopfli'
+    'zsh'
 )
 
 declare applications=(
-  '1password'
-  'airflow'
-  'alfred'
-  'appcleaner'
-  'arq'
-  'authy'
-  'calibre'
-  'deckset'
-  'dropbox'
-  'firefox-nightly'
-  'google-chrome-beta'
-  'iterm2'
-  'karabiner-elements'
-  'licecap'
-  # 'monolingual'
-  # 'onyx'
-  'resolutionator'
-  'slack'
-  'spectacle'
-  'spotify'
-  'sublime-merge'
-  'sublime-tex'
-  'the-unarchiver'
-  'visual-studio-code-insiders'
-  'vlc'
-  'whatsapp'
-  'xquartz'
-  'aws-vault'
+    '1password'
+    'airflow'
+    'alfred'
+    'appcleaner'
+    'arq'
+    'authy'
+    'calibre'
+    'deckset'
+    'dropbox'
+    'firefox-nightly'
+    'google-chrome-beta'
+    'iterm2'
+    'karabiner-elements'
+    'licecap'
+    # 'monolingual'
+    # 'onyx'
+    'resolutionator'
+    'slack'
+    'spectacle'
+    'spotify'
+    'sublime-merge'
+    'sublime-tex'
+    'the-unarchiver'
+    'visual-studio-code-insiders'
+    'vlc'
+    'whatsapp'
+    'xquartz'
+    'aws-vault'
 )
 
 declare fonts=(
-  'font-fira-code'
-  'font-fira-mono'
-  'font-fira-sans'
-  'font-ibm-plex'
-  'font-inconsolata'
-  'font-input'
-  'font-jetbrains-mono'
-  'font-roboto-mono'
-  'font-roboto'
-  'font-source-code-pro'
-  'font-source-sans-pro'
-  'font-source-serif-pro'
+    'font-fira-code'
+    'font-fira-mono'
+    'font-fira-sans'
+    'font-ibm-plex'
+    'font-inconsolata'
+    'font-input'
+    'font-jetbrains-mono'
+    'font-roboto-mono'
+    'font-roboto'
+    'font-source-code-pro'
+    'font-source-sans-pro'
+    'font-source-serif-pro'
 )
 
 brew-tap caskroom/cask
@@ -158,27 +158,27 @@ brew update
 echo -n "Upgrade all already-installed formulae? (y/n) "
 read -rp "" -n 1
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-  echo
-  brew upgrade
+    echo
+    brew upgrade
 fi
 
 for recipe in "${recipes[@]}"; do
-  if [ -n "$recipe" ]; then
-    # shellcheck disable=SC2086
-    brew-install-or-upgrade $recipe
-  fi
+    if [ -n "$recipe" ]; then
+        # shellcheck disable=SC2086
+        brew-install-or-upgrade $recipe
+    fi
 done
 
 for app in "${applications[@]}"; do
-  if [ -n "$app" ]; then
-    brew cask install --require-sha "$app"
-  fi
+    if [ -n "$app" ]; then
+        brew cask install --require-sha "$app"
+    fi
 done
 
 for font in "${fonts[@]}"; do
-  if [ -n "$font" ]; then
-    brew cask install --require-sha "$font"
-  fi
+    if [ -n "$font" ]; then
+        brew cask install --require-sha "$font"
+    fi
 done
 
 # Cleanup stage
@@ -186,9 +186,9 @@ brewroot="$(brew --config | awk '/HOMEBREW_PREFIX/ {print $2}')"/bin
 
 # Fix htop permissions
 if [[ "$(type -P "$brewroot"/htop)" ]] && [[ "$(stat -L -f "%Su:%Sg" "$brewroot/htop")" != "root:wheel" || ! "$(($(stat -L -f "%DMp" "$brewroot/htop") & 4))" ]]; then
-  echo "Updating htop permissions..."
-  sudo chown root:wheel "$brewroot/htop"
-  sudo chmod u+s "$brewroot/htop"
+    echo "Updating htop permissions..."
+    sudo chown root:wheel "$brewroot/htop"
+    sudo chmod u+s "$brewroot/htop"
 fi
 
 ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum

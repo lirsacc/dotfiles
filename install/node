@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
 
 if [[ -z $(command -v nvm) || ! -f "$NVM_DIR/nvm.sh" ]]; then
-  { (
-    [[ -d "$NVM_DIR" ]] && rm -r "$NVM_DIR"
-    # Use cloning instead of direct link so we always get the latest by default
-    git clone https://github.com/creationix/nvm.git "$NVM_DIR"
-    cd "$NVM_DIR" || exit 1
-    # shellcheck disable=2046
-    git checkout $(git describe --abbrev=0 --tags --match "v[0-9]*" origin)
-  ) }
+    { (
+        [[ -d "$NVM_DIR" ]] && rm -r "$NVM_DIR"
+        # Use cloning instead of direct link so we always get the latest by default
+        git clone https://github.com/creationix/nvm.git "$NVM_DIR"
+        cd "$NVM_DIR" || exit 1
+        # shellcheck disable=2046
+        git checkout $(git describe --abbrev=0 --tags --match "v[0-9]*" origin)
+    ); }
 fi
 
 # shellcheck disable=1090
 . "$NVM_DIR/nvm.sh"
 
 declare node_versions=(
-  stable
-  lts/*
+    stable
+    lts/*
 )
 
 for version in "${node_versions[@]}"; do
-  nvm install "$version"
-  nvm use "$version"
+    nvm install "$version"
+    nvm use "$version"
 done
 
 nvm use default

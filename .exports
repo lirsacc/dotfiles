@@ -1,20 +1,18 @@
 #!/usr/bin/env bash
 export PROJECTS="$HOME/projects"
 
-# Make vim the default editor
 export EDITOR="vim"
 export VISUAL_EDITOR="code"
 
-# generic colouriser
+# Generic colouriser
 GRC=$(command -v grc)
-if [ "$TERM" != dumb ] && [ -n "$GRC" ]
-    then
+if [ "$TERM" != dumb ] && [ -n "$GRC" ]; then
+    # shellcheck disable=2139
+    alias colourify="$GRC -es --colour=auto"
+    alias configure='colourify ./configure'
+    for app in {diff,make,gcc,g++,ping,traceroute}; do
         # shellcheck disable=2139
-        alias colourify="$GRC -es --colour=auto"
-        alias configure='colourify ./configure'
-        for app in {diff,make,gcc,g++,ping,traceroute}; do
-            # shellcheck disable=2139
-            alias "$app"='colourify '$app
+        alias "$app=colourify $app"
     done
 fi
 
@@ -58,45 +56,41 @@ export PATH="$HOME/bin:$PATH"
 # Avoid issues with `gpg` as installed via Homebrew.
 # https://stackoverflow.com/a/42265848/96656
 # shellcheck disable=2155
-export GPG_TTY=$(tty);
+export GPG_TTY=$(tty)
 
 export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_BUILD_FROM_SOURCE=0
 export HOMEBREW_NO_EMOJI=1
 export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 # Homebrew replacements of OS X installed tools.
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-
-export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
 export MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
-
-export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
 export MANPATH="/usr/local/opt/make/libexec/gnuman:$MANPATH"
 
-export PATH="/usr/local/opt/m4/bin:$PATH"
-
-export PATH="/usr/local/opt/unzip/bin:$PATH"
-
-export PATH="/usr/local/opt/flex/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/flex/lib"
-export CPPFLAGS="-I/usr/local/opt/flex/include"
+export LDFLAGS="-L/usr/local/opt/libressl/lib"
 
-export PATH="/usr/local/opt/bison/bin:$PATH"
+export CPPFLAGS="-I/usr/local/opt/flex/include"
+export CPPFLAGS="-I/usr/local/opt/libressl/include"
 export LDFLAGS="-L/usr/local/opt/bison/lib"
 
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+export PATH="/usr/local/opt/bison/bin:$PATH"
+export PATH="/usr/local/opt/flex/bin:$PATH"
+export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/libressl/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/libressl/lib"
-export CPPFLAGS="-I/usr/local/opt/libressl/include"
-export PKG_CONFIG_PATH="/usr/local/opt/libressl/lib/pkgconfig"
+export PATH="/usr/local/opt/m4/bin:$PATH"
+export PATH="/usr/local/opt/unzip/bin:$PATH"
 
-# Link Homebrew casks in `/Applications` rather than `~/Applications`
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+export PKG_CONFIG_PATH="/usr/local/opt/libressl/lib/pkgconfig"
 
 # export GOPATH="$HOME/.go"
 # export PATH="$GOPATH/bin:$PATH"
 
-export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
 # export PATH="$HOME/.yarn/bin:$PATH"
@@ -112,5 +106,4 @@ eval "$(pyenv init - --no-rehash zsh)"
 # Disabled because slow on each prompt
 # eval "$(pyenv virtualenv-init -)"
 
-# shellcheck disable=1090
-source "$HOME/.brew.sh"
+export FZF_DEFAULT_COMMAND='ag --literal --files-with-matches --nocolor --hidden -g ""'
