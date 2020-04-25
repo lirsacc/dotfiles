@@ -9,10 +9,15 @@ fi
 # shellcheck disable=1090
 source "$HOME/.brew.sh"
 
-declare recipes=(
-  'gpg'
-  'pinentry-mac'
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_BUILD_FROM_SOURCE=0
+export HOMEBREW_NO_EMOJI=1
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
+declare recipes=(
+
+  # Make Mac OS behave more like the servers.
   'coreutils'
   'moreutils'
   'findutils --with-default-names'
@@ -24,122 +29,126 @@ declare recipes=(
   'ed --with-default-names'
   'gnu-tar --with-default-names'
   'gnu-which --with-default-names'
-  'emacs'
-  'gpatch'
   'less'
-  'm4'
-  'make --with-default-names'
   'nano'
-  'bison'
-  'flex'
   'rsync'
-  # 'gdb'
-  'watch'
   'gawk'
+  'watch'
+  'make --with-default-names'
 
-  'gzip'
-
-  'bash'
+  # Other utilities
+  'awscli'
   'bash-completion'
-
-  'wget --with-iri'
-
-  'vim --with-override-system-vi --with-lua'
-  'grep --with-default-names'
-  'screen'
-  'openssh'
-  'gzip'
-
-  'python'
-  'python@2'
-
-  'htop'
-  'ack'
-  'jp2a'
-  'zsh'
-  'git'
-  # 'mercurial'
-  'imagemagick --with-webp'
-  'pigz'
-  'rename'
-  'tree'
-  'webkit2png'
-  'zopfli'
-  'ngrep'
-  'hr'
-  'the_silver_searcher'  # ag
+  'bash'
+  'bison'
   'ctags'
-  'gibo'
-  'tmux'
-  'screen'
-  'shellcheck'
-  'httpie'
-  'jq'
-  'nmap'
-  'pstree'
-  'pv'
-  'wifi-password'
-  'unzip'
-  'libressl'
-
-  'postgresql'
-  # 'mysql'
-  'pgcli'
-  'mycli'
-
-  # 'erlang'
-  # 'go'
   # 'elixir'
   # 'elm'
+  # 'erlang'
+  'emacs'
+  'fish'
+  'flex'
+  'fzf'
+  'gdb'
+  # 'ghc'
+  'gibo'
+  'git'
+  # 'go'
+  'gpatch'
+  'gpg'
+  'grep --with-default-names'
+  'gzip'
+  'hr'
+  'htop'
+  'httpie'
+  'imagemagick --with-webp'
+  'jp2a'
+  'jq'
+  'libressl'
+  'm4'
+  'mas'
+  'mercurial'
+  'mycli'
+  'mysql'
+  'ngrep'
+  'nmap'
+  'openssh'
   'perl'
-
-  'awscli'
-
-  # 'mas'
+  'pgcli'
+  'pigz'
+  'pinentry-mac'
+  'postgresql'
+  'pstree'
+  'pv'
+  'python'
+  'rename'
+  'screen'
+  'screen'
+  'shellcheck'
+  'the_silver_searcher' # ag
+  'tmux'
+  'tree'
+  'unzip'
+  'vim --with-override-system-vi --with-lua'
+  'webkit2png'
+  'wget --with-iri'
+  'wifi-password'
+  'zopfli'
+  'zsh'
 )
 
 declare applications=(
+  '1password'
+  'airflow'
   'alfred'
   'appcleaner'
+  'arq'
+  'authy'
+  'calibre'
+  'deckset'
   'dropbox'
+  'firefox-nightly'
+  'google-chrome-beta'
   'iterm2'
+  'karabiner-elements'
   'licecap'
   # 'monolingual'
   # 'onyx'
-  'rescuetime'
-  'spectacle'
-  'spotify'
-  'the-unarchiver'
-  'vlc'
-  'xquartz'
-  'whatsapp'
-  'authy'
   'resolutionator'
   'slack'
+  'spectacle'
+  'spotify'
+  'sublime-merge'
   'sublime-tex'
+  'the-unarchiver'
   'visual-studio-code-insiders'
+  'vlc'
+  'whatsapp'
+  'xquartz'
+  'aws-vault'
 )
 
 declare fonts=(
   'font-fira-code'
   'font-fira-mono'
   'font-fira-sans'
+  'font-ibm-plex'
   'font-inconsolata'
   'font-input'
-  'font-open-sans'
+  'font-jetbrains-mono'
   'font-roboto-mono'
   'font-roboto'
   'font-source-code-pro'
   'font-source-sans-pro'
   'font-source-serif-pro'
-  'font-ibm-plex'
 )
 
 brew-tap caskroom/cask
 brew-tap caskroom/fonts
 brew-tap homebrew/cask-versions
-# brew-tap mas-cli/tap
-# brew tap-pin mas-cli/tap
+
+brew-tap mas-cli/tap
+brew tap-pin mas-cli/tap
 
 brew doctor
 
