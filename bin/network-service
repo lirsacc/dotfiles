@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# Adapted from this SO answer: https://apple.stackexchange.com/a/223446
+
+function usage() {
+  echo "List currently active network service / profile"
+  echo
+  echo "Usage: $0 [-n|--name] [-d|--device] [-m|--mac]"
+  echo
+  echo "-n, --name: print only the profile name"
+  echo "-d, --device: print only the network device"
+  echo "-m, --mac: print only the mac address"
+  echo
+}
+
+_print="all"
+
+while [ "$1" != "" ]; do
+    case $(echo "$1" | awk -F= '{print $1}') in
+        -h | --help)
+            usage
+            exit
+            ;;
+        --name|-n)
+            _print="name"
+            ;;
+        --device|-d)
+            _print="device"
+            ;;
+        --mac|-m)
+            _print="mac"
+            ;;
+        *)
+            echo "ERROR: unknown parameter \"$PARAM\""
+            usage
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+services=$(networksetup -listnetworkserviceorder | grep 'Hardware Port')
+
+while read -r line; do
+    service_name=$(echo "$line" | awk -F  "(, )|(: )|[)]" '{print $2}')
+    service_device=$(echo "$line" | awk -F  "(, )|(: )|[)]" '{print $4}')
+    if [ -n "$service_device" ]; then
+        ifout="$(ifconfig "$service_device" 2>/dev/null)"
+        echo "$ifout" | grep 'status: active' > /dev/null 2>&1
+        rc="$?"
+        if [ "$rc" -eq 0 ]; then
+            current_service_name="$service_name"
+            current_service_device="$service_device"
+            current_service_mac=$(echo "$ifout" | awk '/ether/{print $2}')
+        fi
+    fi
+done <<< "$services"
+
+if [ -n "$current_service_name" ]; then
+    if [[ $_print == 'all' ]]; then
+      echo "name: $current_service_name"
+      echo "device: $current_service_device"
+      echo "mac: $current_service_mac"
+    elif [[ $_print == 'name' ]]; then
+      echo "$current_service_name"
+    elif [[ $_print == 'device' ]]; then
+      echo "$current_service_device"
+    elif [[ $_print == 'mac' ]]; then
+      echo "$current_service_mac"
+    fi
+else
+    exit 1
+fi
