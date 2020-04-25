@@ -30,4 +30,4 @@ nvm alias default lts/*
 # Install yarn from homebrew
 # shellcheck disable=1090
 source "$HOME/.brew.sh"
-brew-install-or-upgrade yarn --without-node
+brew-install-or-upgrade yarn --ignore-dependencies
