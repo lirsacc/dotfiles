@@ -81,7 +81,6 @@ declare recipes=(
   'postgresql'
   'pstree'
   'pv'
-  'python'
   'rename'
   'screen'
   'screen'
