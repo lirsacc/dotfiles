@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=1090
+source "$HOME/.brew.sh"
+
+brew-install-or-upgrade fish
+
+if ! functions fisher > /dev/null; then
+    git clone https://github.com/jorgebucaran/fisher.git .fisher.tmp \
+        && mkdir -p "$HOME/.config/fish/functions" \
+        && mv .fisher.tmp/fisher.fish "$HOME/.config/fish/functions" \
+        && rm -rf .fisher.tmp
+fi
+
+fish -c fisher
