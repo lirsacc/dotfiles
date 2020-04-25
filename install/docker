@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# DOCKER_APP_URL=https://download.docker.com/mac/stable/Docker.dmg
-DOCKER_APP_URL=https://download.docker.com/mac/edge/Docker.dmg
-
-curl -o .docker.dmg "$DOCKER_APP_URL"
-hdiutil mount .docker.dmg
-sudo cp -R "/Volumes/Docker/Docker.app" /Applications
-rm -rf .docker.dmg
