@@ -3,6 +3,8 @@
 " it changes other options as a side effect.
 set nocompatible
 
+set encoding=utf-8
+
 " Plugin manager -----------------------------------------------------------------
 if filereadable(expand("~/.vim/plug.vim"))
   source ~/.vim/plug.vim
@@ -66,6 +68,20 @@ set showmatch                                   " live match highlighting
 set hlsearch                                    " highlight matches
 set gdefault                                    " use the `g` flag by default.
 
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in fzf for listing files. Lightning fast and respects .gitignore
+  let $FZF_DEFAULT_COMMAND = 'ag --literal --files-with-matches --nocolor --hidden -g ""'
+
+  if !exists(":Ag")
+    command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+    nnoremap \ :Ag<SPACE>
+  endif
+endif
+
 " Indentation
 set tabstop=2
 set tabpagemax=15                               " Only show 15 tabs
@@ -125,7 +141,16 @@ set showmatch                                   " Show matching brackets/parenth
 set winminheight=0                              " Windows can be 0 line high
 set whichwrap=b,s,h,l,<,>,[,]                   " Backspace and cursor keys wrap too
 
+" Display extra whitespace
+set list listchars=tab:»·,trail:·,nbsp:·
+
+" Use one space, not two, after punctuation.
+set nojoinspaces
+
 set list listchars=tab:\ \ ,trail:·            " Display tabs and trailing spaces visually
+
+" Treat <li> and <p> tags like the block tags they are
+let g:html_indent_tags = 'li\|p'
 
 " Shortcuts
 nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
@@ -163,7 +188,7 @@ set scrolljump=5                                " Lines to scroll when cursor le
 
 set background=dark                             " Assume a dark background
 set termguicolors
-colorscheme molokai
+colorscheme ayu
 
 " Load plugin specific settings
 for fpath in split(globpath('~/.vim/settings', '*.vim'), '\n')

@@ -10,3 +10,5 @@ nnoremap <silent> <leader>gw :Gwrite<CR>:GitGutter<CR>
 nnoremap <silent> <leader>ge :Gedit<CR>
 nnoremap <silent> <leader>gg :GitGutterToggle<CR>
 
+" Set tags for vim-fugitive
+set tags^=.git/tags
