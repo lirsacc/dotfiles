@@ -4,7 +4,6 @@
 # Stolen and adapted from:
 # http://stevelosh.com/blog/2010/02/my-extravagant-zsh-prompt/#my-right-prompt-battery-capacity
 
-from __future__ import print_function
 import math
 import subprocess
 
@@ -12,7 +11,8 @@ p = subprocess.Popen(
   ['ioreg', '-rc', 'AppleSmartBattery'],
   stdout=subprocess.PIPE
 )
-output = p.communicate()[0]
+
+output = p.communicate()[0].decode('utf8')
 
 o_max = [l for l in output.splitlines() if 'MaxCapacity' in l][0]
 o_cur = [l for l in output.splitlines() if 'CurrentCapacity' in l][0]
