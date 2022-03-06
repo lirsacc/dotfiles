@@ -6,6 +6,8 @@ alias reload='exec ${SHELL} -l'
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
 
+alias p='cd $PROJECTS'
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."

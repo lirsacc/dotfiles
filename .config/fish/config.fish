@@ -12,29 +12,19 @@ set -gx LC_ALL en_US.UTF-8
 set -gx LANG en_US.UTF-8
 
 set -gx EDITOR "vim"
-set -gx VISUAL_EDITOR "code"
-# set -gx EDITOR (which code) -w
+set -gx VISUAL_EDITOR "code -a -w"
+
+set -g fish_emoji_width 2
 
 # Prompt
-set -gx SPACEFISH_NODE_SHOW false
-set -gx SPACEFISH_JULIA_SHOW false
-set -gx SPACEFISH_DOCKER_SHOW false
-set -gx SPACEFISH_RUBY_SHOW false
-set -gx SPACEFISH_HASKELL_SHOW false
-set -gx SPACEFISH_CONDA_SHOW false
-set -gx SPACEFISH_ELIXIR_SHOW false
-set -gx SPACEFISH_PYENV_SHOW false
-set -gx SPACEFISH_GOLANG_SHOW false
-set -gx SPACEFISH_PHP_SHOW false
-set -gx SPACEFISH_DOTNET_SHOW false
+# Starship not installed or available on m1 yet.
+# set -gx STARSHIP_CONFIG $HOME/.config/fish/starship.toml
+# starship init fish | source
 
-set -gx SPACEFISH_BATTERY_SHOW false
-
-set -gx SPACEFISH_GIT_STATUS_SHOW false
-
-set -gx SPACEFISH_VENV_SYMBOL '🐍 '
-set -gx SPACEFISH_CHAR_SYMBOL '❯'
-set -gx SPACEFISH_PROMPT_ADD_NEWLINE false
+# In the meantime use pure (https://github.com/pure-fish/pure)
+set -g pure_symbol_prompt "ツ"
+# set -g pure_symbol_reverse_prompt "ツ"
+set -g pure_enable_single_line_prompt "true"
 
 # Highlight section titles in manual pages
 # highlighting inside manpages and elsewhere
@@ -49,12 +39,6 @@ set -gx LESS_TERMCAP_us \e'[04;38;5;146m' # begin underline
 # Don’t clear the screen after quitting a manual page
 set -gx MANPAGER "less -X"
 
-set -gx MANPATH /usr/local/share/man $MANPATH
-set -gx INFOPATH /usr/local/share/info $INFOPATH
-
-set -gx PATH /usr/local/bin:/usr/local/sbin $PATH
-set -gx PATH $HOME/bin $PATH
-
 # Avoid issues with `gpg` as installed via Homebrew.
 # https://stackoverflow.com/a/42265848/96656
 set -gx GPG_TTY (tty)
@@ -66,44 +50,85 @@ set -gx HOMEBREW_NO_AUTO_UPDATE 1
 set -gx HOMEBREW_BUILD_FROM_SOURCE 0
 set -gx HOMEBREW_NO_EMOJI 1
 set -gx HOMEBREW_NO_ANALYTICS 1
-set -gx HOMEBREW_CASK_OPTS --appdir=/Applications
 
-# Homebrew replacements of OS X installed tools.
-set -gx MANPATH /usr/local/opt/coreutils/libexec/gnuman $MANPATH
-set -gx MANPATH /usr/local/opt/grep/libexec/gnuman $MANPATH
-set -gx MANPATH /usr/local/opt/make/libexec/gnuman $MANPATH
+set -gx HOMEBREW_PREFIX "/opt/homebrew";
+set -gx HOMEBREW_CELLAR "/opt/homebrew/Cellar";
+set -gx HOMEBREW_REPOSITORY "/opt/homebrew";
 
-set -gx LDFLAGS "-L/usr/local/opt/flex/lib"
-set -gx LDFLAGS "-L/usr/local/opt/libressl/lib"
+set -gx PATH \
+"/opt/homebrew/bin" \
+"/opt/homebrew/sbin" \
+"/opt/homebrew/opt/coreutils/libexec/gnubin" \
+"/opt/homebrew/opt/gnu-indent/libexec/gnubin" \
+"/opt/homebrew/opt/gnu-sed/libexec/gnubin" \
+"/opt/homebrew/opt/gnu-tar/libexec/gnubin" \
+"/opt/homebrew/opt/gnu-which/libexec/gnubin" \
+"/opt/homebrew/opt/grep/libexec/gnubin" \
+"/opt/homebrew/opt/make/libexec/gnubin" \
+"/opt/homebrew/opt/unzip/bin" \
+$PATH;
 
-set -gx CPPFLAGS "-I/usr/local/opt/flex/include"
-set -gx CPPFLAGS "-I/usr/local/opt/libressl/include"
-set -gx LDFLAGS "-L/usr/local/opt/bison/lib"
 
-set -gx PATH /usr/local/opt/coreutils/libexec/gnubin $PATH
-set -gx PATH /usr/local/opt/gnu-sed/libexec/gnubin $PATH
-set -gx PATH /usr/local/opt/make/libexec/gnubin $PATH
-set -gx PATH /usr/local/opt/bison/bin $PATH
-set -gx PATH /usr/local/opt/flex/bin $PATH
-set -gx PATH /usr/local/opt/grep/libexec/gnubin $PATH
-set -gx PATH /usr/local/opt/libressl/bin $PATH
-set -gx PATH /usr/local/opt/m4/bin $PATH
-set -gx PATH /usr/local/opt/unzip/bin $PATH
+set -q MANPATH; or set MANPATH ''; set -gx MANPATH "/opt/homebrew/share/man" $MANPATH;
+set -q INFOPATH; or set INFOPATH ''; set -gx INFOPATH "/opt/homebrew/share/info" $INFOPATH;
 
-set -gx PKG_CONFIG_PATH "/usr/local/opt/libressl/lib/pkgconfig"
+set -q LDFLAGS; or set LDFLAGS '';
+
+set -gx LDFLAGS \
+"-L/opt/homebrew/lib" \
+"-L/opt/homebrew/opt/binutils/lib" \
+"-L/opt/homebrew/opt/libffi/lib" \
+"-L/opt/homebrew/opt/libressl/lib" \
+"-L/opt/homebrew/opt/openssl@1.1/lib" \
+"-L/opt/homebrew/opt/bzip2/lib" \
+"-L/opt/homebrew/opt/zlib/lib" \
+"-L/opt/homebrew/opt/bison/lib" \
+"-L/opt/homebrew/opt/curl/lib" \
+$LDFLAGS;
+
+set _CFLAGS \
+"-I/opt/homebrew/include" \
+"-I/opt/homebrew/opt/binutils/include" \
+"-I/opt/homebrew/opt/libffi/include" \
+"-I/opt/homebrew/opt/libressl/include" \
+"-I/opt/homebrew/opt/openssl@1.1/include" \
+"-I/opt/homebrew/opt/bzip2/include" \
+"-I/opt/homebrew/opt/curl/include" \
+"-I/opt/homebrew/opt/zlib/include";
+
+set -q CPPFLAGS; or set CPPFLAGS '';
+set -gx CPPFLAGS $_CFLAGS $CPPFLAGS;
+
+set -q CFLAGS; or set CFLAGS '';
+set -gx CFLAGS $_CFLAGS $CFLAGS;
+
+set -q PKG_CONFIG_PATH; or set PKG_CONFIG_PATH '';
+set -gx PKG_CONFIG_PATH \
+"/opt/homebrew/opt/libffi/lib/pkgconfig" \
+"/opt/homebrew/opt/libressl/lib/pkgconfig" \
+"/opt/homebrew/opt/openssl@1.1/lib/pkgconfig" \
+"/opt/homebrew/opt/zlib/lib/pkgconfig" \
+"/opt/homebrew/opt/curl/lib/pkgconfig" \
+$PKG_CONFIG_PATH;
 
 set -gx PATH $HOME/.cargo/bin $PATH
-set -gx NVM_DIR $HOME/.nvm
+set -gx PATH $HOME/bin $PATH
 
 # Python
-set -gx PATH /usr/local/opt/python/libexec/bin $PATH
-set -gx PYENV_ROOT $HOME/.pyenv
-set -gx fish_user_paths $PYENV_ROOT/bin $fish_user_paths
-pyenv init - | source
+set -gx PATH /opt/homebrew/opt/python@3.9/libexec/bin $PATH
 
-command -v ag >/dev/null && set -gx FZF_DEFAULT_COMMAND 'ag --literal --files-with-matches --nocolor --hidden -g ""'
+command -v rg >/dev/null && set -gx FZF_DEFAULT_COMMAND 'rg --files --hidden'
 
 source ~/.config/fish/utils.fish
 
-set PROJECTS "$HOME/projects"
+set -gx PROJECTS "$HOME/projects"
 alias p "cd $HOME/projects"
+
+set -g direnv_fish_mode disable_arrow
+direnv hook fish | source
+
+source /opt/homebrew/opt/asdf/asdf.fish
+
+if test -d "/opt/homebrew/share/fish/vendor_completions.d"
+    set -gx fish_complete_path $fish_complete_path (brew --prefix)/share/fish/vendor_completions.d
+end

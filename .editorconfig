@@ -6,7 +6,7 @@ indent_style = space
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
-indent_size = 2
+indent_size = 4
 
 [*.java]
 indent_style = tab
@@ -31,14 +31,6 @@ indent_size = tab
 [*.go]
 indent_size = tab
 indent_style = 2
-
-[*.{ex,exs}]
-indent_size = 2
-indent_style = space
-
-[*.elm]
-indent_style = space
-indent_size = 4
 
 [*.md]
 trim_trailing_whitespace = false

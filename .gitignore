@@ -13,8 +13,8 @@ tmp/**/*
 .vim/swaps/*
 .vim/undo
 
-# git credentials
-.gitconfig.local
+# local git configs
+.gitconfig.*
 
 # osx
 ._*
@@ -67,3 +67,7 @@ pids
 # ctags
 tags
 !tags/
+
+# direnv
+.envrc
+.direnv

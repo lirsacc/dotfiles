@@ -2,12 +2,6 @@
 
 ZGEN_AUTOLOAD_COMPINIT=0
 
-# uncomment to profile prompt startup with zprof
-# zmodload zsh/zprof
-
-fpath=(~/.zfuncs "${fpath[@]}")
-
-autoload -Uz ~/.zfuncs/*(:t)
 autoload -Uz compinit
 
 source "${HOME}/.zgen/zgen.zsh"
@@ -47,14 +41,16 @@ if ! zgen saved; then
     zgen save
 fi
 
-source "${HOME}/.aliases"
-source "${HOME}/.functions"
-source "${HOME}/.exports"
+
+[[ -f "${HOME}/.aliases" ]] && source "${HOME}/.aliases"
+[[ -f "${HOME}/.functions" ]] && source "${HOME}/.functions"
+[[ -f "${HOME}/.exports" ]] && source "${HOME}/.exports"
 
 [[ -f "${HOME}/.extra" ]] && source "${HOME}/.extra"
 [[ -f "${HOME}/.local" ]] && source "${HOME}/.local"
 
-source "${HOME}/.shims.sh"
+eval "$(direnv hook zsh)"
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 unsetopt CORRECT
 
@@ -63,9 +59,4 @@ setopt appendhistory    # Append history to the history file (no overwriting)
 setopt sharehistory     # Share history across terminals
 setopt incappendhistory # Immediately append to the history file, not just when a term is killed
 
-# uncomment to finish profiling
-# zprof
-
-# uncomment for vim bindings
-# bindkey -v
 bindkey '^U' backward-kill-line

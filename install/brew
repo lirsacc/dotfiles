@@ -6,92 +6,102 @@ if [[ -z $(command -v brew) ]]; then
     return 1
 fi
 
-# shellcheck disable=1090
-source "$HOME/.brew.sh"
+# Useful brew shortcuts taken from https://github.com/thoughtbot/laptop
+brew-install-or-upgrade() {
+  if brew-is-installed "$1"; then
+    if brew-is-upgradable "$1"; then
+      brew upgrade "$@"
+    fi
+  else
+    brew install "$@"
+  fi
+}
+
+brew-is-installed() {
+  local name
+  name="$(brew-expand-alias "$1")"
+  res=$(brew ls --versions "$name")
+  if [[ -z "$res" ]]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+brew-is-upgradable() {
+  local name
+  name="$(brew-expand-alias "$1")"
+  ! brew outdated --quiet "$name" >/dev/null
+}
+
+brew-expand-alias() {
+  brew info "$1" 2>/dev/null | head -1 | awk '{gsub(/.*\//, ""); gsub(/:/, ""); print $1}'
+}
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_BUILD_FROM_SOURCE=0
 export HOMEBREW_NO_EMOJI=1
 export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 declare recipes=(
-
-    # Make Mac OS behave more like the servers.
-    'coreutils'
-    'moreutils'
-    'findutils --with-default-names'
-    'binutils'
-    'diffutils'
-
-    'gnu-sed --with-default-names'
-    'gnu-indent --with-default-names'
-    'ed --with-default-names'
-    'gnu-tar --with-default-names'
-    'gnu-which --with-default-names'
-    'less'
-    'nano'
-    'rsync'
-    'gawk'
-    'watch'
-    'make --with-default-names'
-
-    # Other utilities
-    'awscli'
-    'bash-completion'
+    'asdf'
+    'autoconf'
+    'automake'
     'bash'
+    'binutils'
     'bison'
+    'cmake'
+    'coreutils'
     'ctags'
-    # 'elixir'
-    # 'elm'
-    # 'erlang'
+    'diffutils'
+    'direnv'
+    'ed'
     'emacs'
+    'findutils'
     'fish'
-    'flex'
+    'fonttools'
     'fzf'
-    'gdb'
+    'gawk'
     'gh'
-    # 'ghc'
     'gibo'
     'git'
-    # 'go'
-    'gpatch'
+    'gnu-indent'
+    'gnu-sed'
+    'gnu-tar'
+    'gnu-which'
+    'go'
     'gpg'
-    'grep --with-default-names'
+    'grep'
     'gzip'
-    'hr'
     'htop'
-    'httpie'
-    'imagemagick --with-webp'
-    'jp2a'
+    'imagemagick'
+    'jless'
     'jq'
+    'less'
     'libressl'
-    'm4'
+    'make'
     'mas'
     'mercurial'
-    'mycli'
-    'mysql'
+    'moreutils'
+    'nano'
+    'neovim'
     'ngrep'
     'nmap'
-    'openssh'
+    'openssl@1.1'
     'perl'
-    'pgcli'
-    'pigz'
     'pinentry-mac'
-    'postgresql'
     'pstree'
     'pv'
     'rename'
-    'screen'
+    'rsync'
     'screen'
     'shellcheck'
-    'the_silver_searcher' # ag
     'tmux'
     'tree'
     'unzip'
-    'vim --with-override-system-vi --with-lua'
-    'webkit2png'
-    'wget --with-iri'
+    'vim'
+    'watch'
+    'wget'
     'wifi-password'
     'zopfli'
     'zsh'
@@ -99,56 +109,31 @@ declare recipes=(
 
 declare applications=(
     '1password'
-    'airflow'
     'alfred'
     'appcleaner'
-    'arq'
+    # 'arq'
     'authy'
-    'calibre'
-    'deckset'
-    'dropbox'
-    'firefox-nightly'
-    'google-chrome-beta'
+    # 'calibre'
     'iterm2'
-    'karabiner-elements'
-    'licecap'
-    # 'monolingual'
-    # 'onyx'
-    'resolutionator'
-    'slack'
-    'spectacle'
-    'spotify'
+    'rectangle'
     'sublime-merge'
     'sublime-tex'
     'the-unarchiver'
     'visual-studio-code-insiders'
     'vlc'
-    'whatsapp'
     'xquartz'
-    'aws-vault'
 )
 
 declare fonts=(
+    'font-cascadia-code'
+    'font-cascadia-mono'
     'font-fira-code'
     'font-fira-mono'
     'font-fira-sans'
     'font-ibm-plex'
-    'font-inconsolata'
     'font-input'
     'font-jetbrains-mono'
-    'font-roboto-mono'
-    'font-roboto'
-    'font-source-code-pro'
-    'font-source-sans-pro'
-    'font-source-serif-pro'
 )
-
-brew-tap caskroom/cask
-brew-tap caskroom/fonts
-brew-tap homebrew/cask-versions
-
-brew-tap mas-cli/tap
-brew tap-pin mas-cli/tap
 
 brew doctor
 
@@ -165,7 +150,7 @@ fi
 for recipe in "${recipes[@]}"; do
     if [ -n "$recipe" ]; then
         # shellcheck disable=SC2086
-        brew-install-or-upgrade $recipe
+        brew install $recipe
     fi
 done
 
@@ -180,18 +165,6 @@ for font in "${fonts[@]}"; do
         brew cask install --require-sha "$font"
     fi
 done
-
-# Cleanup stage
-brewroot="$(brew --config | awk '/HOMEBREW_PREFIX/ {print $2}')"/bin
-
-# Fix htop permissions
-if [[ "$(type -P "$brewroot"/htop)" ]] && [[ "$(stat -L -f "%Su:%Sg" "$brewroot/htop")" != "root:wheel" || ! "$(($(stat -L -f "%DMp" "$brewroot/htop") & 4))" ]]; then
-    echo "Updating htop permissions..."
-    sudo chown root:wheel "$brewroot/htop"
-    sudo chmod u+s "$brewroot/htop"
-fi
-
-ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
 
 # Remove outdated versions from the cellar
 brew cleanup

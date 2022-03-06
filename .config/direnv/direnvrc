@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# Direnv global lib.
+# This works on top of the stdlib (https://github.com/direnv/direnv/blob/master/stdlib.sh).
+
+
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+_get_python_version() {
+    cmd=${1:-'python'}
+    "$cmd" -c "import platform; print(platform.python_version())"
+}
+
+# ASDF driven python environment creation.
+# Control variables:
+# - VIRTUAL_ENV_NAME
+# - VIRTUAL_ENV_ALIAS
+# - VIRTUAL_ENV_OPTIONS
+layout_python_asdf() {
+    _python_version=${1}
+
+    if [[ ! -z $_python_version ]]; then
+        if ! asdf where python "$_python_version"; then
+            # TODO: Auto install?
+            log_error "Python version $_python_version not found."
+            log_error "Install it with 'asdf install python $_python_version'"
+            return 1
+        fi
+        _python="$(asdf where python $_python_version)/bin/python"
+    else
+        _python='python'
+        _python_version=$(_get_python_version)
+        if [[ -z $_python_version ]]; then
+            log_error "Could not detect Python version."
+            return 1
+        fi
+    fi
+
+    _venv_name=${VIRTUAL_ENV_NAME:-"$(basename $(pwd))-${_python_version}"}
+    _venv_alias=${VIRTUAL_ENV_ALIAS:-'.venv'}
+    _venv_options=${VIRTUAL_ENV_OPTIONS:-'--copies --upgrade --upgrade-deps'}
+
+    # Default to local but allow usual WORKON_HOME behaviour if set up.
+    _workon_home=${WORKON_HOME:-"$(pwd)/.direnv/python"}
+    _venv_location="$_workon_home/$_venv_name"
+
+    # TODO: Is that necesary?
+    unset PYTHONHOME
+
+    # TODO: Handle existing venv context
+    unset VIRTUAL_ENV
+
+    export VIRTUAL_ENV=$(realpath $_venv_location)
+
+    if [[ -d $VIRTUAL_ENV ]] && [[ ! -z $(ls -A $VIRTUAL_ENV) ]];  then
+        # TODO: Deal with invalid virtualenv.
+        true
+    else
+        log_status "No virtual env found at $VIRTUAL_ENV."
+         mkdir -p $VIRTUAL_ENV
+        $_python -m venv --copies --upgrade "$VIRTUAL_ENV"
+    fi
+
+    # Should be no need to go through the standard activate dance as
+    # direnv takes care of scoping and cleanup.
+    export PATH="${VIRTUAL_ENV}/bin:${PATH}"
+
+    # Create the alias for vscode and other tools.
+    if [[ ! -z $_venv_alias ]]; then
+        _link="$(pwd)/$_venv_alias"
+        if [[ ! -e "$_link" ]] || [[ ! "$(readlink -- "$_link")" = "$VIRTUAL_ENV" ]]; then
+            log_status "Creating virtualenv symlink at $_venv_alias"
+            rm -rf "$_link"
+            ln -s "$VIRTUAL_ENV" "$_link"
+        fi
+    fi
+}

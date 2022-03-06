@@ -46,7 +46,7 @@
 
   # Commands for quickly saving current work state
   fix = commit --amend --no-edit
-  wip = !"git add . --all -U && git commit -m wip"
+  wip = !"git reset . && git add . --all -U && git commit -m wip"
   save = stash save -u
 
   # Credit an author on the latest commit
@@ -54,6 +54,8 @@
 
   # Interactive rebase with the given number of latest commits
   reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+  br = rev-parse --abbrev-ref HEAD
 
   # list aliases
   aliases = config --get-regexp alias
