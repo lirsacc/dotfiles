@@ -188,4 +188,4 @@ set scrolljump=5                                " Lines to scroll when cursor le
 
 set background=dark                             " Assume a dark background
 set termguicolors
-colorscheme ayu
+colorscheme industry
