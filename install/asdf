@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-ASDF_INSTALL_NON_CORE_PLUGINS=${ASDF_INSTALL_NON_CORE_PLUGINS:1}
-ASDF_INSTALL_DEFAULT_VERSIONS=${ASDF_INSTALL_DEFAULT_VERSIONS:1}
-
 core_plugins=(
     direnv
     python
@@ -41,7 +38,7 @@ fi
 function _install() {
     echo "[asdf] installing plugin $1"
     asdf plugin add $1
-    if [ ! -z "${default_versions[$1]}" ] && [ ! -z "$ASDF_INSTALL_DEFAULT_VERSIONS" ]; then
+    if [ ! -z "${default_versions[$1]}" ]; then
         IFS=', ' read -r -a versions <<< "${default_versions[$1]}"
         for version in ${versions[@]}; do
             echo "[asdf] Installing $1@$version"
@@ -59,3 +56,6 @@ if [ ! -z "$ASDF_INSTALL_NON_CORE_PLUGINS" ]; then
         _install $plugin
     done
 fi
+
+asdf direnv setup --shell fish --version latest
+asdf direnv setup --shell zsh --version latest
