@@ -6,6 +6,13 @@ set -eo pipefail
 # Uncomment for debug information
 # set -x
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+scripts="${SCRIPT_DIR}/install"
+target="${HOME}"
+extra_directories=("projects")
+branch="master"
+
 usage="
                                            .
 Your friendly dotfiles bootstraper bot  ~(0_0)~
@@ -19,37 +26,18 @@ Options and arguments:
   -f, --force         Force overwrite files in target directory
   -l, --local         Use local repo only and do not update from git
   -s, --no-install    Sync only and doesn't run the install scripts
+  --no-update         Only sync new file, not changes
+  --no-links          Do not sync symlinks
 
   --target            Use this location instead of \$HOME ($HOME), must be a directory
-  --install           Look for install scripts there instead of $(pwd)/install
-  --branch            Git branch to update from
+  --install           Where to look for install scripts [default: ${scripts}]
+  --branch            Git branch to update from [default: ${branch}]
   "
 
 if ! [[ "$OSTYPE" =~ darwin* ]]; then
-    echo "This is meant to be run on macOS only"
+    echo "This is meant to be run on macOS and will probably break on other systems."
     exit
 fi
-
-# Parameters
-# ------------------------------------------------------------------------------
-
-scripts="${INSTALL_SCRIPTS:-"$(pwd)/install"}"
-target="${HOME}"
-directories=("projects")
-branch="master"
-
-rsync_exclude=(
-    ".git/"
-    "install"
-    "${scripts}"
-    "colors.sh"
-    ".DS_Store"
-    "bootstrap.sh"
-    "README.md"
-    "LICENSE-MIT.txt"
-    ".gitkeep"
-    "_rename-computer.sh"
-)
 
 # Read the options
 # ------------------------------------------------------------------------------
@@ -59,6 +47,8 @@ OPTIND=1
 force=false
 pull=true
 sync_only=false
+no_update=false
+no_links=false
 dry_run=false
 
 optspec=":hflsdc-:"
@@ -82,6 +72,12 @@ while getopts "${optspec}" opt; do
                     ;;
                 no-install)
                     sync_only=true
+                    ;;
+                no-update)
+                    no_update=true
+                    ;;
+                no-links)
+                    no_links=true
                     ;;
                 dry-run)
                     dry_run=true
@@ -175,73 +171,86 @@ if [ "$1" = "--" ]; then shift; fi
 
 unset val
 
-# Source and define helpers
-# ------------------------------------------------------------------------------
+# ==============================================================================
+# Utils
+# ==============================================================================
 
 # shellcheck source=/dev/null
 source .colors.sh
 
-function _bot() {
-    clr_bold clr_green "    .     "
-    clr_bold clr_green " ~(0_0)~  " -n
-    clr_bold "$@"
-}
-
-function _bot_error() {
-    clr_bold clr_red "    .     "
-    clr_bold clr_red " ~(0_0)~  " -n
-    clr_bold clr_red "$@"
-    echo
-}
-
-function _bot_exit() {
-    clr_bold clr_cyan "    .     "
-    clr_bold clr_cyan " ~(0_0)~  " -n
-    clr_bold clr_cyan "Bot out!"
-    echo
-    _cleanup
-    exit 0
-}
-
-function _align() {
-    echo -n "           "
-}
-
-function _rsync() {
-    rsync "${rsync_exclude[@]/#/--exclude=}" -a -t -p --no-perms "$@" . "$target"
-}
+# shellcheck source=/dev/null
+source .bot.sh
 
 function _install_homebrew() {
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 
-function _pretty_rsync_change() {
+rsync_exclude=(
+    ".git/"
+    "install"
+    "${scripts}"
+    ".colors.sh"
+    ".bot.sh"
+    "bootstrap.sh"
+    ".DS_Store"
+    "README.md"
+    "LICENSE-MIT.txt"
+    ".gitkeep"
+    ".Trash"
+)
+
+rsync_flags=(
+    --archive
+    --partial
+    --progress
+    --ignore-times
+    --checksum
+    --no-perms
+    --executability
+    --recursive
+    --human-readable
+)
+
+for x in ${rsync_exclude[*]}; do
+    rsync_flags+=( "--exclude=$x" )
+done
+
+if [[ "$no_update" == "true" ]]; then
+    rsync_flags+=( --ignore-existing )
+fi
+
+if [[ "$no_links" == "true" ]]; then
+    rsync_flags+=( --no-links )
+else
+    rsync_flags+=(
+        --links
+        --safe-links
+    )
+fi
+
+function _rsync() {
+    rsync ${rsync_flags[@]} "$@" . "$target"
+}
+
+function _prettify_rsync_output() {
+    local _update __type _path _mod
+
     # Transform rsync `itemize` output in a `git status`-like manner
-    local start_ cmd_ mod_ file_
+    _update="${1:0:1}"
+    _type="${1:1:1}"
+    _path="${1:10}"
+    _mod="${1:2:7}"
 
-    cmd_=""
-    start_="${1:0:1}"
-    mod_="${1:2:9}"
-    file_="${1:13}"
-
-    # shellcheck disable=2076
-    if [[ ! "<>c" =~ "$start_" ]]; then
+    if [[ "$_update" == "." ]] || [[ "$_type" == "d" ]] || [[ "$_mod" == "..t...." ]]; then
         return 0
     fi
 
-    case "$mod_" in
-        '+++++++')
-            cmd_="clr_red 'MISSING ' -n"
-            ;;
-        '.st......' | '.s.......' | '..t......')
-            # Rsync change state is qualified by git diff status as we only
-            # care about the file's contents.
-            git diff -s "$target/$file_" "$(pwd)/$file_" || cmd_="clr_blue 'UPDATED ' -n"
-            ;;
-    esac
-
-    if [[ -n "${cmd_}" ]]; then
-        eval "_align;$cmd_;echo $file_"
+    if [[ "$_mod" == "+++++++" ]]; then
+        _align && clr_bold clr_green "CREATE " -n && echo "$_path"
+    elif [[ "$_mod" == c* ]]; then # Checksum differs
+        _align && clr_bold clr_blue "UPDATE " -n && echo "$_path"
+    elif [[ "$_update$_type" == "cL" ]]; then  # New symlink
+        _align && clr_bold clr_blue "UPDATE " -n && echo "$_path"
     fi
 }
 
@@ -249,28 +258,23 @@ function check_changes() {
     # Get file change for known files (into the dotfiles repo) from rsync
     # and format them nicely
     local changes
-    _bot "Checking for changed files against $target (this does not check for files deleted in the repo but not in the target)"
-    changes=$(_rsync -i --dry-run)
-    if [[ -z "${changes// /}" ]]; then
+    _bot "Checking for changed files against $target"
+    _bot "WARN: this does not check for files deleted in the repo but not in the target"
+
+    readarray -t changes < <(_rsync -i --dry-run)
+    IFS=$'\n' read -r -d '' -a changes < <(_rsync --itemize-changes --dry-run && printf '\0')
+
+    if ! (( ${#changes[@]} )); then
         _bot "No change detected"
-        _cleanup
         exit 0
     else
         _bot "Changes detected:"
         echo
-        (
-            IFS='
-'
-            for x in $changes; do _pretty_rsync_change "$x"; done
-        )
+        IFS=''
+        for x in ${changes[*]}; do
+            _prettify_rsync_output "$x"
+        done
     fi
-}
-
-function _cleanup() {
-    unset _rsync _install_homebrew check_changes _pretty_rsync_change
-    unset _bot _align _bot_error _bot_exit
-    unset force pull dry_run sync_only
-    unset rsync_exclude scripts directories target
 }
 
 # ==============================================================================
@@ -297,7 +301,7 @@ if $pull; then # -- Update dotfiles from git repo
     [[ $? == 1 ]] && _bot_error "Error moving directories" && exit 1
     echo
     git pull origin "$branch"
-    [[ $? == 1 ]] && _bot_error "Error running 'git pull origin master'" && exit 1
+    [[ $? == 1 ]] && _bot_error "Error running 'git pull origin $branch'" && exit 1
     echo
 fi
 
@@ -338,6 +342,7 @@ done
 
 _bot "Installing xcode command line tools"
 xcode-select --install || true
+sudo xcodebuild -license accept || true
 
 if [[ -z $(command -v brew) ]]; then
     if $force; then
@@ -362,7 +367,7 @@ fi
 
 _bot "Do you want to rename your computer (current name: $(scutil --get ComputerName))? (y/n) " -n
 read -rp "" -n 1
-[[ $REPLY =~ ^[Yy]$ ]] && echo && ./_rename-computer.sh
+[[ $REPLY =~ ^[Yy]$ ]] && echo && ./.rename-computer.sh
 
 _bot "Processing install scripts in '$scripts'"
 for file in "$scripts"/*; do

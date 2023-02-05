@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=1090
-source "$HOME/.brew.sh"
+if [[ -z $(command -v fish) ]]; then
+    echo "[fish] fish should have been installed "
+    return 1
+fi
 
-brew-install-or-upgrade fish
+fish_bin=$(which fish)
 
-if ! functions fisher > /dev/null; then
+# Setup fish as default shell
+read -rp "Setup fish ($fish_bin) as the default shell ? (y/n) " -n 1
+[[ $REPLY =~ ^[Yy]$ ]] && chsh -s "$fish_bin" || echo
+
+if ! fish -c 'functions fisher' > /dev/null; then
     git clone https://github.com/jorgebucaran/fisher.git .fisher.tmp \
         && mkdir -p "$HOME/.config/fish/functions" \
         && mv .fisher.tmp/fisher.fish "$HOME/.config/fish/functions" \

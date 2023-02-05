@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+dd if=/dev/urandom bs="${2:-1M}" count="$1" 2>/dev/null | cat

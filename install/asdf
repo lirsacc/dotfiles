@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+ASDF_INSTALL_NON_CORE_PLUGINS=${ASDF_INSTALL_NON_CORE_PLUGINS:1}
+ASDF_INSTALL_DEFAULT_VERSIONS=${ASDF_INSTALL_DEFAULT_VERSIONS:1}
+
+core_plugins=(
+    direnv
+    python
+    bun
+    nodejs
+    zig
+)
+
+non_core_plugins=(
+    deno
+    elixir
+    gcloud
+    graalvm
+    helm
+    java
+    kapp
+    kbld
+    kubectl
+    terraform
+    ytt
+)
+
+declare -A default_versions
+
+default_versions['python']='latest 3.11-dev 3.10-dev 3.9-dev'
+default_versions['direnv']='latest'
+default_versions['bun']='latest'
+default_versions['zig']='latest'
+default_versions['nodejs']='latest lts'
+
+if [[ -z $(command -v asdf) ]]; then
+    echo "[asdf] asdf should have been installed "
+    return 1
+fi
+
+function _install() {
+    echo "[asdf] installing plugin $1"
+    asdf plugin add $1
+    if [ ! -z "${default_versions[$1]}" ] && [ ! -z "$ASDF_INSTALL_DEFAULT_VERSIONS" ]; then
+        IFS=', ' read -r -a versions <<< "${default_versions[$1]}"
+        for version in ${versions[@]}; do
+            echo "[asdf] Installing $1@$version"
+            asdf install $1 $version
+        done
+    fi
+}
+
+for plugin in ${core_plugins[*]}; do
+    _install $plugin
+done
+
+if [ ! -z "$ASDF_INSTALL_NON_CORE_PLUGINS" ]; then
+    for plugin in ${non_core_plugins[*]}; do
+        _install $plugin
+    done
+fi

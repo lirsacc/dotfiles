@@ -1,0 +1,108 @@
+add_newline = false
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$python\
+$rust\
+$cmd_duration\
+$sudo\
+$character"""
+
+[directory]
+style = "blue"
+repo_root_style = "bold blue"
+truncate_to_repo = true
+truncation_length = 5
+
+[character]
+success_symbol = "[ツ](bold green)"
+error_symbol = "[✖](bold red)"
+vimcmd_symbol = "[❮](green)"
+
+[git_branch]
+format = "[$branch]($style)"
+style = "bright-black"
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+# conflicted = "​"
+# untracked = "​"
+# modified = "​"
+# staged = "​"
+# renamed = "​"
+# deleted = "​"
+# stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[cmd_duration]
+min_time = 10_000  # Show command duration over 10,000 milliseconds (=10 sec)
+format = "[$duration]($style) "
+style = "bright black"
+
+[python]
+format = '[ \[(${version} )(\($virtualenv\))\] ]($style)'
+style = "yellow"
+
+[rust]
+format = '[ \[(${version})\] ]($style)'
+style = "yellow"
+
+# [rust]
+# style = "bright-black"
+
+# [nodejs]
+# style = "bright-black"
+
+# [deno]
+# style = "bright-black"
+
+[aws]
+disabled = true
+
+[azure]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[battery]
+disabled = true
+
+[buf]
+disabled = true
+
+[bun]
+disabled = true
+
+[cmake]
+disabled = true
+
+[cobol]
+disabled = true
+
+[conda]
+disabled = true
+
+[daml]
+disabled = true
+
+[container]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[singularity]
+disabled = true
+
+[package]
+disabled = true

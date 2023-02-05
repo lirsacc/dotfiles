@@ -1,0 +1,8 @@
+#!/usr/bin/env fish
+function create
+    if test ! -f "$argv[1]"
+        install -Dv /dev/null "$argv[1]"
+    end
+end
+
+create $argv

@@ -92,10 +92,6 @@ function create() {
     fi
 }
 
-function remove-known-host() {
-    sed -i "/$1/d" "$HOME/.ssh/known_hosts"
-}
-
 function online-check() {
     # Stolen and adapted (removed cron job, use as a command) from:
     # https://github.com/nicksp/dotfiles/

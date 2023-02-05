@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+import fileinput
+import os
+import sys
+
+try:
+    filenames = [sys.argv[1]]
+    if sys.argv[2:]:
+        print("Unexpected input")
+        sys.exit(1)
+except IndexError:
+    filenames = fileinput.input()
+
+for x in filenames:
+    name, _ = os.path.splitext(x.strip())
+    print(name)

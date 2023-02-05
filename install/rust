@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 
-rustup_url=https://static.rust-lang.org/rustup/dist/i686-apple-darwin/rustup-init
-file="rustup-init.$$.$RANDOM"
+RUST_CHANNELS=${RUST_CHANNELS:-"stable nightly"}
+RUST_DFAULT=${RUST_DFAULT:-"stable"}
 
-echo "Downloading rustup from $rustup_url to $file"
+if [[ -z $(command -v rustup) ]]; then
+    echo "rustup should have been installed "
+    return 1
+fi
 
-curl $rustup_url -S > "$file"
-chmod +x "$file"
-./"$file" --no-modify-path -v -y
-rm -f "$file"
+rustup self update
 
-rustup install stable
-rustup install nightly
-rustup default stable
+IFS=', ' read -r -a channels <<< "$RUST_CHANNELS"
+for x in ${channels[*]}; do
+    rustup install --no-self-update $x
+done
+
+rustup default $RUST_DFAULT

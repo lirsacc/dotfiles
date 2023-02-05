@@ -1,144 +1,21 @@
 #!/usr/bin/env bash
 
-# Exit if Homebrew is not installed.
 if [[ -z $(command -v brew) ]]; then
     echo "Homebrew is needed here, please install from https://brew.sh..."
     return 1
 fi
 
-# Useful brew shortcuts taken from https://github.com/thoughtbot/laptop
-brew-install-or-upgrade() {
-  if brew-is-installed "$1"; then
-    if brew-is-upgradable "$1"; then
-      brew upgrade "$@"
-    fi
-  else
-    brew install "$@"
-  fi
-}
-
-brew-is-installed() {
-  local name
-  name="$(brew-expand-alias "$1")"
-  res=$(brew ls --versions "$name")
-  if [[ -z "$res" ]]; then
-    return 1
-  else
-    return 0
-  fi
-}
-
-brew-is-upgradable() {
-  local name
-  name="$(brew-expand-alias "$1")"
-  ! brew outdated --quiet "$name" >/dev/null
-}
-
-brew-expand-alias() {
-  brew info "$1" 2>/dev/null | head -1 | awk '{gsub(/.*\//, ""); gsub(/:/, ""); print $1}'
-}
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_BUILD_FROM_SOURCE=0
 export HOMEBREW_NO_EMOJI=1
 export HOMEBREW_NO_ANALYTICS=1
 
-declare recipes=(
-    'asdf'
-    'autoconf'
-    'automake'
-    'bash'
-    'binutils'
-    'bison'
-    'cmake'
-    'coreutils'
-    'ctags'
-    'diffutils'
-    'direnv'
-    'ed'
-    'emacs'
-    'findutils'
-    'fish'
-    'fonttools'
-    'fzf'
-    'gawk'
-    'gh'
-    'gibo'
-    'git'
-    'gnu-indent'
-    'gnu-sed'
-    'gnu-tar'
-    'gnu-which'
-    'go'
-    'gpg'
-    'grep'
-    'gzip'
-    'htop'
-    'imagemagick'
-    'jless'
-    'jq'
-    'less'
-    'libressl'
-    'make'
-    'mas'
-    'mercurial'
-    'moreutils'
-    'nano'
-    'neovim'
-    'ngrep'
-    'nmap'
-    'openssl@1.1'
-    'perl'
-    'pinentry-mac'
-    'pstree'
-    'pv'
-    'rename'
-    'rsync'
-    'screen'
-    'shellcheck'
-    'tmux'
-    'tree'
-    'unzip'
-    'vim'
-    'watch'
-    'wget'
-    'wifi-password'
-    'zopfli'
-    'zsh'
-)
-
-declare applications=(
-    '1password'
-    'alfred'
-    'appcleaner'
-    # 'arq'
-    'authy'
-    # 'calibre'
-    'iterm2'
-    'rectangle'
-    'sublime-merge'
-    'sublime-tex'
-    'the-unarchiver'
-    'visual-studio-code-insiders'
-    'vlc'
-    'xquartz'
-)
-
-declare fonts=(
-    'font-cascadia-code'
-    'font-cascadia-mono'
-    'font-fira-code'
-    'font-fira-mono'
-    'font-fira-sans'
-    'font-ibm-plex'
-    'font-input'
-    'font-jetbrains-mono'
-)
-
-brew doctor
-
 # Make sure we’re using the latest Homebrew
 brew update
+
+brew doctor
 
 echo -n "Upgrade all already-installed formulae? (y/n) "
 read -rp "" -n 1
@@ -147,24 +24,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew upgrade
 fi
 
-for recipe in "${recipes[@]}"; do
-    if [ -n "$recipe" ]; then
-        # shellcheck disable=SC2086
-        brew install $recipe
-    fi
-done
-
-for app in "${applications[@]}"; do
-    if [ -n "$app" ]; then
-        brew cask install --require-sha "$app"
-    fi
-done
-
-for font in "${fonts[@]}"; do
-    if [ -n "$font" ]; then
-        brew cask install --require-sha "$font"
-    fi
-done
+brew bundle --file="SCRIPT_DIR/../Brewfile"
 
 # Remove outdated versions from the cellar
 brew cleanup
