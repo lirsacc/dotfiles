@@ -90,10 +90,12 @@ end
 
 command -v rg >/dev/null && set -gx FZF_DEFAULT_COMMAND 'rg --files --hidden'
 
+set -gx ASDF_DIR "$HOMEBREW_PREFIX/opt/asdf/libexec"
+source "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.fish"
+
+# Comes after ASDF so direnv installed with asdf can work.
 set -g direnv_fish_mode disable_arrow
 direnv hook fish | source
-
-source "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.fish"
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
