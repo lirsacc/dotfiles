@@ -50,4 +50,4 @@ set tabstospaces
 
 # Load Improved Nano syntax highlighting files.
 # See https://github.com/scopatz/nanorc
-include ~/.nano/*.nanorc
+include ~/.config/nano/syntax-highlighting/.nanorc

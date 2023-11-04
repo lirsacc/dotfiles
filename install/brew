@@ -24,7 +24,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew upgrade
 fi
 
-brew bundle --file="SCRIPT_DIR/../Brewfile"
+brew bundle --file="$SCRIPT_DIR/../Brewfile"
 
 # Remove outdated versions from the cellar
 brew cleanup

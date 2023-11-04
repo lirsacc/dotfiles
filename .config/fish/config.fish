@@ -2,7 +2,7 @@ set -gx fish_greeting ''
 
 # Shell convenience aliases
 alias unset "set -e"
-alias path 'echo $PATH | tr -s " " "\n"'
+alias reload 'exec $SHELL -l'
 alias h "history"
 
 set -gx TERM "xterm-256color"
@@ -14,10 +14,6 @@ set -gx EDITOR "vim"
 set -gx VISUAL_EDITOR "code -a -w"
 
 set -g fish_emoji_width 2
-
-# Avoid issues with `gpg` as installed via Homebrew.
-# https://stackoverflow.com/a/42265848/96656
-set -gx GPG_TTY (tty)
 
 # Highlight section titles in manual pages
 # highlighting inside manpages and elsewhere
@@ -40,9 +36,9 @@ set -gx HOMEBREW_BUILD_FROM_SOURCE 0
 set -gx HOMEBREW_NO_EMOJI 1
 set -gx HOMEBREW_NO_ANALYTICS 1
 
-set -gx HOMEBREW_PREFIX "/opt/homebrew"
-set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar"
-set -gx HOMEBREW_REPOSITORY "/opt/homebrew"
+set -gx HOMEBREW_PREFIX "/opt/homebrew";
+set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar";
+set -gx HOMEBREW_REPOSITORY "/opt/homebrew";
 
 set -gx PATH \
 "$HOMEBREW_PREFIX/bin" \
@@ -84,6 +80,13 @@ $PKG_CONFIG_PATH;
 
 set -gx PATH $HOME/.cargo/bin $PATH
 set -gx PATH $HOME/bin $PATH
+set -gx PATH $PATH $HOME/.local/bin
+
+# Avoid issues with `gpg` as installed via Homebrew.
+# https://stackoverflow.com/a/42265848/96656
+if which tty &>/dev/null
+    set -gx GPG_TTY (tty)
+end
 
 command -v rg >/dev/null && set -gx FZF_DEFAULT_COMMAND 'rg --files --hidden'
 
@@ -106,10 +109,4 @@ if status is-interactive
 end
 
 source ~/.config/fish/utils.fish
-
-source ~/.config/.aliases.sh
-
-if test -e ~/.extras.fish
-    source ~/.extras.fish
-end
-
+source ~/.config/fish/extras.fish

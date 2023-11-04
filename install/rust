@@ -1,18 +1,8 @@
 #!/usr/bin/env bash
 
-RUST_CHANNELS=${RUST_CHANNELS:-"stable nightly"}
-RUST_DFAULT=${RUST_DFAULT:-"stable"}
+brew install rustup
 
-if [[ -z $(command -v rustup) ]]; then
-    echo "rustup should have been installed "
-    return 1
-fi
+rustup install stable
+rustup install nightly
 
-rustup self update
-
-IFS=', ' read -r -a channels <<< "$RUST_CHANNELS"
-for x in ${channels[*]}; do
-    rustup install --no-self-update $x
-done
-
-rustup default $RUST_DFAULT
+rustup default stable

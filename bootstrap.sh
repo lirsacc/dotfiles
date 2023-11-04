@@ -10,7 +10,6 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 scripts="${SCRIPT_DIR}/install"
 target="${HOME}"
-extra_directories=("projects")
 branch="master"
 
 usage="
@@ -187,6 +186,7 @@ function _install_homebrew() {
 
 rsync_exclude=(
     ".git/"
+    ".gitmodules"
     "install"
     "${scripts}"
     ".colors.sh"
@@ -211,7 +211,7 @@ rsync_flags=(
     --human-readable
 )
 
-for x in ${rsync_exclude[*]}; do
+for x in "${rsync_exclude[@]}"; do
     rsync_flags+=( "--exclude=$x" )
 done
 
@@ -229,7 +229,7 @@ else
 fi
 
 function _rsync() {
-    rsync ${rsync_flags[@]} "$@" . "$target"
+    rsync "${rsync_flags[@]}" "$@" . "$target"
 }
 
 function _prettify_rsync_output() {

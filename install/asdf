@@ -24,7 +24,7 @@ non_core_plugins=(
 
 declare -A default_versions
 
-default_versions['python']='latest 3.11-dev 3.10-dev 3.9-dev'
+default_versions['python']='latest 3.12-dev 3.11-dev 3.10-dev 3.9-dev'
 default_versions['direnv']='latest'
 default_versions['bun']='latest'
 default_versions['zig']='latest'
@@ -37,25 +37,25 @@ fi
 
 function _install() {
     echo "[asdf] installing plugin $1"
-    asdf plugin add $1
-    if [ ! -z "${default_versions[$1]}" ]; then
+    asdf plugin add "$1"
+    if [ -n "${default_versions[$1]}" ]; then
         IFS=', ' read -r -a versions <<< "${default_versions[$1]}"
         for version in ${versions[@]}; do
             echo "[asdf] Installing $1@$version"
-            asdf install $1 $version
+            asdf install "$1" "$version"
         done
     fi
 }
 
-for plugin in ${core_plugins[*]}; do
-    _install $plugin
+for plugin in "${core_plugins[@]}"; do
+    _install "$plugin"
 done
 
-if [ ! -z "$ASDF_INSTALL_NON_CORE_PLUGINS" ]; then
-    for plugin in ${non_core_plugins[*]}; do
-        _install $plugin
+if [ -n "$ASDF_INSTALL_NON_CORE_PLUGINS" ]; then
+    for plugin in "${non_core_plugins[@]}"; do
+        _install "$plugin"
     done
 fi
 
 asdf direnv setup --shell fish --version latest
-asdf direnv setup --shell zsh --version latest
+# asdf direnv setup --shell zsh --version latest
