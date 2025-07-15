@@ -2,5 +2,5 @@
 
 set -eufo pipefail
 
-# hash: {{ include ".config/mise/mise.toml" | sha256sum }}
+# hash: {{ include "~/.config/mise/mise.toml" | sha256sum }}
 mise install
