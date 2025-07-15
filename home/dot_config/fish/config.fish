@@ -10,8 +10,7 @@ set -gx TERM "xterm-256color"
 set -gx LC_ALL en_US.UTF-8
 set -gx LANG en_US.UTF-8
 
-set -gx EDITOR "vim"
-set -gx VISUAL_EDITOR "code -a -w"
+set -gx EDITOR "nvim"
 
 set -g fish_emoji_width 2
 
