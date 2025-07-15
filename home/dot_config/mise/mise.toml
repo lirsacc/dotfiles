@@ -1,0 +1,52 @@
+[tools]
+usage = "latest"
+python = ["3.13", "3.12", "3.11", "3.10", "3.9",]
+node = "lts"
+lua = "latest"
+zig = "latest"
+elixir = "latest"
+gleam = "latest"
+sops = "latest"
+ruby = "latest"
+gh = "latest"
+"npm:@anthropic-ai/claude-code" = "latest"
+"npm:prettier" = "latest"
+"pipx:aider-chat" = { version = "latest", uvx = true, uvx_args = """\
+--no-managed-python
+"""}
+"pipx:llm" = { version = "latest", uvx = true, uvx_args = """\
+--python 3.12 \
+--no-managed-python \
+--with llm-anthropic \
+--with llm-fragments-github \
+--with llm-fragments-pdf \
+--with llm-fragments-site-text \
+--with llm-gemini \
+--with llm-mistral \
+--with llm-mlx \
+--with llm-ollama \
+--with llm-templates-fabric \
+""" }
+"pipx:nox" = { version = "latest", uvx = true, uvx_args = """\
+--no-managed-python \
+"""}
+"pipx:keyring" = { version = "latest", uvx = true, uvx_args = """\
+--no-managed-python \
+""""}
+"pipx:files-to-prompt" = { version = "latest", uvx = true, uvx_args = """\
+--no-managed-python \
+"""}
+"pipx:shot-scraper" = { version = "latest", uvx = true, uvx_args = """\
+--no-managed-python \
+"""}
+"npm:@sourcegraph/amp" = "latest"
+"npm:@google/gemini-cli" = "latest"
+"asdf:mise-plugins/mise-gcloud" = "latest"
+uv = "latest"
+
+[settings]
+paranoid = false
+disable_default_shorthands = true
+
+not_found_auto_install = false
+idiomatic_version_file_enable_tools = ["python", "node", "ruby"]

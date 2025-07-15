@@ -1,0 +1,78 @@
+# global gitignore
+
+tmp/**/*
+
+# linux
+*~
+
+# vim stuff
+%*
+*.sw[a-z]
+*.swap
+.vim/viminfo
+.vim/swaps/*
+.vim/undo
+
+# local git configs
+.gitconfig.*
+
+# osx
+._*
+.AppleDouble
+.DS_Store
+.localized
+.LSOverride
+.Trashes
+Icon
+.Spotlight-V100
+
+# window
+Desktop.ini
+Thumbs.db
+
+# node
+node_modules
+npm-debug.log
+
+# python
+*.pyc
+pip-log.txt
+pip-delete-this-directory.txt
+.egg
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints
+
+# java / jvm
+*.javac
+*.jar
+*.war
+*.ear
+
+# ssh keys
+id_rsa
+
+# vagrant stuff
+.vagrant/
+
+# logs and runtime data
+logs
+*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ctags
+tags
+!tags/
+
+# direnv
+.envrc
+.tool-versions
+.direnv
+
+# LLMS
+CLAUDE.md
+.claude/

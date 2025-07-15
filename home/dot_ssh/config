@@ -1,0 +1,46 @@
+# Added by OrbStack: 'orb' SSH host for Linux machines
+# This only works if it's at the top of ssh_config (before any Host blocks).
+# This won't be added again if you remove it.
+Include ~/.orbstack/ssh/config
+
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+
+Host *
+  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+Host *
+  # Always use SSH2.
+  Protocol 2
+
+  # Use a shared channel for all sessions to the same host,
+  # instead of always opening a new one. This leads to much
+  # quicker connection times.
+  ControlMaster auto
+  ControlPath ~/.ssh/control.%C
+  ControlPersist 1800
+
+  Compression no
+
+  TCPKeepAlive yes
+  ServerAliveInterval 20
+  ServerAliveCountMax 10
+
+  ForwardAgent yes
+  UseRoaming no
+
+Host github.com
+  ControlMaster auto
+  ControlPersist 120
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+
+***REMOVED***
+***REMOVED***
+  ***REMOVED***
+***REMOVED***

@@ -1,0 +1,14 @@
+# Machine specific git configuration
+[user]
+    name = {{ .git_name }}
+    email = {{ .git_email }}
+    signingkey = {{ .git_signingkey }}
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[commit]
+  gpgsign = true

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# uname from coreutils behaves a bit wrong on M1 macs but
+# we still want other unprefixed binaries so this will take
+# precedence pointing to the original Mac OS provided binary.
+/usr/bin/uname "$@"

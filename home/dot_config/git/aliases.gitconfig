@@ -1,0 +1,67 @@
+[alias]
+  # Prevent git git from blowing up
+  git = !exec git
+
+  fp = fetch --prune
+  pp = pull --prune
+  co  = checkout
+  cp  = cherry-pick
+  c = clone --recursive  # Clone a repository including all submodules
+  rb = !"git fetch && git rebase origin/main"
+  rh = !"git fetch && git reset --hard origin/main"
+  ro = !"git fetch && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)"
+  rs = !"git fetch && git reset origin/main"
+  mm = !"git fetch && git merge origin/main"
+
+  please = push --force-with-lease
+  shallow-clone = clone --depth=1
+  hard-reset = reset --hard
+  reset-last = reset --hard HEAD~1
+  undo-last = reset --soft HEAD~1
+
+  # create an empty repository
+  create = !"git init && git commit --allow-empty -m init"
+
+  # nice git log
+  lg = "log --pretty=format:'%C(yellow)%h%Creset %C(red)%d %C(cyan)<%an>%Creset %s %Creset%Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+  g = !"git lg --graph"
+  l = !"git lg --graph -n 20"
+
+  # View the current working tree status using the short format
+  s = status -sb
+
+  # Show the diff between the latest commit and the current state
+  d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+  # Pull in remote changes for the current repository and all its submodules
+  p = !"git pull; git submodule foreach git pull origin main"
+
+  # # Show verbose output about tags, branches or remotes
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+
+  stats = shortlog --email --numbered --summary  # list contributors
+
+  # recent = !"git for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'"
+
+  # # Commands for quickly saving current work state
+  fix = commit --amend --no-edit
+  # wip = !"git reset . && git add . --all -U && git commit -m wip"
+  # save = stash save -u
+
+  # # Credit an author on the latest commit
+  # credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+
+  # # Interactive rebase with the given number of latest commits
+  reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+  rib = "!r() { git rebase -i HEAD~$(git log --oneline ${1-origin/main}..HEAD | wc -l); }; r"
+
+  br = rev-parse --abbrev-ref HEAD
+
+  # # list aliases
+  aliases = config --get-regexp alias
+
+  # create a new working branch
+  workon = "!s() { echo "Starting work on branch ${1?'Please specify branch name as argument'}" && (git rev-parse --verify "${1}" && git checkout "${1}") || (git fetch origin "${2-main}" && git checkout -b "${1}" origin/"${2-main}"); }; s"
