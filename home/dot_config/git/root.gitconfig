@@ -6,3 +6,7 @@
 
 [include]
     path = ~/.config/git/local.gitconfig
+
+# This one isn't included in dotfiles allowing a machine specific manual override
+[include]
+    path = ~/.config/git/overrides.gitconfig
