@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-mkdir -p $HOME/.config/nano
-git clone git@github.com:scopatz/nanorc.git $HOME/.config/nano

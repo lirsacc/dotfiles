@@ -1,0 +1,46 @@
+# Added by OrbStack: 'orb' SSH host for Linux machines
+# This only works if it's at the top of ssh_config (before any Host blocks).
+# This won't be added again if you remove it.
+Include ~/.orbstack/ssh/config
+
+
+Host ec2-52-56-42-45.eu-west-2.compute.amazonaws.com
+  HostName ec2-52-56-42-45.eu-west-2.compute.amazonaws.com
+  User ec2-user
+
+Host *
+  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+Host *
+  # Always use SSH2.
+  Protocol 2
+
+  # Use a shared channel for all sessions to the same host,
+  # instead of always opening a new one. This leads to much
+  # quicker connection times.
+  ControlMaster auto
+  ControlPath ~/.ssh/control.%C
+  ControlPersist 1800
+
+  Compression no
+
+  TCPKeepAlive yes
+  ServerAliveInterval 20
+  ServerAliveCountMax 10
+
+  ForwardAgent yes
+  UseRoaming no
+
+Host github.com
+  ControlMaster auto
+  ControlPersist 120
+
+Host ico-mns
+  Hostname ec2-18-175-239-94.eu-west-2.compute.amazonaws.com
+  User ec2-user
+  IdentityFile /Users/lirsacc/projects/work-mns/ico-notes/lirsacc.pem
+
+Host swift
+    Hostname ec2-13-40-170-44.eu-west-2.compute.amazonaws.com
+    User ec2-user
+    IdentityFile /Users/lirsacc/projects/work-mns/ico-notes/lirsacc-swift.pem

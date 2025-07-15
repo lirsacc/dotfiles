@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -eufo pipefail
+set -x
+
+_hostname={{ .hostname }}
+
+if [[ -z "$_hostname" ]]; then
+    exit 0
+fi
+
+_current=$(sudo scutil --get ComputerName)
+
+if [[ "$_hostname" = "$_current" ]]; then
+    exit 0
+fi
+
+sudo scutil --set ComputerName "$_hostname"
+sudo scutil --set HostName "$_hostname"
+sudo scutil --set LocalHostName "$_hostname"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$_hostname"
