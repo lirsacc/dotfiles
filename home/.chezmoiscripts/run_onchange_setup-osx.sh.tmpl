@@ -3,6 +3,10 @@
 set -eufo pipefail
 set -x
 
+if [[ ! "{{ .run_osx_setup }}" = "true" ]]; then
+    exit 0
+fi
+
 # Based off: https://github.com/mathiasbynens/dotfiles/blob/master/.osx
 
 # Disable the sound effects on boot
