@@ -131,7 +131,10 @@ cask "visual-studio-code@insiders"
 cask "vlc"
 cask "zed"
 
-cask "font-atkinson-hyperlegible"
+cask "font-atkinson-hyperlegible-mono"
+cask "font-atkinson-hyperlegible-next"
+cask "font-bricolage-grotesque"
+cask "font-cascadia-code"
 cask "font-comic-mono"
 cask "font-computer-modern"
 cask "font-dm-mono"
@@ -147,6 +150,7 @@ cask "font-jetbrains-mono"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-mononoki"
 cask "font-mononoki-nerd-font"
+cask "font-space-grotesk"
 
 brew "mas"
 mas "Amphetamine", id: 937984704
@@ -156,8 +160,3 @@ mas "Marked 2", id: 890031187
 mas "NextDNS", id: 1464122853
 mas "Textual 7", id: 1262957439
 mas "The Unarchiver", id: 425424353
-
-cask "font-atkinson-hyperlegible-mono"
-cask "font-atkinson-hyperlegible-next"
-cask "font-bricolage-grotesque"
-cask "font-space-grotesk"
