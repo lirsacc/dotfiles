@@ -17,11 +17,12 @@ Setup
   # Your chezmoi settings
 
   [data]
+      # Set these to start with a default Git identity
       git_email = "<your git email>"
       git_name = "<your git name>"
       git_signingkey = "<the git ssh signing key id>"
       hostname = "<hostname>"  # Remove to leave hostname alone
-      run_osx_setup = "false"  # Set to true to automatically run the osx setup script
-      brew_skip_mas = "true"   # Set to false or remove to enable application installation through mas
+      run_osx_setup = "false"  # Set to `false` to automatically run the osx setup script, defaults enabled
+      brew_skip_mas = "true"   # Set to `true` or remove to enable application installation through mas, defaults enabled
   ```
 3. Run `chezmoi init lirsacc` and `chezmoi apply`

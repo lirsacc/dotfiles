@@ -3,9 +3,10 @@
 set -eufo pipefail
 set -x
 
-if [[ ! "{{ .run_osx_setup }}" = "true" ]]; then
-    exit 0
-fi
+{{- if and (index . "run_osx_setup") (eq .run_osx_setup "false") }}
+# Disabled through run_osx_setup
+exit 0
+{{- end }}
 
 # Based off: https://github.com/mathiasbynens/dotfiles/blob/master/.osx
 
