@@ -21,6 +21,7 @@ Setup
       git_name = "<your git name>"
       git_signingkey = "<the git ssh signing key id>"
       hostname = "<hostname>"  # Remove to leave hostname alone
-      run_osx_setup = "false"  # Set to true to automaticallt run the osx setup script
+      run_osx_setup = "false"  # Set to true to automatically run the osx setup script
+      brew_skip_mas = "true"   # Set to false or remove to enable application installation through mas
   ```
 3. Run `chezmoi init lirsacc` and `chezmoi apply`

@@ -3,7 +3,7 @@
 set -eufo pipefail
 set -x
 
-{{- if ne .hostname nil }}
+{{- if and (index . "hostname") .hostname }}
 _hostname={{ .hostname }}
 
 if [[ -z "$_hostname" ]]; then

@@ -1,12 +1,12 @@
 # Machine specific git configuration
 [user]
-    {{- if ne .git_name nil }}
+    {{- if and (index . "git_name") .git_name }}
     name = {{ .git_name }}
     {{- end }}
-    {{- if ne .git_email nil }}
+    {{- if and (index . "git_email") .git_email }}
     email = {{ .git_email }}
     {{- end }}
-    {{- if ne .git_signingkey nil }}
+    {{- if and (index . "git_signingkey") .git_signingkey }}
     signingkey = {{ .git_signingkey }}
     {{- end }}
 
