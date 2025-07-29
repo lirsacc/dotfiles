@@ -1,0 +1,124 @@
+{
+  "actions" : [
+    {
+      "key" : "t",
+      "type" : "application",
+      "value" : "/Applications/Ghostty.app"
+    },
+    {
+      "actions" : [
+        {
+          "key" : "s",
+          "type" : "application",
+          "value" : "/Applications/Safari.app"
+        },
+        {
+          "key" : "e",
+          "type" : "application",
+          "value" : "/System/Applications/Mail.app"
+        },
+        {
+          "key" : "i",
+          "type" : "application",
+          "value" : "/System/Applications/Music.app"
+        },
+        {
+          "key" : "m",
+          "type" : "application",
+          "value" : "/System/Applications/Messages.app"
+        },
+        {
+          "key" : "c",
+          "type" : "application",
+          "value" : "/System/Applications/Calendar.app"
+        }
+      ],
+      "key" : "m",
+      "type" : "group"
+    },
+    {
+      "actions" : [
+        {
+          "key" : "e",
+          "type" : "url",
+          "value" : "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols"
+        },
+        {
+          "key" : "p",
+          "type" : "url",
+          "value" : "raycast://confetti"
+        },
+        {
+          "key" : "c",
+          "type" : "url",
+          "value" : "raycast://extensions/raycast/system/open-camera"
+        }
+      ],
+      "key" : "r",
+      "type" : "group"
+    },
+    {
+      "key" : "a",
+      "type" : "application",
+      "value" : "/Applications/Arc.app"
+    },
+    {
+      "actions" : [
+        {
+          "key" : "c",
+          "type" : "application",
+          "value" : "/Applications/Claude.app"
+        },
+        {
+          "key" : "g",
+          "type" : "application",
+          "value" : "/Applications/ChatGPT.app"
+        },
+        {
+          "key" : "p",
+          "type" : "application",
+          "value" : "/Applications/Perplexity.app"
+        }
+      ],
+      "key" : "c",
+      "type" : "group"
+    },
+    {
+      "key" : "z",
+      "type" : "application",
+      "value" : "/Applications/Zed.app"
+    },
+    {
+      "key" : "1",
+      "type" : "application",
+      "value" : "/Applications/1Password.app"
+    },
+    {
+      "actions" : [
+        {
+          "key" : "k",
+          "type" : "folder",
+          "value" : "/Users/lirsacc/Desktop"
+        },
+        {
+          "key" : "d",
+          "type" : "folder",
+          "value" : "/Users/lirsacc/Downloads"
+        },
+        {
+          "key" : "i",
+          "type" : "folder",
+          "value" : "/Users/lirsacc/Library/Mobile Documents/com~apple~CloudDocs"
+        }
+      ],
+      "key" : "d",
+      "type" : "group"
+    },
+    {
+      "key" : "o",
+      "type" : "application",
+      "value" : "/Applications/Obsidian.app"
+    }
+  ],
+  "type" : "group"
+}
