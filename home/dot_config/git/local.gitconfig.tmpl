@@ -1,8 +1,14 @@
 # Machine specific git configuration
 [user]
+    {{- if .git_name }}
     name = {{ .git_name }}
+    {{- end }}
+    {{- if .git_email }}
     email = {{ .git_email }}
+    {{- end }}
+    {{- if .git_signingkey }}
     signingkey = {{ .git_signingkey }}
+    {{- end }}
 
 [gpg]
   format = ssh
