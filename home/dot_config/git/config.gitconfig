@@ -25,6 +25,8 @@
   # https://git-scm.com/docs/git-update-index#_untracked_cache
   untrackedCache = true
 
+  pager = delta
+
 [color]
   # Use colors in Git commands that are capable of colored output when
   # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
@@ -49,7 +51,7 @@
 [merge]
   # Include summaries of merged commits in newly created merge commit messages
   log = true
-  conflictstyle = diff3
+  conflictstyle = zdiff3
 
 # URL shorthands
 [url "git@github.com:"]
@@ -108,3 +110,10 @@
 
 [sequence]
   editor = interactive-rebase-tool
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    dark = true      # or light = true, or omit for auto-detection
