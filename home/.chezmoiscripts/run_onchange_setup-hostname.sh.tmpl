@@ -3,6 +3,7 @@
 set -eufo pipefail
 set -x
 
+{{- if ne .hostname nil }}
 _hostname={{ .hostname }}
 
 if [[ -z "$_hostname" ]]; then
@@ -19,3 +20,4 @@ sudo scutil --set ComputerName "$_hostname"
 sudo scutil --set HostName "$_hostname"
 sudo scutil --set LocalHostName "$_hostname"
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$_hostname"
+{{- end }}
