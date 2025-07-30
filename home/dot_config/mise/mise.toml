@@ -1,16 +1,35 @@
 [tools]
 usage = "latest"
+
+# Python stuff
 python = ["3.13", "3.12", "3.11", "3.10", "3.9",]
+uv = "latest"
+"pipx:nox" = { version = "latest", uvx = true, uvx_args = """\
+--no-managed-python \
+"""}
+"pipx:keyring" = { version = "latest", uvx = true, uvx_args = """\
+--no-managed-python \
+"""}
+"pipx:hatch" = { version = "latest", uvx = true, uvx_args = """\
+--no-managed-python \
+"""}
+
+# Other languages with occasional use
 node = "lts"
 lua = "latest"
 zig = "latest"
+erlang = "latest"
 elixir = "latest"
 gleam = "latest"
-sops = "latest"
 ruby = "latest"
-gh = "latest"
-"npm:@anthropic-ai/claude-code" = "latest"
+
+# Various tools where having the same version per project often matters but that are nice to have globally too.
+sops = "latest"
+pre-commit = "latest"
 "npm:prettier" = "latest"
+
+# LLM stuff
+"npm:@anthropic-ai/claude-code" = "latest"
 "pipx:aider-chat" = { version = "latest", uvx = true, uvx_args = """\
 --no-managed-python
 """}
@@ -27,12 +46,6 @@ gh = "latest"
 --with llm-ollama \
 --with llm-templates-fabric \
 """}
-"pipx:nox" = { version = "latest", uvx = true, uvx_args = """\
---no-managed-python \
-"""}
-"pipx:keyring" = { version = "latest", uvx = true, uvx_args = """\
---no-managed-python \
-"""}
 "pipx:files-to-prompt" = { version = "latest", uvx = true, uvx_args = """\
 --no-managed-python \
 """}
@@ -41,8 +54,10 @@ gh = "latest"
 """}
 "npm:@sourcegraph/amp" = "latest"
 "npm:@google/gemini-cli" = "latest"
+
+# Cloud and infra stuff
 "asdf:mise-plugins/mise-gcloud" = "latest"
-uv = "latest"
+"aqua:aws/aws-cli" = "latest"
 
 [settings]
 paranoid = false

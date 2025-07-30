@@ -55,3 +55,9 @@ cat ~/.config/homebrew/Brewfile* | brew bundle --file - cleanup
 ```
 
 This works for my setup where I don't constantly add / remove things from the Brew bundle.
+
+### Mise vs homebrew
+
+It's a bit fuzzy where I use `mise` vs. `brew` to install something, and sometimes there's both but generally mise is used when it's likely I'll need different versions across different projects.
+
+On individual machines I can create a `~/.mise.toml` to record machine specific tools & overrides to be used.
