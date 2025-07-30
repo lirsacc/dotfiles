@@ -3,11 +3,6 @@
 # This won't be added again if you remove it.
 Include ~/.orbstack/ssh/config
 
-
-***REMOVED***
-***REMOVED***
-***REMOVED***
-
 Host *
   IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
@@ -34,13 +29,3 @@ Host *
 Host github.com
   ControlMaster auto
   ControlPersist 120
-
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-
-***REMOVED***
-***REMOVED***
-  ***REMOVED***
-***REMOVED***
