@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-- Originally forked from Mathias Bynens's great [dotfiles repo](https://github.com/mathiasbynens/dotfiles), now detached.
+- Originally forked from Mathias Bynens's great [dotfiles repo](https://github.com/mathiasbynens/dotfiles), now [detached](https://github.com/lirsacc/dotfiles/commit/54eb6ed1b0a41510914b521b1542c18e96a37675).
 - OSX only, setup for >M1 Macs (where homebrew install location changed).
 - Primary shell is [fish](https://fishshell.com/).
 - Use [chezmoi](https://www.chezmoi.io/) for management.
@@ -61,3 +61,20 @@ This works for my setup where I don't constantly add / remove things from the Br
 It's a bit fuzzy where I use `mise` vs. `brew` to install something, and sometimes there's both but generally mise is used when it's likely I'll need different versions across different projects.
 
 On individual machines I can create a `~/.mise.toml` to record machine specific tools & overrides to be used.
+
+### Git config
+
+- A default identity can be configured through the chezmoi data.
+- This uses 1Password for loading SSH keys by default.
+- You can also create a `~/.config/git/overrides.gitconfig` file locally which won't be managed and is loaded last.
+
+#### Git config & identity per directory
+
+A pattern I use often is to have a git identity per directory (e.g. one per GitHub organisation, GitHub instance, etc.). You can achieve this by adding blocks like this in the gitconfig:
+
+```gitconfig
+[includeIf "gitdir:~/projects/my-organisation/"]
+  path = ~/projects/my-organisation/.gitconfig
+```
+
+I haven't found a way to automatically detect those, although something could probably be hacked around through the same prompt-hacks tools mise use to detect the closest config file.
