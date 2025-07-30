@@ -2,19 +2,26 @@
 
 set -eufo pipefail
 
-# Brewfile hash: {{ include "./dot_config/Brewfile" | sha256sum }}
+# Brewfile hash: {{ include "./dot_config/homebrew/Brewfile" | sha256sum }}
+# Brewfile.fonts hash: {{ include "./dot_config/homebrew/Brewfile.fonts" | sha256sum }}
+# Brewfile.casks hash: {{ include "./dot_config/homebrew/Brewfile.casks" | sha256sum }}
+# Brewfile.mas hash: {{ include "./dot_config/homebrew/Brewfile.mas" | sha256sum }}
 # MacOS build version: {{ output "sw_vers" "--buildVersion" }}
 
 export HOMEBREW_BAT=1
 export HOMEBREW_BUILD_FROM_SOURCE=0
 export HOMEBREW_NO_EMOJI=1
 export HOMEBREW_NO_ANALYTICS=1
-export HOMEBREW_BUNDLE_FILE_GLOBAL="~/.config/Brewfile"
-export HOMEBREW_BUNDLE_DUMP_NO_VSCODE="1"
-{{- if and (index . "brew_skip_mas") (eq .brew_skip_mas "true") }}
-export HOMEBREW_BUNDLE_MAS_SKIP="1"
-{{- end }}
 
-brew bundle --global install
 brew update
 brew upgrade
+
+brew bundle --file ~/.config/homebrew/Brewfile
+brew bundle --file ~/.config/homebrew/Brewfile.fonts
+
+{{- if not (eq (index . "brew_skip_casks" | default "false") "true") }}
+brew bundle --file ~/.config/homebrew/Brewfile.casks
+{{- end }}
+{{- if not (eq (index . "brew_skip_mas" | default "false") "true") }}
+brew bundle --file ~/.config/homebrew/Brewfile.mas
+{{- end }}

@@ -26,13 +26,13 @@ gh = "latest"
 --with llm-mlx \
 --with llm-ollama \
 --with llm-templates-fabric \
-""" }
+"""}
 "pipx:nox" = { version = "latest", uvx = true, uvx_args = """\
 --no-managed-python \
 """}
 "pipx:keyring" = { version = "latest", uvx = true, uvx_args = """\
 --no-managed-python \
-""""}
+"""}
 "pipx:files-to-prompt" = { version = "latest", uvx = true, uvx_args = """\
 --no-managed-python \
 """}

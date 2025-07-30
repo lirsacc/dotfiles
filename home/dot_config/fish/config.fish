@@ -36,9 +36,6 @@ set -gx HOMEBREW_BUILD_FROM_SOURCE 0
 set -gx HOMEBREW_NO_EMOJI 1
 set -gx HOMEBREW_NO_ANALYTICS 1
 
-set -gx HOMEBREW_BUNDLE_FILE_GLOBAL "~/.config/Brewfile"
-set -gx HOMEBREW_BUNDLE_DUMP_NO_VSCODE "1"
-
 set -gx HOMEBREW_PREFIX "/opt/homebrew";
 set -gx HOMEBREW_CELLAR "$HOMEBREW_PREFIX/Cellar";
 set -gx HOMEBREW_REPOSITORY "/opt/homebrew";
