@@ -1,5 +1,7 @@
 set -gx fish_greeting ''
 
+set -gx SHELL "/opt/homebrew/bin/fish"
+
 # Shell convenience aliases
 alias unset "set -e"
 alias reload 'exec $SHELL -l'
@@ -54,10 +56,9 @@ $PATH;
 set -q MANPATH; or set MANPATH ''; set -gx MANPATH "$HOMEBREW_PREFIX/share/man" $MANPATH;
 set -q INFOPATH; or set INFOPATH ''; set -gx INFOPATH "$HOMEBREW_PREFIX/share/info" $INFOPATH;
 
-set -q LDFLAGS; or set LDFLAGS '';
-
 # Other not added for now: libffi, binutils, openssl@1.1, openssl@3. zlip
 
+set -q LDFLAGS; or set LDFLAGS '';
 set -gx LDFLAGS \
 "-L$HOMEBREW_PREFIX/lib" \
 "-L$HOMEBREW_PREFIX/opt/curl/lib" \
@@ -78,44 +79,42 @@ set -gx PKG_CONFIG_PATH \
 "$HOMEBREW_PREFIX/opt/curl/lib/pkgconfig" \
 $PKG_CONFIG_PATH;
 
-set -gx PATH $HOME/.cargo/bin $PATH
-set -gx PATH $HOME/bin $PATH
-set -gx PATH $PATH $HOME/.local/bin
-set -gx PATH $PATH /usr/local/bin
+set -gx PATH  \
+    $HOME/.cargo/bin \
+    $HOME/bin \
+    $PATH \
+    $HOME/.local/bin \
+    /usr/local/bin
 
-# Avoid issues with `gpg` as installed via Homebrew.
-# https://stackoverflow.com/a/42265848/96656
-if which tty &>/dev/null
+set -gx FZF_DEFAULT_COMMAND 'rg --files --hidden'
+
+if status is-interactive
+    # Avoid issues with `gpg` as installed via Homebrew.
+    # https://stackoverflow.com/a/42265848/96656
     set -gx GPG_TTY (tty)
-end
 
-command -v rg >/dev/null && set -gx FZF_DEFAULT_COMMAND 'rg --files --hidden'
-
-if status is-interactive
-  mise activate fish | source
-
-  # atuin init fish | source
-else
-  mise activate fish --shims | source
-end
-
-if status is-interactive
     # Commands to run in interactive sessions can go here
-    if test -d (brew --prefix)"/share/fish/completions"
-        set -gx fish_complete_path $fish_complete_path (brew --prefix)/share/fish/completions
+    if test -d "$HOMEBREW_PREFIX/share/fish/completions"
+        set -gx fish_complete_path $fish_complete_path /$HOMEBREW_PREFIXshare/fish/completions
     end
 
-    if test -d (brew --prefix)"/share/fish/vendor_completions.d"
-        set -gx fish_complete_path $fish_complete_path (brew --prefix)/share/fish/vendor_completions.d
+    if test -d "$HOMEBREW_PREFIX/share/fish/vendor_completions.d"
+        set -gx fish_complete_path $fish_complete_path /$HOMEBREW_PREFIXshare/fish/vendor_completions.d
     end
+
+    # Supposedly this is auto-enabled by the homebrew install but that doesn't seem to work.
+    mise activate fish | source
 
     starship init fish | source
     atuin init fish | source
-end
 
-source ~/.config/fish/utils.fish
-source ~/.config/.aliases.sh
+    source ~/.config/fish/utils.fish
+    source ~/.config/.aliases.sh
 
-if test -e ~/.extras.fish
-    source ~/.extras.fish
+    if test -e ~/.extras.fish
+        source ~/.extras.fish
+    end
+else
+    # Supposedly this is auto-enabled by the homebrew install but that doesn't seem to work.
+    mise activate fish --shims | source
 end
