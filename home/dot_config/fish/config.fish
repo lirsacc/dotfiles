@@ -5,7 +5,6 @@ set -gx SHELL "/opt/homebrew/bin/fish"
 # Shell convenience aliases
 alias unset "set -e"
 alias reload 'exec $SHELL -l'
-alias h "history"
 
 set -gx TERM "xterm-256color"
 
@@ -102,19 +101,14 @@ if status is-interactive
         set -gx fish_complete_path $fish_complete_path /$HOMEBREW_PREFIXshare/fish/vendor_completions.d
     end
 
-    # Supposedly this is auto-enabled by the homebrew install but that doesn't seem to work.
     mise activate fish | source
 
     starship init fish | source
     atuin init fish | source
 
-    source ~/.config/fish/utils.fish
-    source ~/.config/.aliases.sh
-
     if test -e ~/.extras.fish
         source ~/.extras.fish
     end
 else
-    # Supposedly this is auto-enabled by the homebrew install but that doesn't seem to work.
     mise activate fish --shims | source
 end
