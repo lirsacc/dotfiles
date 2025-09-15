@@ -16,12 +16,10 @@ uv = "latest"
 
 # Other languages with occasional use
 node = "lts"
-lua = "latest"
 zig = "latest"
 erlang = "latest"
 elixir = "latest"
 gleam = "latest"
-ruby = "latest"
 
 # Various tools where having the same version per project often matters but that are nice to have globally too.
 sops = "latest"
