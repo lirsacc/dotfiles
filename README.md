@@ -50,9 +50,7 @@ The workaround is to split the brewfiles and not use a global one. This makes it
 cat ~/.config/homebrew/Brewfile* | brew bundle --file -
 ```
 
-```shell
-cat ~/.config/homebrew/Brewfile* | brew bundle --file - cleanup
-```
+This is abstracted out under the fish function `brew-bundle-all`.
 
 This works for my setup where I don't constantly add / remove things from the Brew bundle.
 
