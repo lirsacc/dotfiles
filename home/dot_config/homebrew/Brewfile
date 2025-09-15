@@ -1,5 +1,6 @@
 brew "mise"
 brew "fish"
+brew "fisher"
 brew "starship"
 brew "xcodes"
 
