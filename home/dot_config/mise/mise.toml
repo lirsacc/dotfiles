@@ -29,7 +29,7 @@ pre-commit = "latest"
 # LLM stuff
 "npm:@anthropic-ai/claude-code" = "latest"
 "pipx:aider-chat" = { version = "latest", uvx = true, uvx_args = """\
---no-managed-python
+--no-managed-python \
 """}
 "pipx:llm" = { version = "latest", uvx = true, uvx_args = """\
 --python 3.12 \
