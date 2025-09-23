@@ -3,6 +3,8 @@
 # This won't be added again if you remove it.
 Include ~/.orbstack/ssh/config
 
+Include overrides/*
+
 Host *
   IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
@@ -14,7 +16,7 @@ Host *
   # instead of always opening a new one. This leads to much
   # quicker connection times.
   ControlMaster auto
-  ControlPath ~/.ssh/control.%C
+  ControlPath ~/.ssh/control-%h-%p-%r
   ControlPersist 1800
 
   Compression no
@@ -25,7 +27,3 @@ Host *
 
   ForwardAgent yes
   UseRoaming no
-
-Host github.com
-  ControlMaster auto
-  ControlPersist 120
