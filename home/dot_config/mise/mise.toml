@@ -27,7 +27,6 @@ pre-commit = "latest"
 "npm:prettier" = "latest"
 
 # LLM stuff
-"npm:@anthropic-ai/claude-code" = "latest"
 "pipx:aider-chat" = { version = "latest", uvx = true, uvx_args = """\
 --no-managed-python \
 """}
@@ -50,12 +49,15 @@ pre-commit = "latest"
 "pipx:shot-scraper" = { version = "latest", uvx = true, uvx_args = """\
 --no-managed-python \
 """}
+"npm:@anthropic-ai/claude-code" = "latest"
 "npm:@sourcegraph/amp" = "latest"
 "npm:@google/gemini-cli" = "latest"
+"npm:@openai/codex" = "latest"
 
 # Cloud and infra stuff
-"asdf:mise-plugins/mise-gcloud" = "latest"
-"aqua:aws/aws-cli" = "latest"
+# "asdf:mise-plugins/mise-gcloud" = "latest"
+# "aqua:aws/aws-cli" = "latest"
+
 
 [settings]
 paranoid = false
